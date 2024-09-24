@@ -19,12 +19,17 @@ const NurseSchema = new mongoose.Schema({
         required: true
     },
     avatar: {
-        type: String
+        type: String,
+        default: 'pics/default.png'
     },
     phone: {
         type: String,
         required: true
     },
+    appointment: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Appointment"
+    }
 
 });
 
