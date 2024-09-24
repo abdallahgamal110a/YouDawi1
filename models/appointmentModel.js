@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { validateAppointmentTime } = require('../utils/appointmentUtils');
 
 const Schema = mongoose.Schema;
 const AppointmentSchema = new Schema({
@@ -26,24 +27,8 @@ const AppointmentSchema = new Schema({
         required: True,
         match: /^(09|1[0-9]|2[0-2]):([0-5]\d)$/, // working hours from 09:00 to 22:59
         validate: {
-            async function(time) {
-                const doctorId = this.doctorId;
-                const patientId = this.patientId;
-                const appointmentDate = this.appointmentDate;
-
-                const docConflict = await mongoose.models.Appointment.findone({
-                    doctorId,
-                    appointmentDate,
-                    appointmentTime: time
-                });
-
-                const patConflict = await mongoose.models.Appointment.findOne({
-                    patientId,
-                    appointmentDate,
-                    appointmentTime: time
-                })
-
-                return !docConflict && !patConflict
+            validator: function(time) {
+                return validateAppointmentTime(time, this.doctorId, this.patientId, this.appointmentDate);
             },
             message: 'This time is already booked'
         },
