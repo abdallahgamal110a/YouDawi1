@@ -55,7 +55,7 @@ const AppointmentSchema = new Schema({
         createdAt: {
             type: String,
             default: Date.now,
-            reqired: True
+            reqired: true
         }
     }
 });

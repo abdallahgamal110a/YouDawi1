@@ -63,6 +63,14 @@ const patientSchema = new mongooes.Schema({
         type: String,
         require: true
       },
+      patient: {
+        type: mongooes.Schema.Types.ObjectId,
+        ref: "Patient"
+      },
+      doctor: {
+        type: mongooes.Schema.Types.ObjectId,
+        ref: "Doctor"
+      }
     }
   ],
   appointmentsNotifications: [
@@ -77,6 +85,15 @@ const patientSchema = new mongooes.Schema({
       read: {
         type: Boolean
       },
+      appointment: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Appointment"
+      },
+      createdAt: {
+        type: String,
+        default: Date.now,
+        reqired: true
+      }
     }
   ]
 });
