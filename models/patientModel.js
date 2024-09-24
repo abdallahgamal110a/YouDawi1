@@ -97,3 +97,6 @@ const patientSchema = new mongooes.Schema({
     }
   ]
 });
+
+const Patient = mongooes.model('Patient', patientSchema);
+module.exports = { Patient };
