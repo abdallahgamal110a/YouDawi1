@@ -1,42 +1,129 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useForm } from 'react-hook-form';
 
-function Register() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Register = () => {
+    const { register, handleSubmit } = useForm();
+    const [role, setRole] = useState('patient');
+    const [gender, setGender] = useState('');
+    const onSubmit = (data) => {
+        console.log('Form Data:', data);
+        // Here, you can send the data to your backend server
+    };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('/api/register', { email, password });
-      console.log(res.data); // Handle successful registration
-    } catch (err) {
-      console.error('Registration failed', err);
-    }
-  };
+    return (
+        <div style={{ maxWidth: '400px', margin: 'auto', marginTop: '50px' }}>
+            <h2>Register</h2>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                    <label>
+                        <input
+                            type="radio"
+                            value="patient"
+                            checked={role === 'patient'}
+                            onChange={() => setRole('patient')}
+                        />
+                        Patient
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="doctor"
+                            checked={role === 'doctor'}
+                            onChange={() => setRole('doctor')}
+                        />
+                        Doctor
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="nurse"
+                            checked={role === 'nurse'}
+                            onChange={() => setRole('nurse')}
+                        />
+                        Nurse
+                    </label>
+                </div>
 
-  return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleRegister}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Register</button>
-      </form>
-    </div>
-  );
-}
+                <div>
+                    <label>Name:</label>
+                    <input type="text" {...register('name')} required />
+                </div>
+
+
+                <div>
+                    <label>Gender:</label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="male"
+                            {...register('gender')}
+                            checked={gender === 'male'}
+                            onChange={() => setGender('male')}
+                        />
+                        Male
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="female"
+                            {...register('gender')}
+                            checked={gender === 'female'}
+                            onChange={() => setGender('female')}
+                        />
+                        Female
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="other"
+                            {...register('gender')}
+                            checked={gender === 'other'}
+                            onChange={() => setGender('other')}
+                        />
+                        Other
+                    </label>
+                </div>
+
+                <div>
+                    <label>Email:</label>
+                    <input type="email" {...register('email')} required />
+                </div>
+
+                <div>
+                    <label>Password:</label>
+                    <input type="password" {...register('password')} required />
+                </div>
+
+                {role === 'doctor' && (
+                    <div>
+                        <div>
+                            <label>Specialty:</label>
+                            <input type="text" {...register('specialty')} required /></div>
+                        <div>
+                            <label>License Number:</label>
+                            <input type="text" {...register('licenseNumber')} required />
+                        </div>
+                    </div>
+                )}
+
+                {role === 'patient' && (
+                    <div>
+                        <label>Date of Birth:</label>
+                        <input type="date" {...register('dob')} required />
+
+                    </div>
+                )}
+
+                {role === 'nurse' && (
+                    <div>
+                        Maybe some additional fields for nurses?
+                    </div>
+                )}
+
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    );
+};
 
 export default Register;
