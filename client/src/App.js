@@ -9,9 +9,11 @@ function App() {
     <Router>
       <div>
         <Routes>
-          <Route path="/home" element={<Home />} />            {/* Home page */}
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+           
+           {/* Redirect from the root URL ("/") to /home */}
           <Route path="/" element={<Navigate to="/home" />} />
         </Routes>
       </div>
