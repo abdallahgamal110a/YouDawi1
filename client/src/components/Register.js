@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
     const { register, handleSubmit } = useForm();
@@ -122,6 +123,12 @@ const Register = () => {
 
                 <button type="submit">Register</button>
             </form>
+
+            Or
+            <br />
+            <Link to="/login">
+                <button>Sign In</button>
+            </Link>
         </div>
     );
 };
