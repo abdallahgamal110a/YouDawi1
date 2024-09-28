@@ -3,6 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const doctorsRouter = require('./routes/doctorsRoute');
+const appointmentRouter = require('./routes/appointmentRoute');
+const prescreptionRouter = require('./routes/prescreptionRoute');
 
 const HOSTNAME = '127.0.0.1';
 const PORT = process.env.PORT || 4000;
@@ -10,13 +13,8 @@ const DB_URL = process.env.DB_URL;
 
 const app = express();
 
-app.use(cors())
+app.use(cors());
 app.use(express.json());
-
-const doctorsRouter = require('./routes/doctorsRoute');
-const appointmentRouter = require('./routes/appointmentRoute')
-const prescreptionRouter = require('./routes/prescreptionRoute')
-
 
 app.use('/api/doctors', doctorsRouter);
 app.use('/api/appointments', appointmentRouter);
