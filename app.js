@@ -14,15 +14,17 @@ app.use(cors())
 app.use(express.json());
 
 const doctorsRouter = require('./routes/doctorsRoute');
+const appointmentRouter = require('./routes/appointmentRoute')
 
 
 
 app.use('/api/doctors', doctorsRouter);
+app.use('/api/appointments', appointmentRouter);
 
 mongoose.connect(DB_URL).then(() => {
-  console.log(`Mongodb Server Started`);
+    console.log(`Mongodb Server Started`);
 });
 
 app.listen(PORT, HOSTNAME, () => {
-  console.log(`Server Started on http://${HOSTNAME}:${PORT}`);
+    console.log(`Server Started on http://${HOSTNAME}:${PORT}`);
 });
