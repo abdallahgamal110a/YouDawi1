@@ -7,7 +7,7 @@ const getAllAppointments = asyncHandler(async(req, res) => {
     const limit = query.limit || 5;
     const page = query.page || 1;
     const skip = (page - 1) * limit;
-    const appointments = await Appointment.find().limit(limit).skip(skip);
+    const appointments = await Appointment.find({}, { '__v': false }).limit(limit).skip(skip);
     res.json({ status: httpStatusText.SUCCESS, data: { appointments } });
 })
 const postAppointment = asyncHandler(async(req, res) => {
