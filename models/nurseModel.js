@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const NurseSchema = new mongoose.Schema({
     firstName: {
@@ -12,7 +13,8 @@ const NurseSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        validate: [validator.isEmail, 'This field must be a valid email']
     },
     password: {
         type: String,
@@ -23,7 +25,7 @@ const NurseSchema = new mongoose.Schema({
         default: 'pics/default.png'
     },
     phone: {
-        type: String,
+        type: Number,
         required: true
     },
     appointment: {
