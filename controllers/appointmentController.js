@@ -11,7 +11,6 @@ const getAllAppointments = asyncHandler(async(req, res) => {
     res.json({ status: httpStatusText.SUCCESS, data: { appointments } });
 })
 const postAppointment = asyncHandler(async(req, res) => {
-    console.log('POST /appointments route hit');
     const { patientId, doctorId, appointmentDate, appointmentTime } = req.body;
     const appointment = new Appointment({ patientId, doctorId, appointmentDate, appointmentTime });
     const newAppointment = await appointment.save();

@@ -15,11 +15,12 @@ app.use(express.json());
 
 const doctorsRouter = require('./routes/doctorsRoute');
 const appointmentRouter = require('./routes/appointmentRoute')
-
+const prescreptionRouter = require('./routes/prescreptionRoute')
 
 
 app.use('/api/doctors', doctorsRouter);
 app.use('/api/appointments', appointmentRouter);
+app.use('/api/prescreptions', prescreptionRouter);
 
 mongoose.connect(DB_URL).then(() => {
     console.log(`Mongodb Server Started`);
