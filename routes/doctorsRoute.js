@@ -7,11 +7,11 @@ const doctorsController = require('../controllers/doctorsController');
 router.route('/')
                 .get(doctorsController.getAllDoctors)
 
-router.route('/register')
-                .get(doctorsController.registerDoctor)
+router.route('/registerDoctor')
+                .post(doctorsController.registerDoctor)
                 
-router.route('/login')
-                .get(doctorsController.loginDoctor)
+router.route('/loginDoctor')
+                .post(doctorsController.loginDoctor)
 
 
 module.exports = router;

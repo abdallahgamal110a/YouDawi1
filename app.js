@@ -17,7 +17,7 @@ const doctorsRouter = require('./routes/doctorsRoute');
 
 
 
-app.use('api/doctors', doctorsRouter);
+app.use('/api/doctors', doctorsRouter);
 
 mongoose.connect(DB_URL).then(() => {
   console.log(`Mongodb Server Started`);
