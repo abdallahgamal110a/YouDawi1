@@ -7,6 +7,8 @@ const doctorsRouter = require('./routes/doctorsRoute');
 const appointmentRouter = require('./routes/appointmentRoute');
 const prescreptionRouter = require('./routes/prescreptionRoute');
 
+const httpStatusText = require('./utils/httpStatusText');
+
 const HOSTNAME = '127.0.0.1';
 const PORT = process.env.PORT || 4000;
 const DB_URL = process.env.DB_URL;

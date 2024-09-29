@@ -36,11 +36,11 @@ const DoctorSchema = new mongoose.Schema({
     //     type: [String],
     //     required: true
     // },
-    // status: {
-    //     type: String,
-    //     enum: ['pending', 'approved', 'cancelled'],
-    //     default: 'pending'
-    // },
+    status: {
+        type: String,
+        enum: ['pending', 'approved', 'cancelled'],
+        default: 'pending'
+    },
     // schedule: [
     //     {
     //       day: {
