@@ -22,8 +22,11 @@ const register = asyncHandler(async(req, res, next) => {
         password: hashedPassword
     })
 
-await newDoctor.save();
-res.status(201).json({status: 'success', data: {doctor: newDoctor}})
+    const token = await generateJWT({email: newDoctor.email, id: newDoctor._id});
+    newDoctor.token = token;
+
+    await newDoctor.save();
+    res.status(201).json({status: 'success', data: {doctor: newDoctor}})
 
 
 });

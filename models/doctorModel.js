@@ -19,7 +19,7 @@ const DoctorSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
     // avatar: {
     //     type: String,
     //     default: 'pics/default.png'
@@ -61,6 +61,9 @@ const DoctorSchema = new mongoose.Schema({
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: "Patient"
     // }
+    token: {
+        type: String
+    }
 
 });
 
