@@ -28,7 +28,7 @@ const register = asyncHandler(async(req, res, next) => {
         await newDoctor.save();
         res.status(201).json({ status: httpStatusText.SUCCESS, data: { doctor: newDoctor } });
     } catch (err) {
-        const error = appError.create('Failed to register doctor', 500, httpStatusText.ERROR);
+        const error = appError.create('Failed to register the doctor', 500, httpStatusText.ERROR);
         return next(error);
     }
 });
