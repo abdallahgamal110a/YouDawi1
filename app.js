@@ -20,6 +20,11 @@ app.use('/api/doctors', doctorsRouter);
 app.use('/api/appointments', appointmentRouter);
 app.use('/api/prescreptions', prescreptionRouter);
 
+
+app.use((error, req, res, next) => {
+  res.status(error.statusCode || 500).json({status: error.statusText || httpStatusText.ERROR, message: error.message, code: error.statusCode || 500, data: null});
+});
+
 mongoose.connect(DB_URL).then(() => {
     console.log(`Mongodb Server Started`);
 });

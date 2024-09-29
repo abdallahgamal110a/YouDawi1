@@ -2,10 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 const doctorsController = require('../controllers/doctorsController');
-
+const verifyToken = require('../middlewares/verifyToken');
 
 router.route('/')
-                .get(doctorsController.getAllDoctors)
+                .get(verifyToken, doctorsController.getAllDoctors)
 
 router.route('/register')
                 .post(doctorsController.register)

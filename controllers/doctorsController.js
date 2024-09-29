@@ -1,7 +1,9 @@
 const Doctor = require("../models/doctorModel");
-const asyncHandler = require("../middlewares/asyncHandler")
+const asyncHandler = require("../middlewares/asyncHandler");
+const httpStatusText = require('../utils/httpStatusText');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const generateJWT = require("../utils/generateJWT");
 
 
 
@@ -46,14 +48,22 @@ const login= asyncHandler(async(req, res, next) => {
     const matchedPassword = await bcrypt.compare(password, doctor.password);
 
     if (doctor && matchedPassword) {
-        return res.status(200).json({status: 'success', message: 'Logged in successfully'}) 
+        const token = await generateJWT({email: doctor.email, id: doctor._id});
+        return res.status(200).json({status: 'success', data: {token}}) 
     } else {
         return res.status(500).json({status: 'error', message: 'Something went wrong within the login'})
     }
 })
 
 
-const getAllDoctors= () => {}
+const getAllDoctors = asyncHandler(async(req, res) => {
+    const query = req.query;
+    const limit = query.limit || 5;
+    const page = query.page || 1;
+    const skip = (page - 1) * limit;
+    const doctors = await Doctor.find({}, { '__v': false, 'password': false }).limit(limit).skip(skip);
+    res.json({ status: httpStatusText.SUCCESS, data: { doctors } });
+})
 
 
 module.exports = {
