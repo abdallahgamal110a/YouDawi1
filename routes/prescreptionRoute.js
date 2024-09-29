@@ -10,3 +10,5 @@ router.route('/:id')
     .get(prescreptionController.getprescreptionById)
     .put(prescreptionController.updatePrescreption)
     .delete(prescreptionController.deleteprescreption);
+
+module.exports = router;
