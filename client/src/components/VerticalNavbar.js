@@ -4,8 +4,9 @@ function VerticalNavbar() {
     return (
         <nav className="vertical-navbar bg-emerald-400 w-20 h-full p-2 flex flex-col justify-between">
             <div>
-                
-                <ul>
+                <div className='border-solid border-black border-0.25 text-blue'>logo</div>
+
+                <ul className='mt-2'>
                     <li>
                         <NavLink to="/home" className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink>
                     </li>

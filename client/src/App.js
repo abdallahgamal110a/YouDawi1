@@ -20,7 +20,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/components" />} /> {/* Redirect root to /home */}
+          <Route index element={<Navigate to="/components-preview" />} /> {/* Redirect root to /home */}
           <Route path="home" element={<Home />} />
           <Route path="doctors" element={<DoctorList />} />
           <Route path="appointments" element={<Appointements />} />
@@ -28,12 +28,12 @@ function App() {
 
         </Route>
         <Route>
-          <Route path="/" element={<Navigate to="/components" />} /> {/* Redirect root to /home */}
-          <Route path="home" element={<LandingPage />} />
+          <Route path="/" element={<Navigate to="/components-preview" />} /> {/* Redirect root to /home */}
+          <Route path="public-home" element={<LandingPage />} />
           <Route path="about" element={<About />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
-          <Route path="components" element={<ComponentsPreview />} />
+          <Route path="components-preview" element={<ComponentsPreview />} />
 
         </Route>
         {/* Catch-all route for unmatched paths */}

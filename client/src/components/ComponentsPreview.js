@@ -8,9 +8,8 @@ import Checkbox from './Checkbox';
 
 function ComponentsPreview() {
     return (
-        <div className="p-4 ">
-            <h2 className="text-2xl font-bold mb-4">Components Preview</h2>
-            <h3 className="text-xl font-bold mb-4">Routes</h3>
+        <div className="p-4 flex flex-col items-center justify-center">
+            <h2 className="text-3xl font-bold mb-4">Routes</h2>
             <Link label='Home' path='/home' />
             <Link label='Doctors' path='/doctors' />
             <Link label='Appointments' path='/appointments' />
@@ -21,7 +20,7 @@ function ComponentsPreview() {
             <Link label='Login' path='/login' />
             
 
-            <h3 className="text-xl font-bold mb-4">Components</h3>
+            <h2 className="text-3xl font-bold mb-4">Components</h2>
             <div className="mb-4">
                 <Button label="Button" />
             </div>
