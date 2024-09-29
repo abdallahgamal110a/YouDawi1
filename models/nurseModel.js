@@ -6,10 +6,10 @@ const NurseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    lastName: {
-        type: String,
-        required: true
-    },
+    // lastName: {
+    //     type: String,
+    //     required: true
+    // },
     email: {
         type: String,
         required: true,
@@ -20,14 +20,14 @@ const NurseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    avatar: {
-        type: String,
-        default: 'pics/default.png'
-    },
-    phone: {
-        type: Number,
-        required: true
-    },
+    // avatar: {
+    //     type: String,
+    //     default: 'pics/default.png'
+    // },
+    // phone: {
+    //     type: Number,
+    //     required: true
+    // },
     appointment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Appointment"
