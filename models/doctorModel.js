@@ -39,7 +39,7 @@ const DoctorSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['pending', 'approved', 'cancelled'],
-        default: 'pending'
+        default: 'approved'
     },
     // schedule: [
     //     {
@@ -63,6 +63,11 @@ const DoctorSchema = new mongoose.Schema({
     // }
     token: {
         type: String
+    },
+    role: {
+        type: String,
+        enum: ['doctor'],
+        default: 'doctor'
     }
 
 });

@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const nursesController = require('../controllers/nursesController');
 const verifyToken = require('../middlewares/verifyToken');
+const allowedTo = require('../middlewares/allowedTo');
 
 router.route('/register')
     .post(nursesController.register)
@@ -16,6 +17,6 @@ router.route('/')
 router.route('/:id')
     .get(verifyToken, nursesController.getNurseById)
     .put(verifyToken, nursesController.updateNurse)
-    .delete(verifyToken, nursesController.deleteNurse)
+    .delete(verifyToken, allowedTo("nurse", "doctor"), nursesController.deleteNurse)
 
 module.exports = router;

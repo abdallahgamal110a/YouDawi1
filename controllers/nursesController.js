@@ -9,7 +9,7 @@ const appError = require("../utils/appError")
 
 
 const register = asyncHandler(async(req, res, next) => {
-    const { firstName, email, password } = req.body;
+    const { firstName, email, password, role } = req.body;
     const nurse = await Nurse.findOne({email: email});
     if (nurse) {
         const error = appError.create('User already exists', 400, httpStatusText.FAIL)
@@ -20,10 +20,11 @@ const register = asyncHandler(async(req, res, next) => {
     const newNurse = new Nurse({
         firstName,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        role
     })
     try {
-        const token = await generateJWT({ email: newNurse.email, id: newNurse._id });
+        const token = await generateJWT({ email: newNurse.email, id: newNurse._id, role: newNurse.role });
         newNurse.token = token;
         await newNurse.save();
         res.status(201).json({ status: httpStatusText.SUCCESS, data: { nurse: newNurse } });
@@ -54,7 +55,7 @@ const login= asyncHandler(async(req, res, next) => {
     }
     const matchedPassword = await bcrypt.compare(password, nurse.password);
     if (matchedPassword) {
-        const token = await generateJWT({ email: nurse.email, id: nurse._id });
+        const token = await generateJWT({ email: nurse.email, id: nurse._id, role: nurse.role });
         return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
     } else {
         const error = appError.create('Invalid credentials', 401, httpStatusText.FAIL);

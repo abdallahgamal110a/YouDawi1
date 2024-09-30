@@ -23,7 +23,7 @@ const NurseSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['pending', 'approved', 'cancelled'],
-        default: 'pending'
+        default: 'approved'
     },
     // avatar: {
     //     type: String,
@@ -39,6 +39,11 @@ const NurseSchema = new mongoose.Schema({
     },
     token: {
         type: String
+    },
+    role: {
+        type: String,
+        enum: ['nurse'],
+        default: 'nurse'
     }
 
 });
