@@ -14,8 +14,8 @@ router.route('/')
     .get(verifyToken, doctorsController.getAllDoctors)
 
 router.route('/:id')
-    .get(doctorsController.getDoctorById)
-    .put(doctorsController.updateDoctor)
-    .delete(doctorsController.deleteDoctor)
+    .get(verifyToken, doctorsController.getDoctorById)
+    .put(verifyToken, doctorsController.updateDoctor)
+    .delete(verifyToken, doctorsController.deleteDoctor)
 
 module.exports = router;
