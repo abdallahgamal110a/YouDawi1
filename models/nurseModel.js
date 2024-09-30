@@ -36,6 +36,9 @@ const NurseSchema = new mongoose.Schema({
     appointment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Appointment"
+    },
+    token: {
+        type: String
     }
 
 });
