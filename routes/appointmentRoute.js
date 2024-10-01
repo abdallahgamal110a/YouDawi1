@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const appointmentController = require('../controllers/appointmentController')
+const allowedTo = require('../middlewares/allowedTo')
+const userRoles = require('../utils/userRoles')
 
 router.route('/')
-    .get(appointmentController.getAllAppointments)
+    .get(allowedTo(userRoles.ADMIN), appointmentController.getAllAppointments)
     .post(appointmentController.postAppointment)
 
 router.route('/:id')
