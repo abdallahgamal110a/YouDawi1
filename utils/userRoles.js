@@ -1,8 +1,8 @@
 const userRoles = {
-    ADMIN: "ADMIN",
-    PATIENT: "PATIENT",
-    DOCTOR: "DOCTOR",
-    NURSE: "NURSE",
+    ADMIN: "admin",
+    PATIENT: "patient",
+    DOCTOR: "doctor",
+    NURSE: "nurse",
 }
 
 module.exports = userRoles;

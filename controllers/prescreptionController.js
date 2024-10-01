@@ -1,8 +1,7 @@
 const Prescreption = require('../models/prescreptionModel')
 const asyncHandler = require('../middlewares/asyncHandler')
 const httpStatusText = require('../utils/httpStatusText')
-const allowedTo = require('../middlewares/allowedTo')
-const userRoles = require('../utils/userRoles')
+const appError = require('../utils/appError')
 
 const getAllprescreptions = asyncHandler(async(req, res) => {
     const query = req.query
