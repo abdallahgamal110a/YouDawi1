@@ -54,14 +54,14 @@ const DoctorSchema = new mongoose.Schema({
     //       }
     //     }
     //   ],
-    // appointment: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Appointment"
-    // },
-    // patient: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Patient"
-    // }
+    appointment: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Appointment"
+    },
+    patient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Patient"
+    },
     token: {
         type: String
     },

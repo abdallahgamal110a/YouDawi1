@@ -70,20 +70,23 @@ const getAllDoctors = asyncHandler(async(req, res, next) => {
     const limit = query.limit || 5;
     const page = query.page || 1;
     const skip = (page - 1) * limit;
-    const doctors = await Doctor.find({}, { '__v': false, 'password': false }).limit(limit).skip(skip);
+    const { role } = req.currentUser;
+    const roleCondition = role === 'admin' ? {} : { status: 'approved' };
+    const doctors = await Doctor.find(roleCondition, { '__v': false, 'password': false }).limit(limit).skip(skip);
     res.json({ status: httpStatusText.SUCCESS, data: { doctors } });
 });
 
 const getDoctorsBySpecialty = asyncHandler(async (req, res, next) => {
     const { specialty } = req.query;
     console.log(specialty);
-    
     if (!specialty) {
         return next(
         appError.create('Specialty is required', 400, httpStatusText.FAIL)
     );
     }
-    const doctors = await Doctor.find({ specialization: specialty });
+    const { role } = req.currentUser;
+    const roleCondition = role === 'admin' ? { specialization: specialty } : { specialization: specialty, status: 'approved' };
+    const doctors = await Doctor.find({ roleCondition });
     
     if (!doctors || doctors.length === 0) {
         return next(
