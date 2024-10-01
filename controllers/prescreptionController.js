@@ -12,10 +12,16 @@ const getAllprescreptions = asyncHandler(async(req, res) => {
 });
 
 const postprescreption = asyncHandler(async(req, res) => {
-    const { patientId, doctorId, medications, dateIssued } = req.body;
-    const prescreption = new Prescreption(patientId, doctorId, medications, dateIssued)
+    const { patientId, doctorId, medications, dateIssued, instructions } = req.body;
+    const prescreption = new Prescreption({
+        patientId,
+        doctorId,
+        medications,
+        dateIssued,
+        instructions
+    });
     const newPrescreption = await prescreption.save();
-    const response = newPrescription.toObject({ versionKey: false });
+    const response = newPrescreption.toObject({ versionKey: false });
     res.status(201).json({ status: httpStatusText.SUCCESS, data: { prescreption: response } });
 });
 

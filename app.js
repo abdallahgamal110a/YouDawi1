@@ -26,7 +26,7 @@ app.use('/api/nurses', nursesRouter);
 
 
 app.use((error, req, res, next) => {
-  res.status(error.statusCode || 500).json({status: error.statusText || httpStatusText.ERROR, message: error.message, code: error.statusCode || 500, data: null});
+    res.status(error.statusCode || 500).json({ status: error.statusText || httpStatusText.ERROR, message: error.message, code: error.statusCode || 500, data: null });
 });
 
 mongoose.connect(DB_URL).then(() => {
