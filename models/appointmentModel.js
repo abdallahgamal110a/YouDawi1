@@ -25,12 +25,12 @@ const AppointmentSchema = new Schema({
         type: String,
         required: true,
         match: /^(09|1[0-9]|2[0-2]):([0-5]\d)$/, // working hours from 09:00 to 22:59
-        validate: {
-            validator: function(time) {
-                return validateAppointmentTime(time, this.doctorId, this.patientId, this.appointmentDate);
-            },
-            message: 'This time is already booked'
-        },
+        // validate: {
+        //     validator: function(time) {
+        //         return validateAppointmentTime(time, this.doctorId, this.patientId, this.appointmentDate);
+        //     },
+        //     message: 'This time is already booked'
+        // },
         status: {
             type: String,
             enum: ['Pending', 'Confirmed', 'Cancelled']

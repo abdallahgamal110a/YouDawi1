@@ -12,6 +12,6 @@ router.route('/')
 router.route('/:id')
     .get(verifyToken, appointmentController.getAppointmentById)
     .put(verifyToken, appointmentController.updateAppointment)
-    .delete(verifyToken, appointmentController.sdeleteAppointment);
+    .delete(verifyToken, appointmentController.deleteAppointment);
 
 module.exports = router;

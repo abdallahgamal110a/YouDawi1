@@ -1,6 +1,8 @@
 const Appointment = require('../models/appointmentModel')
 const asyncHandler = require('../middlewares/asyncHandler')
 const httpStatusText = require('../utils/httpStatusText')
+const { validateAppointmentTime } = require('../utils/appointmentUtils');
+const appError = require('../utils/appError')
 
 const getAllAppointments = asyncHandler(async(req, res) => {
     const query = req.query;
@@ -10,8 +12,13 @@ const getAllAppointments = asyncHandler(async(req, res) => {
     const appointments = await Appointment.find({}, { '__v': false }).limit(limit).skip(skip);
     res.json({ status: httpStatusText.SUCCESS, data: { appointments } });
 })
-const postAppointment = asyncHandler(async(req, res) => {
+const postAppointment = asyncHandler(async(req, res, next) => {
     const { patientId, doctorId, appointmentDate, appointmentTime } = req.body;
+    const appointmentCheck = await validateAppointmentTime(appointmentTime, doctorId, patientId, appointmentDate);
+    if (!appointmentCheck) {
+        const err = appError.create('This time is already booked', 400, httpStatusText.FAIL);
+        return next(err);
+    }
     const appointment = new Appointment({ patientId, doctorId, appointmentDate, appointmentTime });
     const newAppointment = await appointment.save();
     res.status(201).json({ status: httpStatusText.SUCCESS, data: { appointment: newAppointment } });
