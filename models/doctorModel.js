@@ -33,10 +33,10 @@ const DoctorSchema = new mongoose.Schema({
     //     type: Number,
     //     required: true
     // },
-    // specialization: {
-    //     type: [String],
-    //     required: true
-    // },
+    specialization: {
+        type: [String],
+        required: true
+    },
     status: {
         type: String,
         enum: ['pending', 'approved', 'cancelled'],
