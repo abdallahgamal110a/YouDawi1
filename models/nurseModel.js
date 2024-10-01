@@ -26,10 +26,10 @@ const NurseSchema = new mongoose.Schema({
         enum: ['pending', 'approved', 'cancelled'],
         default: 'approved'
     },
-    // avatar: {
-    //     type: String,
-    //     default: 'pics/default.png'
-    // },
+    avatar: {
+        type: String,
+        default: 'pics/default.png'
+    },
     // phone: {
     //     type: Number,
     //     required: true

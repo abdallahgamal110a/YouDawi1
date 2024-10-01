@@ -22,7 +22,8 @@ const register = asyncHandler(async(req, res, next) => {
         email,
         password: hashedPassword,
         specialization,
-        role
+        role,
+        avatar: req.file.filename
     })
     try {
         const token = await generateJWT({ email: newDoctor.email, id: newDoctor._id, role: newDoctor.role });

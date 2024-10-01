@@ -21,10 +21,10 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // avatar: {
-    //     type: String,
-    //     default: 'pics/default.png'
-    // },
+    avatar: {
+        type: String,
+        default: 'pics/default.png'
+    },
     // logo: {
     //     type: String,
     //     default: 'pics/logo.png'

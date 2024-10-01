@@ -4,10 +4,11 @@ const router = express.Router();
 const nursesController = require('../controllers/nursesController');
 const verifyToken = require('../middlewares/verifyToken');
 const allowedTo = require('../middlewares/allowedTo');
-const userRoles = require('../utils/userRoles')
+const userRoles = require('../utils/userRoles');
+const upload = require('../utils/upload');
 
 router.route('/register')
-    .post(nursesController.register)
+    .post(upload.single('avatar'), nursesController.register)
                 
 router.route('/login')
     .post(nursesController.login)

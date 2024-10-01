@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
+
+
 
 const doctorsRouter = require('./routes/doctorsRoute');
 const appointmentRouter = require('./routes/appointmentRoute');
@@ -15,7 +18,7 @@ const PORT = process.env.PORT || 4000;
 const DB_URL = process.env.DB_URL;
 
 const app = express();
-
+app.use('/pics', express.static(path.join(__dirname, 'pics')));
 app.use(cors());
 app.use(express.json());
 
