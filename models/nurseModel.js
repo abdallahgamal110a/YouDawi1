@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const userRoles = require('../utils/userRoles')
 
 const NurseSchema = new mongoose.Schema({
     firstName: {
@@ -42,8 +43,8 @@ const NurseSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['nurse'],
-        default: 'nurse'
+        enum: [userRoles.NURSE],
+        default: userRoles.NURSE
     }
 
 });
