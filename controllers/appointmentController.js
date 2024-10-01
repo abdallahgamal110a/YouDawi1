@@ -18,7 +18,7 @@ const postAppointment = asyncHandler(async(req, res) => {
 })
 
 const getAppointmentById = asyncHandler(async(req, res) => {
-    const appointment = await Appointment.findById(req.params.id);
+    const appointment = await Appointment.findById(req.params.id).select('-__v');
     if (!appointment) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Appointment not found' });
     }
@@ -26,7 +26,7 @@ const getAppointmentById = asyncHandler(async(req, res) => {
 });
 
 const updateAppointment = asyncHandler(async(req, res) => {
-    const appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }).select('-__v');
     // new: return updated document / runValidators: updated data meets schema requirements.
     if (!appointment) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Appointment not found' });

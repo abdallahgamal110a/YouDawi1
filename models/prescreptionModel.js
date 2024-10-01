@@ -5,18 +5,18 @@ const prescreptionSchema = new Schema({
     patientId: {
         type: Schema.Types.ObjectId,
         ref: 'Patient',
-        reqired: true
+        required: true
     },
     doctorId: {
         type: Schema.Types.ObjectId,
         ref: 'Doctor',
-        reqired: true
+        required: true
     },
     medications: [{
-        name: { type: String, reqired: true },
-        dosage: { type: String, reqired: true },
-        frequiency: { type: String, reqired: true },
-        duration: { type: String, reqired: true }
+        name: { type: String, required: true },
+        dosage: { type: String, required: true },
+        frequency: { type: String, required: true },
+        duration: { type: String, required: true }
     }],
     dateIssued: {
         type: Date,
