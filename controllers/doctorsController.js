@@ -79,14 +79,14 @@ const getDoctorsBySpecialty = asyncHandler(async (req, res, next) => {
     
     if (!specialty) {
         return next(
-        AppError.create('Specialty is required', 400, httpStatusText.FAIL)
+        appError.create('Specialty is required', 400, httpStatusText.FAIL)
     );
     }
     const doctors = await Doctor.find({ specialization: specialty });
     
     if (!doctors || doctors.length === 0) {
         return next(
-        AppError.create('No doctors found for this specialty', 404, 'Not Found')
+        appError.create('No doctors found for this specialty', 404, 'Not Found')
     );
     }
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
