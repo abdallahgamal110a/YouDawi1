@@ -5,26 +5,26 @@ const prescreptionSchema = new Schema({
     patientId: {
         type: Schema.Types.ObjectId,
         ref: 'Patient',
-        reqired: True
+        required: true
     },
     doctorId: {
         type: Schema.Types.ObjectId,
         ref: 'Doctor',
-        reqired: True
+        required: true
     },
     medications: [{
-        name: { type: String, reqired: True },
-        dosage: { type: String, reqired: True },
-        frequiency: { type: String, reqired: True },
-        duration: { type: String, reqired: True }
+        name: { type: String, required: true },
+        dosage: { type: String, required: true },
+        frequency: { type: String, required: true },
+        duration: { type: String, required: true }
     }],
     dateIssued: {
         type: Date,
-        required: True
+        required: true
     },
 
     instructions: String,
 })
 
-const prescreption = mongoose.models('Prescreption', prescreptionSchema)
+const prescreption = mongoose.model('Prescreption', prescreptionSchema)
 module.exports = prescreption;

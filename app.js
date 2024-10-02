@@ -1,18 +1,41 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const path = require('path');
 
+
+
+const doctorsRouter = require('./routes/doctorsRoute');
+const appointmentRouter = require('./routes/appointmentRoute');
+const prescreptionRouter = require('./routes/prescreptionRoute');
+const nursesRouter = require('./routes/nursesRoute');
+
+const httpStatusText = require('./utils/httpStatusText');
 
 const HOSTNAME = '127.0.0.1';
 const PORT = process.env.PORT || 4000;
 const DB_URL = process.env.DB_URL;
 
 const app = express();
+app.use('/pics', express.static(path.join(__dirname, 'pics')));
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/doctors', doctorsRouter);
+app.use('/api/appointments', appointmentRouter);
+app.use('/api/prescreptions', prescreptionRouter);
+app.use('/api/nurses', nursesRouter);
+
+
+app.use((error, req, res, next) => {
+    res.status(error.statusCode || 500).json({ status: error.statusText || httpStatusText.ERROR, message: error.message, code: error.statusCode || 500, data: null });
+});
 
 mongoose.connect(DB_URL).then(() => {
-  console.log(`Mongodb Server Started`);
+    console.log(`Mongodb Server Started`);
 });
 
 app.listen(PORT, HOSTNAME, () => {
-  console.log(`Server Started on http://${HOSTNAME}:${PORT}`);
+    console.log(`Server Started on http://${HOSTNAME}:${PORT}`);
 });

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
     const { register, handleSubmit } = useForm();
-    const [role, setRole] = useState('patient');
+    // const [role, setRole] = useState('patient');
     const [gender, setGender] = useState('');
     const onSubmit = (data) => {
         console.log('Form Data:', data);
@@ -11,10 +12,10 @@ const Register = () => {
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: 'auto', marginTop: '50px' }}>
+        <div className='flex flex-col items-center justify-center'>
             <h2>Register</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div>
+                {/* <div>
                     <label>
                         <input
                             type="radio"
@@ -42,7 +43,7 @@ const Register = () => {
                         />
                         Nurse
                     </label>
-                </div>
+                </div> */}
 
                 <div>
                     <label>Name:</label>
@@ -94,7 +95,7 @@ const Register = () => {
                     <input type="password" {...register('password')} required />
                 </div>
 
-                {role === 'doctor' && (
+                {/* {role === 'doctor' && (
                     <div>
                         <div>
                             <label>Specialty:</label>
@@ -118,10 +119,16 @@ const Register = () => {
                     <div>
                         Maybe some additional fields for nurses?
                     </div>
-                )}
+                )} */}
 
                 <button type="submit">Register</button>
             </form>
+
+            Or
+            <br />
+            <Link to="/login">
+                <button>Sign In</button>
+            </Link>
         </div>
     );
 };
