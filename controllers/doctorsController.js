@@ -5,7 +5,8 @@ const httpStatusText = require('../utils/httpStatusText');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const generateJWT = require("../utils/generateJWT");
-const appError = require("../utils/appError")
+const appError = require("../utils/appError");
+const userRoles = require("../utils/userRoles");
 
 
 
@@ -53,7 +54,7 @@ const register = asyncHandler(async(req, res, next) => {
 });
 
 
-const login= asyncHandler(async(req, res, next) => {
+const login = asyncHandler(async(req, res, next) => {
     const {email, password} = req.body;
     if (!email || !password) {
         const error = appError.create('Email and Password are required', 400, httpStatusText.FAIL);
@@ -94,15 +95,15 @@ const getAllDoctors = asyncHandler(async(req, res, next) => {
 
 const getDoctorsBySpecialty = asyncHandler(async (req, res, next) => {
     const { specialty } = req.query;
-    console.log(specialty);
+    // console.log(specialty);
     if (!specialty) {
         return next(
         appError.create('Specialty is required', 400, httpStatusText.FAIL)
     );
     }
-    const { role } = req.currentUser;
+    const { role} = req.currentUser;
     const roleCondition = role === 'admin' ? { specialization: specialty } : { specialization: specialty, status: 'approved' };
-    const doctors = await Doctor.find({ roleCondition });
+    const doctors = await Doctor.find(roleCondition);
     
     if (!doctors || doctors.length === 0) {
         return next(
@@ -117,10 +118,17 @@ const getDoctorById = asyncHandler(async(req, res, next) => {
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
     }
+    console.log(doctor.status)
+    if (doctor.status !== 'approved') {
+        return res.status(400).json({ status: httpStatusText.FAIL, message: 'Doctor not approved' });
+    }
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
 const updateDoctor = asyncHandler(async(req, res, next) => {
+    if (req.currentUser.role !== userRoles.ADMIN){
+        delete req.body.status;
+    }
     const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });

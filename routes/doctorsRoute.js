@@ -17,12 +17,12 @@ router.route('/')
     .get(verifyToken, doctorsController.getAllDoctors);
 
 router.route('/specialty')
-    .get(verifyToken, allowedTo(userRoles.NURSE, userRoles.ADMIN, userRoles.PATIENT), doctorsController.getDoctorsBySpecialty);
+    .get(verifyToken, doctorsController.getDoctorsBySpecialty);
 
 router.route('/:id')
     .get(verifyToken, doctorsController.getDoctorById)
-    .put(verifyToken, doctorsController.updateDoctor)
-    .delete(verifyToken, doctorsController.deleteDoctor);
+    .put(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN),doctorsController.updateDoctor)
+    .delete(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.deleteDoctor);
 
 router.route('/:id/schedule')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.NURSE, userRoles.ADMIN), doctorsController.getDoctorSchedule)
