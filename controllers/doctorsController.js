@@ -211,5 +211,6 @@ module.exports = {
     deleteDoctor,
     getDoctorSchedule,
     updateDoctorSchedule,
-    getProfile, getDoctorDashboard
+    getProfile, 
+    getDoctorDashboard
 }
