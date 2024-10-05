@@ -25,10 +25,10 @@ function App() {
           <Route path="doctors" element={<DoctorList />} />
           <Route path="appointments" element={<Appointements />} />
           <Route path="patients" element={<Patients />} />
-          <Route path="components-preview" element={<ComponentsPreview />} />
         </Route>
 
         {/* Public routes (outside of layout) */}
+        <Route path="components-preview" element={<ComponentsPreview />} />
         <Route path="public-home" element={<LandingPage />} />
         <Route path="about" element={<About />} />
         <Route path="register" element={<Register />} />
