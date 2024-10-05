@@ -10,7 +10,7 @@ const appError = require("../utils/appError")
 
 
 const register = asyncHandler(async(req, res, next) => {
-    const { firstName, email, password, specialization, role } = req.body;
+    const { firstName, email, password, specialization, role, schedule } = req.body;
     const doctor = await Doctor.findOne({email: email});
     if (doctor) {
         const error = appError.create('User already exists', 400, httpStatusText.FAIL)
@@ -18,12 +18,27 @@ const register = asyncHandler(async(req, res, next) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    // console.log(schedule);
+    // console.log(typeof(schedule));
+    let parsedSchedule = [];
+    if (typeof schedule === 'string') {
+        try {
+            parsedSchedule = JSON.parse(schedule);
+        } catch (error) {
+            return res.status(400).json({ message: 'Invalid schedule format' });
+        }
+    } else {
+        parsedSchedule = schedule;
+    }
+    // console.log(parsedSchedule);
+    // console.log(typeof(parsedSchedule));
     const newDoctor = new Doctor({
         firstName,
         email,
         password: hashedPassword,
         specialization,
         role,
+        schedule: parsedSchedule,
         avatar: req.file.filename
     })
     try {
