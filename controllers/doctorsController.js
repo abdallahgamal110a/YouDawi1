@@ -1,4 +1,5 @@
 const Doctor = require("../models/doctorModel");
+const Appointment = require("../models/appointmentModel");
 const asyncHandler = require("../middlewares/asyncHandler");
 const httpStatusText = require('../utils/httpStatusText');
 const bcrypt = require("bcryptjs");
@@ -106,7 +107,6 @@ const getDoctorById = asyncHandler(async(req, res, next) => {
 
 const updateDoctor = asyncHandler(async(req, res, next) => {
     const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    // new: return updated document / runValidators: updated data meets schema requirements.
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
     }
@@ -121,6 +121,31 @@ const deleteDoctor = asyncHandler(async(req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: null });
 })
 
+const getDoctorSchedule = asyncHandler(async(req, res, next) => {
+    console.log(req.params);
+    const { id } = req.params;
+    const appointments = await Appointment.find({ doctorId: id });
+    if (!appointments) {
+        return res.status(404).json({ status: httpStatusText.FAIL, message: 'Appointments not found' });
+    }
+    res.json({ status: httpStatusText.SUCCESS, data: { appointments } });
+});
+
+const updateDoctorSchedule = asyncHandler(async(req, res, next) => {
+    const { id } = req.params;
+    const newData = req.params.body;
+    const updatedAppointment = await Doctor.findByIdAndUpdate(id, { schedule: newData }, { new: true, runValidators: true });
+    res.json({ status: httpStatusText.SUCCESS, data: { updatedAppointment } });
+});
+
+const getProfile = asyncHandler(async(req, res, next) => {
+    const doctor = await Doctor.findById(req.currentUser.id);
+    if (!doctor) {
+        return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
+    }
+    res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
+})
+
 
 module.exports = {
     register,
@@ -129,5 +154,8 @@ module.exports = {
     getDoctorsBySpecialty,
     getDoctorById,
     updateDoctor,
-    deleteDoctor
+    deleteDoctor,
+    getDoctorSchedule,
+    updateDoctorSchedule,
+    getProfile
 }

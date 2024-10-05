@@ -22,6 +22,13 @@ router.route('/specialty')
 router.route('/:id')
     .get(verifyToken, doctorsController.getDoctorById)
     .put(verifyToken, doctorsController.updateDoctor)
-    .delete(verifyToken, doctorsController.deleteDoctor)
+    .delete(verifyToken, doctorsController.deleteDoctor);
+
+router.route('/:id/schedule')
+    .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.NURSE, userRoles.ADMIN), doctorsController.getDoctorSchedule)
+    .put(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.NURSE, userRoles.ADMIN), doctorsController.updateDoctorSchedule)
+
+router.route('/me')
+    .get(verifyToken, allowedTo(userRoles.DOCTOR), doctorsController.getProfile);
 
 module.exports = router;
