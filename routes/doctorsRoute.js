@@ -28,7 +28,10 @@ router.route('/:id/schedule')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.NURSE, userRoles.ADMIN), doctorsController.getDoctorSchedule)
     .put(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.NURSE, userRoles.ADMIN), doctorsController.updateDoctorSchedule)
 
+router.route('/:id/status')
+    .put(verifyToken, allowedTo(userRoles.ADMIN),doctorsController.updateDoctorStatus);
+
 router.route('/me')
-    .get(verifyToken, allowedTo(userRoles.DOCTOR), doctorsController.getProfile);
+    .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.getProfile);
 
 module.exports = router;

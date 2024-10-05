@@ -15,6 +15,10 @@ router.route('/:id')
     .delete(verifyToken, appointmentController.deleteAppointment);
 
 router.route('/doctor/:id')
-    .get(appointmentController.getAppointmentsByDoctorId) // verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN) to be added 
+    .get(appointmentController.getAppointmentsByDoctorId) // verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN) to be added
+
+router.route('/patient/:id')
+    .get(appointmentController.getAppointmentsByPatientId)
+
 
 module.exports = router;

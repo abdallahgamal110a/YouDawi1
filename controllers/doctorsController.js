@@ -53,7 +53,6 @@ const register = asyncHandler(async(req, res, next) => {
     }
 });
 
-
 const login = asyncHandler(async(req, res, next) => {
     const {email, password} = req.body;
     if (!email || !password) {
@@ -136,6 +135,16 @@ const updateDoctor = asyncHandler(async(req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
+const updateDoctorStatus = asyncHandler(async(req, res, next) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    const doctor = await Doctor.findByIdAndUpdate(id, { status }, { new: true, runValidators: true});
+    if (!doctor) {
+        return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
+    }
+    res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
+});
+
 const deleteDoctor = asyncHandler(async(req, res, next) => {
     const doctor = await Doctor.findByIdAndDelete(req.params.id);
     if (!doctor) {
@@ -177,6 +186,7 @@ module.exports = {
     getDoctorsBySpecialty,
     getDoctorById,
     updateDoctor,
+    updateDoctorStatus,
     deleteDoctor,
     getDoctorSchedule,
     updateDoctorSchedule,
