@@ -176,8 +176,29 @@ const getProfile = asyncHandler(async(req, res, next) => {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
     }
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
-})
+});
 
+const getDoctorDashboard = asyncHandler(async(req, res, next) => {
+    const doctorId = req.currentUser.id;
+    const upcomingAppointments = await Appointment.find({
+        doctorId: doctorId,
+        appointmentDate: { $gte: new Date() },
+        status: 'confirmed'  // Better to change to scheduled in the model
+    })
+    .populate('patientId', 'firstName lastName phone email')
+    .populate('nurseId', 'firstName lastName')
+
+    const patients = await Appointment.find( { doctorId: doctorId })
+        .distinct('patientId')
+        .populate('patientId', 'firstName lastName email');
+    
+    const nurses = await Appointment.find({ doctorId: doctorId })
+        .distinct(nurseId)
+        .populate('nurseId', 'firstName lastName');
+
+    const doctor = await Doctor.findById(doctorId)
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { upcomingAppointments, patients, nurses, schedule: doctor.schedule }})
+})
 
 module.exports = {
     register,
@@ -190,5 +211,5 @@ module.exports = {
     deleteDoctor,
     getDoctorSchedule,
     updateDoctorSchedule,
-    getProfile
+    getProfile, getDoctorDashboard
 }

@@ -34,4 +34,7 @@ router.route('/:id/status')
 router.route('/me')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.getProfile);
 
+router.route('/dashboard')
+    .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.getDoctorDashboard);
+
 module.exports = router;
