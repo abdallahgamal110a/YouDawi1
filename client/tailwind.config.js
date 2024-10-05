@@ -1,13 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}",
-
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          '10': 'hsl(349, 89%, 71%)',
+          '20': 'hsl(315, 79%, 76%)',
+          '40': 'hsl(256, 64%, 72%)',
+          '60': 'hsl(215, 66%, 70%)',
+          '80': 'hsl(184, 58%, 66%)',
+          '100': 'hsl(214, 100%, 96%)',
+        },
+      },
       spacing: {
-        // Set the root spacing scale to make 1rem = 8px
-
         'px': '0.125rem',  // 1px
         '0.25': '0.25rem',  // 2px
         '0.5': '0.5rem',  // 4px
@@ -43,9 +49,9 @@ module.exports = {
         '64': '64rem', // 512px
         '72': '72rem', // 576px
         '80': '80rem', // 640px
-        '96': '96rem', // 768px
+        '96': '96rem', // 768px,
       }
     },
   },
   plugins: [],
-}
+};
