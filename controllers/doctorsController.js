@@ -3,14 +3,14 @@ const asyncHandler = require("../middlewares/asyncHandler");
 const httpStatusText = require('../utils/httpStatusText');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const generateJWT = require("../utils/generateJWT");
+const generateJWT = require("../utils/generateJWT").default;
 const appError = require("../utils/appError")
 
 
 
-const register = asyncHandler(async(req, res, next) => {
+const register = asyncHandler(async (req, res, next) => {
     const { firstName, email, password, specialization, role } = req.body;
-    const doctor = await Doctor.findOne({email: email});
+    const doctor = await Doctor.findOne({ email: email });
     if (doctor) {
         const error = appError.create('User already exists', 400, httpStatusText.FAIL)
         return next(error);
@@ -37,13 +37,13 @@ const register = asyncHandler(async(req, res, next) => {
 });
 
 
-const login= asyncHandler(async(req, res, next) => {
-    const {email, password} = req.body;
+const login = asyncHandler(async (req, res, next) => {
+    const { email, password } = req.body;
     if (!email || !password) {
         const error = appError.create('Email and Password are required', 400, httpStatusText.FAIL);
         return next(error);
     }
-    const doctor = await Doctor.findOne({email: email});
+    const doctor = await Doctor.findOne({ email: email });
     if (!doctor) {
         const error = appError.create('Doctor not found', 404, httpStatusText.FAIL);
         return next(error);
@@ -65,7 +65,7 @@ const login= asyncHandler(async(req, res, next) => {
     }
 });
 
-const getAllDoctors = asyncHandler(async(req, res, next) => {
+const getAllDoctors = asyncHandler(async (req, res, next) => {
     const query = req.query;
     const limit = query.limit || 5;
     const page = query.page || 1;
@@ -81,22 +81,22 @@ const getDoctorsBySpecialty = asyncHandler(async (req, res, next) => {
     console.log(specialty);
     if (!specialty) {
         return next(
-        appError.create('Specialty is required', 400, httpStatusText.FAIL)
-    );
+            appError.create('Specialty is required', 400, httpStatusText.FAIL)
+        );
     }
     const { role } = req.currentUser;
     const roleCondition = role === 'admin' ? { specialization: specialty } : { specialization: specialty, status: 'approved' };
     const doctors = await Doctor.find({ roleCondition });
-    
+
     if (!doctors || doctors.length === 0) {
         return next(
-        appError.create('No doctors found for this specialty', 404, 'Not Found')
-    );
+            appError.create('No doctors found for this specialty', 404, 'Not Found')
+        );
     }
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
 });
 
-const getDoctorById = asyncHandler(async(req, res, next) => {
+const getDoctorById = asyncHandler(async (req, res, next) => {
     const doctor = await Doctor.findById(req.params.id);
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
@@ -104,7 +104,7 @@ const getDoctorById = asyncHandler(async(req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
-const updateDoctor = asyncHandler(async(req, res, next) => {
+const updateDoctor = asyncHandler(async (req, res, next) => {
     const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     // new: return updated document / runValidators: updated data meets schema requirements.
     if (!doctor) {
@@ -113,7 +113,7 @@ const updateDoctor = asyncHandler(async(req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
-const deleteDoctor = asyncHandler(async(req, res, next) => {
+const deleteDoctor = asyncHandler(async (req, res, next) => {
     const doctor = await Doctor.findByIdAndDelete(req.params.id);
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
