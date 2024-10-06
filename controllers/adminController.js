@@ -55,17 +55,27 @@ const HandelData = asyncHandler(async (req, res, next) => {
 });
 
 const login = asyncHandler(async (req, res, next) => {
+  console.log("i m trying to login")
   const { userName, password } = req.body;
+  console.log("before")
+  console.log(userName, password)
   if (!userName || !password) {
+    console.log("after")
+    console.log(userName, password)
     const error = appError.create('UserName and Password are required', 400, httpStatusText.FAIL);
     return next(error);
   }
   const admin = Admin.findOne({ userName: userName });
+  console.log((admin.userName))
+  console.log(typeof(admin))
   if (!admin) {
     const error = appError.create('Admin not found', 404, httpStatusText.FAIL);
     return next(error);
   }
+  console.log(admin.password)
   const matchedPassword = await bcrypt.compare(password, admin.password);
+  
+  console.log(matchedPassword)
   if (matchedPassword) {
     const token = await generateJWT({ userName: admin.userName, id: admin._id, role: admin.role });
     return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
@@ -74,7 +84,6 @@ const login = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 });
-
 
 module.exports = {
   login

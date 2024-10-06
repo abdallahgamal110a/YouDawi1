@@ -3,12 +3,12 @@ const userRoles = require('../utils/userRoles');
 
 const adminSchema = new mongoose.Schema({
   userName: {
-    default: 'admin',
+  //  default: 'admin',
     type: String,
     require: true
   },
   password: {
-    default: '12345',
+  //  default: '12345',
     type: String,
     require: true
   },
