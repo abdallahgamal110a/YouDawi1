@@ -42,18 +42,18 @@ const DoctorSchema = new mongoose.Schema({
         enum: ['pending', 'approved', 'cancelled'],
         default: 'approved'
     },
-    // schedule: [
-    //     {
-    //       day: {
-    //         type: String,
-    //         required: true
-    //       },
-    //       timeSlots: {
-    //         type: [String],
-    //         required: true
-    //       }
-    //     }
-    //   ],
+    schedule: [
+        {
+            day: {
+                type: String,
+                required: true
+            },
+            timeSlots: {
+                type: [String],
+                required: true
+            }
+        }
+    ],
     appointment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Appointment"
