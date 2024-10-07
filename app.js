@@ -8,7 +8,7 @@ const path = require('path');
 
 const doctorsRouter = require('./routes/doctorsRoute');
 const appointmentRouter = require('./routes/appointmentRoute');
-const prescreptionRouter = require('./routes/prescreptionRoute');
+const prescriptionRouter = require('./routes/prescriptionRoute');
 const nursesRouter = require('./routes/nursesRoute');
 
 const httpStatusText = require('./utils/httpStatusText');
@@ -24,7 +24,7 @@ app.use(express.json());
 
 app.use('/api/doctors', doctorsRouter);
 app.use('/api/appointments', appointmentRouter);
-app.use('/api/prescreptions', prescreptionRouter);
+app.use('/api/prescriptions', prescriptionRouter);
 app.use('/api/nurses', nursesRouter);
 
 

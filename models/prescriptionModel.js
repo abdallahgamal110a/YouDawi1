@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const prescreptionSchema = new Schema({
+const prescriptionSchema = new Schema({
     patientId: {
         type: Schema.Types.ObjectId,
         ref: 'Patient',
@@ -26,5 +26,5 @@ const prescreptionSchema = new Schema({
     instructions: String,
 })
 
-const prescreption = mongoose.model('Prescreption', prescreptionSchema)
-module.exports = prescreption;
+const prescription = mongoose.model('Prescription', prescriptionSchema)
+module.exports = prescription;
