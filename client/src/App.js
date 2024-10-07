@@ -37,9 +37,9 @@ function App() {
         {/* Catch-all route for unmatched paths */}
         {/* You can uncomment this if you need a default redirect */}
         {/* <Route path="*" element={<Navigate to="/login" />} /> */}
+        {/*myproject*/}
       </Routes>
     </Router>
   );
 }
-
 export default App;
