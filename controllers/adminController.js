@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const Admin = require('../models/adminModel');
 const asyncHandler = require('../middlewares/asyncHandler');
 const httpStatusText = require('../utils/httpStatusText');
@@ -15,11 +15,10 @@ async function addAdmin() {
     if (adminCount < 1) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(process.env.PASSWORD_ADMIN, salt);
-
       const newAdmin = new Admin({
-        userName: process.env.USERNAME_ADMIN,
+        userName: process.env.UESRNAME_ADMIN,
         password: hashedPassword,
-        role: userRoles.ADMIN
+        role: userRoles.ADMIN,
       });
       await newAdmin.save();
       console.log('Admin added successfully');
@@ -32,56 +31,35 @@ async function addAdmin() {
 }
 addAdmin();
 
-const HandelData = asyncHandler(async (req, res, next) => {
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+const login = asyncHandler(async (req, res, next) => {
+  const { userName, password } = req.body;
 
-  const newAdmin = new Admin({
-    userName,
-    password: hashedPassword,
-    role,
-  });
+  if (!userName || !password) {
+    return next(appError.create('UserName and Password are required', 400, httpStatusText.FAIL));
+  }
 
   try {
-    const token = await generateJWT({ userName: newAdmin.userName, id: newAdmin._id, role: newAdmin.role });
-    newAdmin.token = token;
-    console.log('Generated Token:', token);
-    await newAdmin.save();
-  } catch (err) {
-    const error = appError.create('Failed to Handle Data', 500, httpStatusText.ERROR);
-    return next(error);
-  }
+    const admin = await Admin.findOne({ userName });
+    if (!admin) {
+      return next(appError.create('Admin not found', 404, httpStatusText.FAIL));
+    }
 
-});
+    const matchedPassword = await bcrypt.compare(password, admin.password);
 
-const login = asyncHandler(async (req, res, next) => {
-  console.log("i m trying to login")
-  const { userName, password } = req.body;
-  console.log("before")
-  console.log(userName, password)
-  if (!userName || !password) {
-    console.log("after")
-    console.log(userName, password)
-    const error = appError.create('UserName and Password are required', 400, httpStatusText.FAIL);
-    return next(error);
-  }
-  const admin = Admin.findOne({ userName: userName });
-  console.log((admin.userName))
-  console.log(typeof(admin))
-  if (!admin) {
-    const error = appError.create('Admin not found', 404, httpStatusText.FAIL);
-    return next(error);
-  }
-  console.log(admin.password)
-  const matchedPassword = await bcrypt.compare(password, admin.password);
-  
-  console.log(matchedPassword)
-  if (matchedPassword) {
-    const token = await generateJWT({ userName: admin.userName, id: admin._id, role: admin.role });
-    return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
-  } else {
-    const error = appError.create('Invalid credentials', 401, httpStatusText.FAIL);
-    return next(error);
+    if (matchedPassword) {
+      const token = await generateJWT({
+        userName: admin.userName,
+        id: admin._id,
+        role: admin.role
+      });
+
+      return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
+    } else {
+      return next(appError.create('Invalid credentials', 401, httpStatusText.FAIL));
+    }
+  } catch (error) {
+    console.error('Error handling login:', error.message);
+    return next(appError.create('Internal server error', 500, httpStatusText.FAIL));
   }
 });
 
