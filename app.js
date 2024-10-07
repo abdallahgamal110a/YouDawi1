@@ -10,6 +10,7 @@ const doctorsRouter = require('./routes/doctorsRoute');
 const appointmentRouter = require('./routes/appointmentRoute');
 const prescriptionRouter = require('./routes/prescriptionRoute');
 const nursesRouter = require('./routes/nursesRoute');
+const patientRouter = require('./routes/patientRoute')
 
 const httpStatusText = require('./utils/httpStatusText');
 
@@ -27,6 +28,7 @@ app.use('/api/doctors', doctorsRouter);
 app.use('/api/appointments', appointmentRouter);
 app.use('/api/prescriptions', prescriptionRouter);
 app.use('/api/nurses', nursesRouter);
+app.use('/api/patients', patientRouter)
 
 
 app.use((error, req, res, next) => {
