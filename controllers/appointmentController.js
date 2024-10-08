@@ -3,6 +3,8 @@ const asyncHandler = require('../middlewares/asyncHandler')
 const httpStatusText = require('../utils/httpStatusText')
 const { validateAppointmentTime } = require('../utils/appointmentUtils');
 const appError = require('../utils/appError')
+const { authorizeUserAccess } = require('../utils/authUserAccess');
+const userRoles = require('../utils/userRoles')
 
 const getAllAppointments = asyncHandler(async(req, res) => {
     const query = req.query;
@@ -55,7 +57,7 @@ const getAppointmentsByDoctorId = asyncHandler(async(req, res) => {
     const page = query.page || 1;
     const skip = (page - 1) * limit;
     const doctorAppointments = await Appointment
-        .find({ doctorId: req.params.id }, { '__v': false })
+        .find({ doctorId: req.params.id, token: req.header.token }, { '__v': false })
         .limit(limit)
         .skip(skip);
     if (!doctorAppointments) {
@@ -65,6 +67,17 @@ const getAppointmentsByDoctorId = asyncHandler(async(req, res) => {
 });
 
 const getAppointmentsByPatientId = asyncHandler(async(req, res) => {
+    const requestedPatientId = req.params.id;
+
+    const { authorized, message } = authorizeUserAccess(
+        [userRoles.ADMIN, userRoles.PATIENT],
+        req.headers,
+        requestedPatientId
+    );
+
+    if (!authorized) {
+        return res.status(403).json({ status: httpStatusText.FAIL, message });
+    }
     const query = req.query;
     const limit = query.limit || 5;
     const page = query.page || 1;
