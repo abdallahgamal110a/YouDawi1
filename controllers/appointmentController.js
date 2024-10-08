@@ -31,7 +31,7 @@ const getAppointmentById = asyncHandler(async(req, res) => {
     if (!appointment) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Appointment not found' });
     }
-    res.json({ status: httpStatusText.SUCCESS, data: { appointment } });
+    res.json({ status: httpStatusText.SUCCESS, data: 'Appointment deleted' });
 });
 
 const updateAppointment = asyncHandler(async(req, res) => {
@@ -52,6 +52,17 @@ const deleteAppointment = asyncHandler(async(req, res) => {
 })
 
 const getAppointmentsByDoctorId = asyncHandler(async(req, res) => {
+    const requestedDoctorId = req.params.id;
+
+    const { authorized, message } = authorizeUserAccess(
+        [userRoles.ADMIN, userRoles.DOCTOR, userRoles.NURSE], // Nurses, Admins, and Doctors can access doctor appointments
+        req.headers,
+        requestedDoctorId
+    );
+
+    if (!authorized) {
+        return res.status(403).json({ status: httpStatusText.FAIL, message });
+    }
     const query = req.query;
     const limit = query.limit || 5;
     const page = query.page || 1;
