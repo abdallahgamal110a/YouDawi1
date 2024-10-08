@@ -1,7 +1,9 @@
 const Appointment = require('../models/appointmentModel')
+const Patient = require('../models/patientModel')
 const asyncHandler = require('../middlewares/asyncHandler')
 const httpStatusText = require('../utils/httpStatusText')
 const { validateAppointmentTime } = require('../utils/appointmentUtils');
+const { sendPushNotification } = require('../utils/notificationUtils');
 const appError = require('../utils/appError')
 const { authorizeUserAccess } = require('../utils/authUserAccess');
 const userRoles = require('../utils/userRoles')
@@ -23,6 +25,16 @@ const postAppointment = asyncHandler(async(req, res, next) => {
     }
     const appointment = new Appointment({ patientId, doctorId, appointmentDate, appointmentTime });
     const newAppointment = await appointment.save();
+
+    // Send a push notification to the patient
+    const patient = await Patient.findById(patientId);
+    if (patient && patient.pushSubscription) {
+        sendPushNotification(patient.pushSubscription, {
+            title: 'New Appointment Scheduled',
+            message: `You have scheduled an appointment on ${appointmentDate} at ${appointmentTime}.`
+        });
+    }
+
     res.status(201).json({ status: httpStatusText.SUCCESS, data: { appointment: newAppointment } });
 })
 
@@ -103,13 +115,13 @@ const getAppointmentsByPatientId = asyncHandler(async(req, res) => {
     res.json({ status: httpStatusText.SUCCESS, data: { patientAppointments } });
 });
 
-
-module.exports = {
-    getAllAppointments,
-    postAppointment,
-    getAppointmentById,
-    updateAppointment,
-    deleteAppointment,
-    getAppointmentsByDoctorId,
-    getAppointmentsByPatientId
-}
+const getPatientNotifications =
+    module.exports = {
+        getAllAppointments,
+        postAppointment,
+        getAppointmentById,
+        updateAppointment,
+        deleteAppointment,
+        getAppointmentsByDoctorId,
+        getAppointmentsByPatientId
+    }

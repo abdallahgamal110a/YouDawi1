@@ -73,27 +73,40 @@ const patientSchema = new mongooes.Schema({
             ref: "Doctor"
         }
     }],
-    // appointmentsNotifications: [{
-    //     status: {
-    //         type: Date,
-    //         enum: ['Approved', 'Appointment Remeber']
-    //     },
-    //     massage: {
-    //         type: String
-    //     },
-    //     read: {
-    //         type: Boolean
-    //     },
-    //     appointment: {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: "Appointment"
-    //     },
-    //     createdAt: {
-    //         type: String,
-    //         default: Date.now,
-    //         reqired: true
-    //     }
-    // }]
+    appointmentsNotifications: [{
+        status: {
+            type: String,
+            enum: ['Approved', 'Appointment Remember'],
+            default: 'Appointment Remember'
+        },
+        message: {
+            type: String,
+            default: 'You are subscribed for appointment notifications.'
+        },
+        read: {
+            type: Boolean,
+            default: false
+        },
+        appointment: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Appointment"
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            required: true
+        }
+    }],
+    // which holds the information needed to send push 
+    // notifications to that patient.
+    //  keys and endpoint information is needed to send push notifications.
+    pushSubscription: {
+        endpoint: String,
+        keys: {
+            p256dh: String,
+            auth: String
+        }
+    },
     role: {
         type: String,
         enum: [userRoles.PATIENT],
