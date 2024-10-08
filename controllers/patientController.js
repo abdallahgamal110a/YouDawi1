@@ -5,7 +5,7 @@ const appError = require('../utils/appError')
 const bcrypt = require("bcryptjs");
 const generateJWT = require("../utils/generateJWT");
 
-const registerPatient = asyncHandler(async(req, res, next) => {
+const registerPatient = asyncHandler(async (req, res, next) => {
     const { firstName, lastName, email, password, phone, gender, dataOfBirth, age, address, healthHistory } = req.body;
     const patient = await Patient.findOne({ email: email });
     if (patient) {
@@ -39,8 +39,30 @@ const registerPatient = asyncHandler(async(req, res, next) => {
     } catch (err) {
         return next(appError.create('Failed to register the patient', 500, httpStatusText.ERROR));
     }
-})
+});
+
+const login = asyncHandler(async (req, res, next) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        const error = appError.create('Email and Password are required', 400, httpStatusText.FAIL);
+        return next(error);
+    }
+    const patient = await Patient.findOne({ email: email });
+    if (!patient) {
+        const error = appError.create('Patient not found', 404, httpStatusText.FAIL);
+        return next(error);
+    }
+    const matchedPassword = await bcrypt.compare(password, patient.password);
+    if (matchedPassword) {
+        const token = await generateJWT({ email: patient.email, id: patient._id, role: patient.role });
+        return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
+    } else {
+        const error = appError.create('Invalid credentials', 401, httpStatusText.FAIL);
+        return next(error);
+    }
+});
 
 module.exports = {
-    registerPatient
+    registerPatient,
+    login
 }
