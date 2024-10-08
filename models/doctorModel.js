@@ -3,14 +3,14 @@ const validator = require('validator');
 const userRoles = require('../utils/userRoles')
 
 const DoctorSchema = new mongoose.Schema({
-    firstName: {
+    firstName : {
         type: String,
         required: true
     },
-    // lastName : {
-    //     type: String,
-    //     required: true
-    // },
+    lastName : {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true,
@@ -25,33 +25,56 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         default: 'pics/default.png'
     },
-    // logo: {
-    //     type: String,
-    //     default: 'pics/logo.png'
-    // },
-    // phone: {
-    //     type: Number,
-    //     required: true
-    // },
+    adresse: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        enum: ['Alexandria', 'Aswan', 'Abydos', 'Avaris', 'Port Said', 'Faiyum', 'Elephantine', 'Amarna', 'Asyut', 'Giza', 'Luxor', 'Heliopolis', 'Sharm El-Sheikh', 'El-Mansoura', 'Akhetaten', 'Crocodiloplis city', 'Cairo', 'Minya', 'Thebes', 'Memphis', 'Zagazig', 'Edfu', 'Al Mahallah Al Kubra', 'Hermopolis'],
+        required: true
+    },
+    logo: {
+        type: String,
+        default: 'pics/logo.png'
+    },
+    phone: {
+        type: Number,
+        required: true
+    },
     specialization: {
         type: [String],
+        enum: ['Cardiology', 'Dermatology', 'Endocrinology', 'Gastroenterology', 'General Practice', 'Neurology', 'Oncology', 'Orthopedics', 'Pediatrics', 'Psychiatry', 'Pulmonology'],
         required: true
     },
     status: {
         type: String,
         enum: ['pending', 'approved', 'cancelled'],
-        default: 'approved'
+        default: 'pending'
     },
-    schedule: [{
-        day: {
-            type: String,
-            required: true
-        },
-        timeSlots: {
-            type: [String],
-            required: true
+    schedule: [
+        {
+            day: {
+                type: String,
+                required: true
+            },
+            timeSlots: {
+                type: [String],
+                required: true
+            }
         }
-    }],
+    ],
+    price: {
+        type: Number
+    },
+    averageRating: {
+        type: Number,
+        default: 0,
+    },
+    totalRating: {
+        type: Number,
+        default: 0,
+    },
     appointment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Appointment"

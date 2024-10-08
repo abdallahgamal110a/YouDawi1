@@ -7,14 +7,17 @@ const allowedTo = require('../middlewares/allowedTo');
 const userRoles = require('../utils/userRoles');
 const upload = require('../utils/upload');
 
-router.route('/register')
-    .post(upload.single('avatar'), nursesController.register)
-                
 router.route('/login')
     .post(nursesController.login)
 
 router.route('/')
     .get(verifyToken, nursesController.getAllNurses)
+
+router.route('/me')
+    .get(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR, userRoles.ADMIN), nursesController.getProfile);
+
+router.route('/dashboard')
+    .get(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR, userRoles.ADMIN), nursesController.getNurseDashboard);
 
 router.route('/:id')
     .get(verifyToken, nursesController.getNurseById)

@@ -19,6 +19,12 @@ router.route('/')
 router.route('/specialty')
     .get(verifyToken, doctorsController.getDoctorsBySpecialty);
 
+router.route('/name')
+    .get(verifyToken, doctorsController.getDoctorsByName);
+
+router.route('/location')
+    .get(verifyToken, doctorsController.getDoctorsByLocation);
+
 router.route('/:id')
     .get(verifyToken, doctorsController.getDoctorById)
     .put(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN),doctorsController.updateDoctor)
@@ -36,5 +42,8 @@ router.route('/me')
 
 router.route('/dashboard')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.getDoctorDashboard);
+
+router.route('/registerNurse')
+    .post(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.registerNurse)
 
 module.exports = router;
