@@ -27,7 +27,8 @@ const AppointmentSchema = new Schema({
         match: /^(09|1[0-9]|2[0-2]):([0-5]\d)$/, // working hours from 09:00 to 22:59
         status: {
             type: String,
-            enum: ['Pending', 'Confirmed', 'Cancelled']
+            enum: ['Pending', 'Confirmed', 'Cancelled'],
+            default: 'Pending'
         },
         notes: String,
         updatedAt: {
