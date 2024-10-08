@@ -1,39 +1,13 @@
 const Nurse = require("../models/nurseModel");
+const Appointment = require('../models/appointmentModel');
+const Doctor = require('../models/doctorModel');
+const Patient = require('../models/patientModel')
 const asyncHandler = require("../middlewares/asyncHandler");
 const httpStatusText = require('../utils/httpStatusText');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const generateJWT = require("../utils/generateJWT");
 const appError = require("../utils/appError")
-
-
-
-const register = asyncHandler(async(req, res, next) => {
-    const { firstName, email, password, role } = req.body;
-    const nurse = await Nurse.findOne({email: email});
-    if (nurse) {
-        const error = appError.create('User already exists', 400, httpStatusText.FAIL)
-        return next(error);
-    }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const newNurse = new Nurse({
-        firstName,
-        email,
-        password: hashedPassword,
-        role,
-        avatar: req.file.filename
-    })
-    try {
-        const token = await generateJWT({ email: newNurse.email, id: newNurse._id, role: newNurse.role });
-        newNurse.token = token;
-        await newNurse.save();
-        res.status(201).json({ status: httpStatusText.SUCCESS, data: { nurse: newNurse } });
-    } catch (err) {
-        const error = appError.create('Failed to register the nurse', 500, httpStatusText.ERROR);
-        return next(error);
-    }
-});
 
 
 const login= asyncHandler(async(req, res, next) => {
@@ -84,7 +58,6 @@ const getNurseById = asyncHandler(async(req, res) => {
 
 const updateNurse = asyncHandler(async(req, res) => {
     const nurse = await Nurse.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    // new: return updated document / runValidators: updated data meets schema requirements.
     if (!nurse) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Nurse not found' });
     }
@@ -97,14 +70,71 @@ const deleteNurse = asyncHandler(async(req, res) => {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Nurse not found' });
     }
     res.json({ status: httpStatusText.SUCCESS, data: null });
-})
+});
+
+const getProfile = asyncHandler(async(req, res, next) => {
+    const nurse = await Nurse.findById(req.currentUser.id);
+    if (!nurse) {
+        return res.status(404).json({ status: httpStatusText.FAIL, message: 'Nurse not found' });
+    }
+    res.json({ status: httpStatusText.SUCCESS, data: { nurse } });
+});
+
+const getNurseDashboard = asyncHandler(async (req, res, next) => {
+    const nurseId = req.currentUser.id;
+    
+    try {
+        const nurse = await Nurse.findById(nurseId)
+            .populate('doctor', 'firstName lastName')
+            .select('-password');
+        
+        if (!nurse) {
+            return res.status(404).json({ message: 'Nurse not found' });
+        }
+
+        const dashboardData = {
+            nurseProfile: {
+                firstName: nurse.firstName,
+                lastName: nurse.lastName,
+                email: nurse.email,
+                phone: nurse.phone,
+                avatar: nurse.avatar,
+                doctor: nurse.doctor ? `${nurse.doctor.firstName} ${nurse.doctor.lastName}` : null
+            },
+            appointments: await getUpcomingAppointments(nurse._id),
+            patients: await Appointment.find( { nurseId: nurseId })
+                .distinct('patientId')
+                .populate('patientId', 'firstName lastName email')
+        };
+
+        res.status(200).json(dashboardData);
+    } catch (error) {
+        console.error('Error fetching nurse dashboard:', error);
+        next(error); 
+    }
+});
+
+async function getUpcomingAppointments(nurseId) {
+    try {
+        return Appointment.find({
+            nurseId: nurseId,
+            status: 'confirmed'
+        })
+        .populate('patient', 'firstName lastName phone email')
+        .select('_id appointmentDate patient');
+    } catch (error) {
+        console.error('Error fetching upcoming appointments:', error);
+        throw error;
+    }
+}
 
 
 module.exports = {
-    register,
     login,
     getAllNurses,
     getNurseById,
     updateNurse,
-    deleteNurse
+    deleteNurse,
+    getProfile,
+    getNurseDashboard
 }

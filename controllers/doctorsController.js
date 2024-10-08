@@ -1,23 +1,28 @@
 const Doctor = require("../models/doctorModel");
+const Nurse = require("../models/nurseModel");
 const Appointment = require("../models/appointmentModel");
 const asyncHandler = require("../middlewares/asyncHandler");
 const httpStatusText = require('../utils/httpStatusText');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const generateJWT = require("../utils/generateJWT");
-const appError = require("../utils/appError")
+const appError = require("../utils/appError");
+const userRoles = require("../utils/userRoles");
 
 
 
-const register = asyncHandler(async (req, res, next) => {
-    const { firstName, email, password, specialization, role } = req.body;
-    const doctor = await Doctor.findOne({ email: email });
+const register = asyncHandler(async(req, res, next) => {
+    const { firstName, lastName, email, password, adresse, city, phone, specialization, role, schedule } = req.body;
+    console.log('Request body:', req.body);
+    console.log('File:', req.file);
+    const doctor = await Doctor.findOne({email: email});
     if (doctor) {
         const error = appError.create('User already exists', 400, httpStatusText.FAIL)
         return next(error);
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    
     // console.log(schedule);
     // console.log(typeof(schedule));
     let parsedSchedule = [];
@@ -32,34 +37,44 @@ const register = asyncHandler(async (req, res, next) => {
     }
     // console.log(parsedSchedule);
     // console.log(typeof(parsedSchedule));
+    let avatar = 'pics/default.png';
+    if (req.file) {
+        avatar = req.file.filename;
+        console.log('Avatar uploaded successfully:', avatar);
+    }
     const newDoctor = new Doctor({
         firstName,
+        lastName,
         email,
         password: hashedPassword,
+        adresse,
+        city,
+        phone,
         specialization,
-        role,
         schedule: parsedSchedule,
-        avatar: req.file.filename
+        avatar,
+        role
     })
+    console.log('Doctor created successfully:', newDoctor);
     try {
         const token = await generateJWT({ email: newDoctor.email, id: newDoctor._id, role: newDoctor.role });
         newDoctor.token = token;
         await newDoctor.save();
         res.status(201).json({ status: httpStatusText.SUCCESS, data: { doctor: newDoctor } });
     } catch (err) {
+        console.error('Error during registration:', err);
         const error = appError.create('Failed to register the doctor', 500, httpStatusText.ERROR);
         return next(error);
     }
 });
 
-
-const login = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
+const login = asyncHandler(async(req, res, next) => {
+    const {email, password} = req.body;
     if (!email || !password) {
         const error = appError.create('Email and Password are required', 400, httpStatusText.FAIL);
         return next(error);
     }
-    const doctor = await Doctor.findOne({ email: email });
+    const doctor = await Doctor.findOne({email: email});
     if (!doctor) {
         const error = appError.create('Doctor not found', 404, httpStatusText.FAIL);
         return next(error);
@@ -81,7 +96,7 @@ const login = asyncHandler(async (req, res, next) => {
     }
 });
 
-const getAllDoctors = asyncHandler(async (req, res, next) => {
+const getAllDoctors = asyncHandler(async(req, res, next) => {
     const query = req.query;
     const limit = query.limit || 5;
     const page = query.page || 1;
@@ -95,24 +110,69 @@ const getAllDoctors = asyncHandler(async (req, res, next) => {
 const getDoctorsBySpecialty = asyncHandler(async (req, res, next) => {
     const { specialty } = req.query;
     // console.log(specialty);
-    if (!specialty) {
+    if (!specialty || !specialty.trim()) {
         return next(
-            appError.create('Specialty is required', 400, httpStatusText.FAIL)
+        appError.create('Specialty is required', 400, httpStatusText.FAIL)
+    );
+    }
+    const { role} = req.currentUser;
+    const roleCondition = role === 'admin' ? { specialization: specialty } : { specialization: specialty, status: 'approved' };
+    const doctors = await Doctor.find(roleCondition);
+    
+    if (!doctors || doctors.length === 0) {
+        return next(
+        appError.create('No doctors found for this specialty', 404, 'Not Found')
+    );
+    }
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
+});
+
+const getDoctorsByName = asyncHandler(async (req, res, next) => {
+    const { firstName, lastName } = req.query;
+    if (!firstName || !firstName.trim()) {
+        return next(
+            appError.create('First name is required', 400, httpStatusText.FAIL)
         );
     }
-    const { role } = req.currentUser;
-    const roleCondition = role === 'admin' ? { specialization: specialty } : { specialization: specialty, status: 'approved' };
-    const doctors = await Doctor.find({ roleCondition });
+    if (!lastName || !lastName.trim()) {
+        return next(
+            appError.create('Last name is required', 400, httpStatusText.FAIL)
+        );
+    }
+
+    const doctors = await Doctor.find({
+        $or: [
+            { firstName: { $regex: firstName, $options: 'i' } },
+            { lastName: { $regex: lastName, $options: 'i' } }
+        ]
+    });
 
     if (!doctors || doctors.length === 0) {
         return next(
-            appError.create('No doctors found for this specialty', 404, 'Not Found')
+            appError.create('No doctors found with this name', 404, 'Not Found')
+        );
+    }
+
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
+});
+
+const getDoctorsByLocation = asyncHandler(async (req, res, next) => {
+    const { city } = req.query;
+    if (!city || !city.trim()) {
+        return next(
+            appError.create('City is required', 400, httpStatusText.FAIL)
+        );
+    }
+    const doctors = await Doctor.find({ city });
+    if (!doctors || doctors.length === 0) {
+        return next(
+            appError.create('No doctors found in this location', 404, 'Not Found')
         );
     }
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
 });
 
-const getDoctorById = asyncHandler(async (req, res, next) => {
+const getDoctorById = asyncHandler(async(req, res, next) => {
     const doctor = await Doctor.findById(req.params.id);
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
@@ -124,7 +184,10 @@ const getDoctorById = asyncHandler(async (req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
-const updateDoctor = asyncHandler(async (req, res, next) => {
+const updateDoctor = asyncHandler(async(req, res, next) => {
+    if (req.currentUser.role !== userRoles.ADMIN){
+        delete req.body.status;
+    }
     const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
@@ -132,17 +195,17 @@ const updateDoctor = asyncHandler(async (req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
-const updateDoctorStatus = asyncHandler(async (req, res, next) => {
+const updateDoctorStatus = asyncHandler(async(req, res, next) => {
     const { id } = req.params;
     const { status } = req.body;
-    const doctor = await Doctor.findByIdAndUpdate(id, { status }, { new: true, runValidators: true });
+    const doctor = await Doctor.findByIdAndUpdate(id, { status }, { new: true, runValidators: true});
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
     }
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
-const deleteDoctor = asyncHandler(async (req, res, next) => {
+const deleteDoctor = asyncHandler(async(req, res, next) => {
     const doctor = await Doctor.findByIdAndDelete(req.params.id);
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
@@ -150,7 +213,7 @@ const deleteDoctor = asyncHandler(async (req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: null });
 })
 
-const getDoctorSchedule = asyncHandler(async (req, res, next) => {
+const getDoctorSchedule = asyncHandler(async(req, res, next) => {
     console.log(req.params);
     const { id } = req.params;
     const appointments = await Appointment.find({ doctorId: id });
@@ -160,14 +223,14 @@ const getDoctorSchedule = asyncHandler(async (req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { appointments } });
 });
 
-const updateDoctorSchedule = asyncHandler(async (req, res, next) => {
+const updateDoctorSchedule = asyncHandler(async(req, res, next) => {
     const { id } = req.params;
     const newData = req.params.body;
     const updatedAppointment = await Doctor.findByIdAndUpdate(id, { schedule: newData }, { new: true, runValidators: true });
     res.json({ status: httpStatusText.SUCCESS, data: { updatedAppointment } });
 });
 
-const getProfile = asyncHandler(async (req, res, next) => {
+const getProfile = asyncHandler(async(req, res, next) => {
     const doctor = await Doctor.findById(req.currentUser.id);
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
@@ -175,33 +238,69 @@ const getProfile = asyncHandler(async (req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
-const getDoctorDashboard = asyncHandler(async (req, res, next) => {
+const getDoctorDashboard = asyncHandler(async(req, res, next) => {
     const doctorId = req.currentUser.id;
     const upcomingAppointments = await Appointment.find({
         doctorId: doctorId,
         appointmentDate: { $gte: new Date() },
         status: 'confirmed'  // Better to change to scheduled in the model
     })
-        .populate('patientId', 'firstName lastName phone email')
-        .populate('nurseId', 'firstName lastName')
+    .populate('patientId', 'firstName lastName phone email')
+    .populate('nurseId', 'firstName lastName')
 
-    const patients = await Appointment.find({ doctorId: doctorId })
+    const patients = await Appointment.find( { doctorId: doctorId })
         .distinct('patientId')
         .populate('patientId', 'firstName lastName email');
-
+    
     const nurses = await Appointment.find({ doctorId: doctorId })
         .distinct(nurseId)
         .populate('nurseId', 'firstName lastName');
 
     const doctor = await Doctor.findById(doctorId)
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: { upcomingAppointments, patients, nurses, schedule: doctor.schedule } })
-})
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { upcomingAppointments, patients, nurses, schedule: doctor.schedule }})
+});
+
+const registerNurse = asyncHandler(async(req, res, next) => {
+    console.log('Request body:', req.body);
+
+    const { firstName, lastName, email, password, phone } = req.body;
+    console.log(req.body);
+    const nurse = await Nurse.findOne({email: email});
+    console.log('finding nurs')
+    if (nurse) {
+        const error = appError.create('Nurse already exists', 400, httpStatusText.FAIL)
+        return next(error);
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    console.log(hashedPassword)
+    const newNurse = new Nurse({
+        firstName,
+        lastName,
+        email,
+        phone,
+        password: hashedPassword,
+        role: userRoles.NURSE
+    })
+    try {
+        const token = await generateJWT({ email: newNurse.email, id: newNurse._id, role: newNurse.role });
+        newNurse.token = token;
+        await newNurse.save();
+        res.status(201).json({ status: httpStatusText.SUCCESS, data: { nurse: newNurse } });
+    } catch (err) {
+        const error = appError.create('Failed to register the nurse', 500, httpStatusText.ERROR);
+        return next(error);
+    }
+});
+
 
 module.exports = {
     register,
     login,
     getAllDoctors,
     getDoctorsBySpecialty,
+    getDoctorsByName,
+    getDoctorsByLocation,
     getDoctorById,
     updateDoctor,
     updateDoctorStatus,
@@ -209,5 +308,6 @@ module.exports = {
     getDoctorSchedule,
     updateDoctorSchedule,
     getProfile,
-    getDoctorDashboard
+    getDoctorDashboard,
+    registerNurse
 }

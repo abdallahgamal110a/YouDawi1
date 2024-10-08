@@ -1,7 +1,7 @@
-const mongooes = require('mongoose');
+const mongoose = require('mongoose');
 const userRoles = require('../utils/userRoles')
 
-const patientSchema = new mongooes.Schema({
+const patientSchema = new mongoose.Schema({
     firstName: {
         type: String,
         require: true
@@ -65,11 +65,11 @@ const patientSchema = new mongooes.Schema({
             require: true
         },
         patient: {
-            type: mongooes.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Patient"
         },
         doctor: {
-            type: mongooes.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Doctor"
         }
     }],
@@ -104,5 +104,5 @@ const patientSchema = new mongooes.Schema({
     },
 });
 
-const Patient = mongooes.model('Patient', patientSchema);
+const Patient = mongoose.model('Patient', patientSchema);
 module.exports = Patient;
