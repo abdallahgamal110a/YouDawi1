@@ -141,6 +141,35 @@ const getPushSubscription = asyncHandler(async(req, res, next) => {
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { pushSubscription: patient.pushSubscription } });
 });
 
+const approveAppointment = asyncHandler(async(req, res, next) => {
+  const appointmentId = req.params.id;
+
+    const appointment = await Appointment.findById(appointmentId);
+    if (!appointment) {
+        return next(appError.create('Appointment not found', 404, httpStatusText.FAIL));
+    }
+
+    appointment.status = 'Confirmed';
+    await appointment.save();
+
+    res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Appointment confirmed.' });
+});
+
+const cancelAppointment = asyncHandler(async(req, res, next) => {
+  const appointmentId = req.params.id;
+    console.log(appointmentId)
+    console.log(req.params.id)
+    const appointment = await Appointment.findById(appointmentId);
+    if (!appointment) {
+        return next(appError.create('Appointment not found', 404, httpStatusText.FAIL));
+    }
+
+    appointment.status = 'Cancelled';
+    await appointment.save();
+
+    res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Appointment cancelled.' });
+});
+
 module.exports = {
     getAllAppointments,
     postAppointment,
@@ -150,5 +179,7 @@ module.exports = {
     getAppointmentsByDoctorId,
     getAppointmentsByPatientId,
     setPushSubscription,
-    getPushSubscription
+    getPushSubscription,
+    approveAppointment,
+    cancelAppointment
 }

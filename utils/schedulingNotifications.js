@@ -1,6 +1,8 @@
 const cron = require('node-cron');
 const Appointment = require('../models/appointmentModel');
 const sendPushNotification = require('../utils/notificationUtils');
+const Doctor = require('../models/doctorModel');
+const Patient = require('../models/patientModel')
 
 cron.schedule('0 0 * * *', async() => {
     const oneDayAhead = new Date();
@@ -13,12 +15,24 @@ cron.schedule('0 0 * * *', async() => {
     });
 
     appointments.forEach(async(appointment) => {
+        const doctor = await Doctor.findById(appointment.doctorId);
         const patient = await Patient.findById(appointment.patientId);
         if (patient && patient.pushSubscription) {
             sendPushNotification(patient.pushSubscription, {
                 title: 'Appointment Reminder',
-                message: `Your appointment is scheduled for tomorrow at ${appointment.appointmentTime}`,
-                appointmentId: appointment._id,
+                body: `You have an appointment with Dr. ${doctor.firstName} tomorrow at ${appointment.appointmentTime}`,
+                actions: [{
+                        action: 'approve',
+                        title: 'Approve Appointment'
+                    },
+                    {
+                        action: 'cancel',
+                        title: 'Cancel Appointment'
+                    }
+                ],
+                data: {
+                    appointmentId: appointment._id
+                }
             });
         }
     });

@@ -28,5 +28,10 @@ router.route('/patient/:id/push-subscription')
     .post(verifyToken, allowedTo(userRoles.PATIENT), appointmentController.setPushSubscription)
     .get(verifyToken, allowedTo(userRoles.PATIENT), appointmentController.getPushSubscription)
 
+router.route('/:id/approve')
+    .post(verifyToken, allowedTo(userRoles.PATIENT), appointmentController.approveAppointment);
+
+router.route('/:id/cancel')
+    .post(verifyToken, allowedTo(userRoles.PATIENT), appointmentController.cancelAppointment);
 
 module.exports = router;
