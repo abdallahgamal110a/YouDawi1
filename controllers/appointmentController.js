@@ -115,13 +115,40 @@ const getAppointmentsByPatientId = asyncHandler(async(req, res) => {
     res.json({ status: httpStatusText.SUCCESS, data: { patientAppointments } });
 });
 
-const getPatientNotifications =
-    module.exports = {
-        getAllAppointments,
-        postAppointment,
-        getAppointmentById,
-        updateAppointment,
-        deleteAppointment,
-        getAppointmentsByDoctorId,
-        getAppointmentsByPatientId
+const setPushSubscription = asyncHandler(async(req, res, next) => {
+    const patientId = req.params.id;
+    const { endpoint, keys } = req.body;
+
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+        return next(appError.create('Patient not found', 404, httpStatusText.FAIL));
     }
+
+    patient.pushSubscription = { endpoint, keys };
+    await patient.save();
+
+    res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Push subscription set successfully.' });
+});
+
+const getPushSubscription = asyncHandler(async(req, res, next) => {
+    const patientId = req.params.id;
+
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+        return next(appError.create('Patient not found', 404, httpStatusText.FAIL));
+    }
+
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { pushSubscription: patient.pushSubscription } });
+});
+
+module.exports = {
+    getAllAppointments,
+    postAppointment,
+    getAppointmentById,
+    updateAppointment,
+    deleteAppointment,
+    getAppointmentsByDoctorId,
+    getAppointmentsByPatientId,
+    setPushSubscription,
+    getPushSubscription
+}

@@ -4,9 +4,10 @@ const vapidKeys = {
     publicKey: process.env.VAPI_PUBLIC_KEY,
     privateKey: process.env.VAPI_PRIVATE_KEY
 };
+const VAPID_SUBJECT = 'https://YouDawi.com'
 
 webPush.setVapidDetails(
-    'yassminash305@gmail.com',
+    VAPID_SUBJECT,
     vapidKeys.publicKey,
     vapidKeys.privateKey
 );
