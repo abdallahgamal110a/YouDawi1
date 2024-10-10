@@ -186,6 +186,12 @@ const getDoctorById = asyncHandler(async(req, res, next) => {
 
 const updateDoctor = asyncHandler(async(req, res, next) => {
     if (req.currentUser.role !== userRoles.ADMIN){
+        if (req.currentUser.id !== req.params.id) {
+            return res.status(403).json({
+                status: httpStatusText.FAIL,
+                message: 'You are not authorized to update this doctor\'s data.'
+            });
+        }
         delete req.body.status;
     }
     const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });

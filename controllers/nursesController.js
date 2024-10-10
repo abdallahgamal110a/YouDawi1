@@ -7,7 +7,8 @@ const httpStatusText = require('../utils/httpStatusText');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const generateJWT = require("../utils/generateJWT");
-const appError = require("../utils/appError")
+const appError = require("../utils/appError");
+const userRoles = require("../utils/userRoles");
 
 
 const login= asyncHandler(async(req, res, next) => {
@@ -21,11 +22,8 @@ const login= asyncHandler(async(req, res, next) => {
         const error = appError.create('Nurse not found', 404, httpStatusText.FAIL);
         return next(error);
     }
-    if (nurse.status === 'pending') {
-        const error = appError.create('Nurse is not approved yet', 403, httpStatusText.FAIL);
-        return next(error);
-    } else if (nurse.status === 'cancelled') {
-        const error = appError.create('Nurse account has been cancelled', 403, httpStatusText.FAIL);
+    if (nurse.status !== 'Active') {
+        const error = appError.create('Nurse status is inactive', 403, httpStatusText.FAIL);
         return next(error);
     }
     const matchedPassword = await bcrypt.compare(password, nurse.password);
@@ -57,6 +55,15 @@ const getNurseById = asyncHandler(async(req, res) => {
 });
 
 const updateNurse = asyncHandler(async(req, res) => {
+    if (req.currentUser.role !== userRoles.ADMIN && req.currentUser.role !== userRoles.DOCTOR){
+        if (req.currentUser.id !== req.params.id) {
+            return res.status(403).json({
+                status: httpStatusText.FAIL,
+                message: 'You are not authorized to update this nurse\'s data.'
+            });
+        }
+        delete req.body.status;
+    }
     const nurse = await Nurse.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!nurse) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Nurse not found' });
@@ -70,6 +77,17 @@ const deleteNurse = asyncHandler(async(req, res) => {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Nurse not found' });
     }
     res.json({ status: httpStatusText.SUCCESS, data: null });
+});
+
+
+const deactivateNurse = asyncHandler(async(req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    const nurse = await Nurse.findByIdAndUpdate(id, { status }, { new: true, runValidators: true});
+    if (!nurse) {
+        return res.status(404).json({ status: httpStatusText.FAIL, message: 'Nurse not found' });
+    }
+    res.json({ status: httpStatusText.SUCCESS, data: { nurse } });
 });
 
 const getProfile = asyncHandler(async(req, res, next) => {
@@ -135,6 +153,7 @@ module.exports = {
     getNurseById,
     updateNurse,
     deleteNurse,
+    deactivateNurse,
     getProfile,
     getNurseDashboard
 }
