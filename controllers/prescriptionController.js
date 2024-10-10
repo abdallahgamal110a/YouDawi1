@@ -1,4 +1,5 @@
 const Prescription = require('../models/prescriptionModel')
+const Patient = require('../models/patientModel');
 const asyncHandler = require('../middlewares/asyncHandler')
 const httpStatusText = require('../utils/httpStatusText')
 const appError = require('../utils/appError')
@@ -23,6 +24,22 @@ const postprescription = asyncHandler(async(req, res) => {
     });
     const newPrescription = await prescription.save();
     const response = newPrescription.toObject({ versionKey: false });
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+        return res.status(404).json({ status: httpStatusText.FAIL, message: 'Patient not found' });
+    }
+
+    patient.healthHistory.push({
+      prescriptions: {
+        prescriptionId: newPrescription._id,
+        medications: medications,
+        dateIssued: dateIssued,
+        instructions: instructions,
+        doctor: doctorId
+    }
+    });
+
+    await patient.save();
     res.status(201).json({ status: httpStatusText.SUCCESS, data: { prescription: response } });
 });
 

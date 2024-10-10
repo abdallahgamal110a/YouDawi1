@@ -71,8 +71,34 @@ const patientSchema = new mongoose.Schema({
         doctor: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Doctor"
-        }
+        },
+        prescriptions: [{
+          prescriptionId: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'Prescription',
+              required: true
+          },
+          medications: [{
+              name: {
+                  type: String,
+                  required: true
+              },
+              dosage: {
+                  type: String,
+                  required: true
+              },
+              frequency: {
+                  type: String,
+                  required: true
+              },
+              duration: {
+                  type: String,
+                  required: true
+              }
+        }]
+      }]
     }],
+    
     appointmentsNotifications: [{
         status: {
             type: String,
@@ -96,6 +122,7 @@ const patientSchema = new mongoose.Schema({
             default: Date.now,
             required: true
         }
+
     }],
     // which holds the information needed to send push 
     // notifications to that patient.

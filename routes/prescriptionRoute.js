@@ -6,7 +6,7 @@ const allowedTo = require('../middlewares/allowedTo')
 const userRoles = require('../utils/userRoles')
 
 router.route('/')
-    .get(prescriptionController.getAllprescriptions) // verifyToken, allowedTo(userRoles.DOCTOR)
+    .get(verifyToken, allowedTo(userRoles.DOCTOR), prescriptionController.getAllprescriptions)
     .post(prescriptionController.postprescription)
 
 router.route('/:id')
