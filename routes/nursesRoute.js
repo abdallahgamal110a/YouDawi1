@@ -11,7 +11,7 @@ router.route('/login')
     .post(nursesController.login)
 
 router.route('/')
-    .get(verifyToken, nursesController.getAllNurses)
+    .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), nursesController.getAllNurses)
 
 router.route('/me')
     .get(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR, userRoles.ADMIN), nursesController.getProfile);
@@ -20,8 +20,10 @@ router.route('/dashboard')
     .get(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR, userRoles.ADMIN), nursesController.getNurseDashboard);
 
 router.route('/:id')
-    .get(verifyToken, nursesController.getNurseById)
-    .put(verifyToken, nursesController.updateNurse)
-    .delete(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR), nursesController.deleteNurse)
+    .get(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR, userRoles.ADMIN), nursesController.getNurseById)
+    .put(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR, userRoles.ADMIN), nursesController.updateNurse)
+    .delete(verifyToken, allowedTo(userRoles.ADMIN), nursesController.deleteNurse)
 
+router.route('/:id/deactivate')
+    .patch(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), nursesController.deactivateNurse)
 module.exports = router;

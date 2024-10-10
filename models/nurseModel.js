@@ -48,6 +48,11 @@ const NurseSchema = new mongoose.Schema({
         type: String,
         enum: [userRoles.NURSE],
         default: userRoles.NURSE
+    },
+    status: {
+        type: String,
+        enum: ['Active', 'Inactive'],
+        default: 'Active'
     }
 
 });
