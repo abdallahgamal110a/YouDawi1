@@ -5,8 +5,12 @@ import './CalendarStyles.css'; // Create this CSS file for custom styling
 
 const appointments = [
   { id: 1, date: new Date(2024, 9, 6), title: 'Appointment with Dr. John Doe' },  // Year, Month (0-indexed), Day
-  { id: 2, date: new Date(2024, 9, 10), title: 'Appointment with Dr. Jane Smith' },
-  { id: 3, date: new Date(2024, 9, 15), title: 'Appointment with Dr. Alice Johnson' },
+  { id: 2, date: new Date(2024, 9, 6), title: 'Consultation with Dr. James Bond' },
+  { id: 3, date: new Date(2024, 9, 10), title: 'Appointment with Dr. Jane Smith' },
+  { id: 4, date: new Date(2024, 9, 15), title: 'Appointment with Dr. Johnson' },
+  { id: 5, date: new Date(2024, 9, 26), title: 'Appointment with Dr. Alice Johnson' },
+  { id: 6, date: new Date(2024, 9, 15), title: 'Appointment with Dr. David Johnson' },
+  { id: 7, date: new Date(2024, 9, 15), title: 'Appointment with Dr. John Doe' },
 ];
 
 function AppointmentCalendar() {
@@ -28,7 +32,8 @@ function AppointmentCalendar() {
     setSelectedDate(date);
   };
 
-  const appointmentOnSelectedDate = appointments.find(
+  // Filter appointments for the selected date
+  const appointmentsOnSelectedDate = appointments.filter(
     (appointment) => appointment.date.toDateString() === selectedDate.toDateString()
   );
 
@@ -41,11 +46,16 @@ function AppointmentCalendar() {
         tileClassName={tileClassName} // Highlight the appointment dates
       />
 
-      {appointmentOnSelectedDate ? (
+      {appointmentsOnSelectedDate.length > 0 ? (
         <div className="mt-4 p-4 bg-green-100 border border-green-400 rounded-lg">
-          <h3 className="text-lg font-bold">Appointment Details</h3>
-          <p>{appointmentOnSelectedDate.title}</p>
-          <p>{appointmentOnSelectedDate.date.toDateString()}</p>
+          <h3 className="text-lg font-bold">Appointments on {selectedDate.toDateString()}</h3>
+          <ul>
+            {appointmentsOnSelectedDate.map((appointment) => (
+              <li key={appointment.id} className="mt-2">
+                {appointment.title}
+              </li>
+            ))}
+          </ul>
         </div>
       ) : (
         <div className="mt-4 p-4 bg-gray-100 border border-gray-400 rounded-lg">
