@@ -18,6 +18,7 @@ function ComponentsPreview() {
             <Link label='Register' path='/register' />
             <Link label='PublicHome' path='/public-home' />
             <Link label='Login' path='/login' />
+            <Link label='LandingPage' path='/public-home' />
             
 
             <h2 className="text-3xl font-bold mb-4">Components</h2>

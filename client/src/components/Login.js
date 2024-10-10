@@ -1,9 +1,10 @@
 import React from 'react';
 
+
 function Login() {
 
     return (
-        <div className="bg-white w-full max-w-sm rounded-lg shadow-md p-6">
+        <div className="mx-auto max-w-4xl max-h-60  bg-white shadow-md p-10">
             <div className="bg-blue-600 text-white text-center py-2 rounded-t-lg">
                 <h2 className="text-lg font-semibold">Login</h2>
             </div>
@@ -35,6 +36,7 @@ function Login() {
                 <span className="text-gray-700">New User ?</span>
                 <a href="/" className="text-blue-500 ml-1">Sign Up</a>
             </div>
+           
         </div>
     );
 }
