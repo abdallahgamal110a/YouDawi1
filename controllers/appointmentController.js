@@ -23,7 +23,7 @@ const postAppointment = asyncHandler(async(req, res, next) => {
         const err = appError.create('This time is already booked', 400, httpStatusText.FAIL);
         return next(err);
     }
-    const appointment = new Appointment({ patientId, doctorId, appointmentDate, appointmentTime });
+    const appointment = new Appointment({ patientId, doctorId, appointmentDate, appointmentTime, status: 'Pending'});
     const newAppointment = await appointment.save();
 
     // Send a push notification to the patient
@@ -157,8 +157,6 @@ const approveAppointment = asyncHandler(async(req, res, next) => {
 
 const cancelAppointment = asyncHandler(async(req, res, next) => {
   const appointmentId = req.params.id;
-    console.log(appointmentId)
-    console.log(req.params.id)
     const appointment = await Appointment.findById(appointmentId);
     if (!appointment) {
         return next(appError.create('Appointment not found', 404, httpStatusText.FAIL));
