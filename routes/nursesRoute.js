@@ -10,6 +10,12 @@ const upload = require('../utils/upload');
 router.route('/login')
     .post(nursesController.login)
 
+router.route('/requestResetPassword')
+    .post(nursesController.requestResetPassword);
+
+router.route('/resetPassword/:token')
+    .post(nursesController.resetPassword)
+
 router.route('/')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), nursesController.getAllNurses)
 

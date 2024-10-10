@@ -21,6 +21,12 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpires: {
+        type: Date
+    },
     avatar: {
         type: String,
         default: 'pics/default.png'
