@@ -1,10 +1,11 @@
 require('dotenv').config({ path: '../.env' });
 const Admin = require('../models/adminModel');
 const asyncHandler = require('../middlewares/asyncHandler');
+const doctorsController = require('../controllers/doctorsController');
 const httpStatusText = require('../utils/httpStatusText');
 const appError = require('../utils/appError');
 const bcrypt = require('bcryptjs');
-const generateJWT = require("../utils/generateJWT").default;
+const generateJWT = require("../utils/generateJWT");
 const userRoles = require('../utils/userRoles');
 
 
@@ -20,6 +21,7 @@ async function addAdmin() {
         password: hashedPassword,
         role: userRoles.ADMIN,
       });
+
       await newAdmin.save();
       console.log('Admin added successfully');
     } else {
@@ -52,8 +54,10 @@ const login = asyncHandler(async (req, res, next) => {
         id: admin._id,
         role: admin.role
       });
+      admin.token = token
+      await admin.save();
 
-      return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
+      return res.status(200).json({ status: httpStatusText.SUCCESS, data: token  });
     } else {
       return next(appError.create('Invalid credentials', 401, httpStatusText.FAIL));
     }
@@ -62,6 +66,8 @@ const login = asyncHandler(async (req, res, next) => {
     return next(appError.create('Internal server error', 500, httpStatusText.FAIL));
   }
 });
+
+
 
 module.exports = {
   login

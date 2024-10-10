@@ -7,11 +7,11 @@ const userRoles = require('../utils/userRoles')
 
 router.route('/')
     .get(verifyToken, allowedTo(userRoles.DOCTOR), prescriptionController.getAllprescriptions)
-    .post(prescriptionController.postprescription)
+    .post(verifyToken, allowedTo(userRoles.DOCTOR), prescriptionController.postprescription)
 
 router.route('/:id')
-    .get(prescriptionController.getprescriptionById)
-    .put(prescriptionController.updatePrescription)
-    .delete(prescriptionController.deleteprescription);
+    .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.PATIENT), prescriptionController.getprescriptionById)
+    .put(verifyToken, allowedTo(userRoles.DOCTOR), prescriptionController.updatePrescription)
+    .delete(verifyToken, allowedTo(userRoles.DOCTOR), prescriptionController.deleteprescription);
 
 module.exports = router;
