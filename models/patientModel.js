@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const userRoles = require('../utils/userRoles')
+const userRoles = require('../utils/userRoles');
+const validator = require('validator');
+
 
 const patientSchema = new mongoose.Schema({
     firstName: {
@@ -13,7 +15,8 @@ const patientSchema = new mongoose.Schema({
     email: {
         type: String,
         require: true,
-        unique: true
+        unique: true,
+        validate: [validator.isEmail, 'This field must be a valid email']
     },
     password: {
         type: String,
@@ -73,32 +76,32 @@ const patientSchema = new mongoose.Schema({
             ref: "Doctor"
         },
         prescriptions: [{
-          prescriptionId: {
-              type: mongoose.Schema.Types.ObjectId,
-              ref: 'Prescription',
-              required: true
-          },
-          medications: [{
-              name: {
-                  type: String,
-                  required: true
-              },
-              dosage: {
-                  type: String,
-                  required: true
-              },
-              frequency: {
-                  type: String,
-                  required: true
-              },
-              duration: {
-                  type: String,
-                  required: true
-              }
+            prescriptionId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Prescription',
+                required: true
+            },
+            medications: [{
+                name: {
+                    type: String,
+                    required: true
+                },
+                dosage: {
+                    type: String,
+                    required: true
+                },
+                frequency: {
+                    type: String,
+                    required: true
+                },
+                duration: {
+                    type: String,
+                    required: true
+                }
+            }]
         }]
-      }]
     }],
-    
+
     appointmentsNotifications: [{
         status: {
             type: String,

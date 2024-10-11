@@ -62,7 +62,16 @@ const login = asyncHandler(async (req, res, next) => {
     }
 });
 
+const getProfile = asyncHandler(async (req, res, next) => {
+    const patient = await Patient.findById(req.currentUser.id);
+    if (!patient) {
+        return res.status(404).json({ status: httpStatusText.FAIL, message: "Patient Not Found" })
+    }
+    res.json({ status: httpStatusText.SUCCESS, data: { patient } });
+});
+
 module.exports = {
     registerPatient,
-    login
+    login,
+    getProfile
 }

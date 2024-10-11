@@ -7,7 +7,11 @@ const userRoles = require('../utils/userRoles')
 
 router.route('/register')
     .post(patientController.registerPatient);
+
 router.route('/login')
     .post(patientController.login);
+
+router.route('/profile')
+    .get(verifyToken, allowedTo(userRoles.ADMIN, userRoles.PATIENT), patientController.getProfile);
 
 module.exports = router;
