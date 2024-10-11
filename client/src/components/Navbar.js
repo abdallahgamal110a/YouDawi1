@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import myImage from '../pics/logo2.jpg';
 
+
 const Navbar = () => {
   return (
   
@@ -23,9 +24,12 @@ const Navbar = () => {
           <Link to="/doctors-login" className="text-sky-600 hover:text-sky-600">
             Are you Doctors?
           </Link>
-          <Link to="/login" className="text-sky-600 hover:text-sky-600">
-            About Us
-          </Link>
+           <a href="#about" className="navbar-links">
+            About
+          </a>
+           <a href="#reviews" className="navbar-links">
+            Reviews
+          </a>
           <Link to="/login" className="text-sky-600 hover:text-sky-600">
             Login
           </Link>

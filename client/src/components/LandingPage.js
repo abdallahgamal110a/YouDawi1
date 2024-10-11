@@ -6,7 +6,8 @@ import myImage3 from '../pics/mobile.jpeg';
 import './style.css'
 import Footer_h from './Footer';
 import Banner from './Banner';
-
+import About from './About';
+import Reviews from "./Reviews";
 
 function LandingPage() {
   return (
@@ -15,7 +16,7 @@ function LandingPage() {
            <Banner/>
       
        <main className="bg-white text-sky-600 text-center py-16">
-                        <h1 className="text-6xl font-bold mb-4">Feel better about finding healthcare</h1>
+                        <h1 className="text-6xl font-bold mb-4">Feel better about finding YouDawi</h1>
                         <div className="flex justify-center space-x-8 mb-8">
                   <div className="text-center">
                                  
@@ -47,8 +48,11 @@ function LandingPage() {
                                 </div>
                             </div>
                         </div>
-                    </section>
-      </main>
+              </section>
+              
+          </main>
+          <About />
+           <Reviews />
           <Footer_h/>
     </div>
   );

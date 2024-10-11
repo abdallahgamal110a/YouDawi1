@@ -41,7 +41,7 @@
 .about-description {
     margin: 32px 0;
     color: #4d4b4b;
-    font-family: 'Rubik', sans-serif;
+    font-family:  'sans-serif';
     font-size: 18px;
     letter-spacing: .7px;
     line-height: 1.7rem;
@@ -72,10 +72,10 @@
     line-height: 1.6rem;
 }
 .fa-icon {
-    color: #9D2553;
+    color: #1b57a0;
 }
 /* Responsive */
-@media screen and (max-width: 1000px) {
+/* @media screen and (max-width: 1000px) {
     .about-section {
         display: block;
     }
@@ -91,4 +91,4 @@
     .about-text-content {
         width: 100%;
     }
-}
+} */
