@@ -7,7 +7,7 @@
     margin: 64px 0 128px 0;
 }
 .info-title {
-    font-family: 'Poppins', sans-serif;
+   font-family: "Source Sans Pro", "Arial", sans-serif;
     font-size: 40px;
     font-weight: bold;
 }
@@ -28,10 +28,10 @@
     margin: 64px;
     text-align: center;
     color: rgb(77, 75, 75);
-    font-family: 'Rubik', sans-serif;
+   font-family: "Source Sans Pro", "Arial", sans-serif;
     font-size: 18px;
-    letter-spacing: .8px;
-    line-height: 1.8rem;
+    letter-spacing: 3px;
+    line-height: 4rem;
 }
 /* Cards */
 .info-cards-content {
@@ -50,18 +50,18 @@
 .info-card-title {
     margin: 32px 0 40px 0;
     color: black;
-    font-family: 'Poppins', sans-serif;
+   font-family: "Source Sans Pro", "Arial", sans-serif;
     font-size: 28px;
     font-weight: bold;
-    letter-spacing: .8px;
+    letter-spacing: 2px;
 }
 .info-card-description {
     margin: 24px;
     color: rgb(77, 75, 75);
-    font-family: 'Rubik', sans-serif;
+   font-family: "Source Sans Pro", "Arial", sans-serif;
     font-size: 18px;
-    letter-spacing: .8px;
-    line-height: 1.5rem;
+    letter-spacing: 2px;
+    line-height: 4rem;
 }
 .info-card-icon {
     position: absolute;

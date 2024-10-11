@@ -21,28 +21,22 @@ function Info() {
 
       <div className="info-cards-content">
         <InformationCard
-          title="Emergency Care"
-          description="Our Emergency Care service is designed to be your reliable support
-            in critical situations. Whether it's a sudden illness, injury, or
-            any medical concern that requires immediate attention, our team of
-            dedicated healthcare professionals is available 24/7 to provide
-            prompt and efficient care."
+          title="Book for free, pay at the clinic"
+          description="
+The examination price on Vezeeta is the same as the examination price at the clinic, without any additional costs.."
         icon={faUserShield}
         />
 
         <InformationCard
-          title="Heart Disease"
-          description="Our team of experienced cardiologists and medical experts use
-            state-of-the-art technology to assess your cardiovascular health and
-            design personalized treatment plans. From comprehensive screenings
-            to advanced interventions, we are committed to helping you maintain
-            a healthy heart and lead a fulfilling life."
+          title="Your reservation is confirmed with the doctor"
+          description="
+Your reservation is confirmed once you choose from the doctor's available appointments."
         icon={faCalendarCheck}
               />
 
               
         <InformationCard
-          title="Dental Care"
+          title="All Needs in YouDawi"
                   description="Search and book an appointment with a doctor in a clinic,
            hospital, home visit, or over the phone. You can also order medications, or book a service or operation at the best price."
         icon={faStethoscope}
