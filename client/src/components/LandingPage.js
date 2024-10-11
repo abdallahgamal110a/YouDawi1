@@ -8,30 +8,13 @@ import Footer_h from './Footer';
 import Banner from './Banner';
 import About from './About';
 import Reviews from "./Reviews";
+import Info from './Info';
 
 function LandingPage() {
   return (
     <div>
           <Navbar />
            <Banner/>
-      
-       <main className="bg-white text-sky-600 text-center py-16">
-                        <h1 className="text-6xl font-bold mb-4">Feel better about finding YouDawi</h1>
-                        <div className="flex justify-center space-x-8 mb-8">
-                  <div className="text-center">
-                                 
-                                <i className="fas fa-user-md text-3xl mb-2"></i>
-                                <p>Profiles for Every Doctor in America</p>
-                            </div>
-                            <div className="text-center">
-                                <i className="fas fa-search text-3xl mb-2"></i>
-                                <p>Search by What Matters Most to You</p>
-                            </div>
-                            <div className="text-center">
-                                <i className="fas fa-star text-3xl mb-2"></i>
-                                <p>More Than 10 Million Patient Ratings</p>
-                            </div>
-                        </div>
                         <section className="flex  py-0">
                         <div className="mx-auto absolute  top-12 bottom-50 left-20 right-15">
                             <div className="bg-gray-100 p-4 rounded-lg shadow-md opacity-90">
@@ -49,8 +32,7 @@ function LandingPage() {
                             </div>
                         </div>
               </section>
-              
-          </main>
+           <Info />
           <About />
            <Reviews />
           <Footer_h/>
