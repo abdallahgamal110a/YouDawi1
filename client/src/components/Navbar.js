@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import myImage from '../pics/logo2.jpg';
 
 
-c ar = () => {
+const Navbar = () => {
   return (
 
     <nav className="bg-white-600 p-4">

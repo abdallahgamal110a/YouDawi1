@@ -2,7 +2,6 @@ import React from 'react';
 
 
 function Login() {
-
     return (
         <div className="mx-auto max-w-4xl max-h-60  bg-white shadow-md p-10">
             <div className="bg-blue-600 text-white text-center py-2 rounded-t-lg">
@@ -10,7 +9,7 @@ function Login() {
             </div>
             <form className="space-y-4 mt-4">
                 <div>
-                    <label className="block text-gray-700">Mobile or Email<span className="text-red-500">*</span></label>
+                    <label className="block text-gray-700">Your Email<span className="text-red-500">*</span></label>
                     <input type="text" className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:border-blue-500" />
                 </div>
                 <div>
@@ -29,9 +28,6 @@ function Login() {
                 <span className="mx-2 text-gray-500">or</span>
                 <hr className="flex-grow border-gray-300" />
             </div>
-            <button className="w-full bg-blue-600 text-white py-2 rounded flex items-center justify-center">
-                <i className="fab fa-facebook-f mr-2"></i> Connect With Facebook
-            </button>
             <div className="text-center mt-4">
                 <span className="text-gray-700">New User ?</span>
                 <a href="/" className="text-blue-500 ml-1">Sign Up</a>
