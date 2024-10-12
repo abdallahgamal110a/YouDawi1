@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import myImage from '../pics/logo2.jpg';
 
 
-const Navbar = () => {
+c ar = () => {
   return (
 
     <nav className="bg-white-600 p-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
-          {/* <i className="fas fa-bars text-xl mr-4"></i> */}
-          <img src={myImage} alt="Healthcare" width="40" height="50" />
+                            {/* <i className="fas fa-bars text-xl mr-4"></i> */}
+           <img src={myImage} alt="YouDawi" className="h-8 w-20"/>           
           {/* <img src={myImage} alt="Healthgrades logo" className="h-10 w-10 rounded-full"/> */}
         </div>
 
