@@ -14,4 +14,8 @@ router.route('/login')
 router.route('/profile')
     .get(verifyToken, allowedTo(userRoles.ADMIN, userRoles.PATIENT), patientController.getProfile);
 
+router.route('/')
+    .get(verifyToken, patientController.getAllPatients);
+
+
 module.exports = router;

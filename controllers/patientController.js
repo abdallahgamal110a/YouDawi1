@@ -60,6 +60,7 @@ const login = asyncHandler(async (req, res, next) => {
         const error = appError.create('Invalid credentials', 401, httpStatusText.FAIL);
         return next(error);
     }
+
 });
 
 const getProfile = asyncHandler(async (req, res, next) => {
@@ -70,8 +71,48 @@ const getProfile = asyncHandler(async (req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { patient } });
 });
 
+const getAllPatients = asyncHandler(async (req, res, next) => {
+    const query = req.query;
+    const limit = parseInt(query.limit || '5');
+    const page = parseInt(query.page || '1');
+
+    if (limit <= 0 || limit > 100) {
+        return res.status(400).json({ status: httpStatusText.FAIL, message: 'Invalid limit value' });
+    }
+    if (page <= 0) {
+        return res.status(400).json({ status: httpStatusText.FAIL, message: 'Invalid page number' });
+    }
+
+    const skip = (page - 1) * limit;
+
+    const projection = {
+        __v: 0,
+        password: 0
+    };
+
+    try {
+        const patients = await Patient.find()
+            .select(projection)
+            .limit(limit)
+            .skip(skip);
+
+        res.json({
+            status: httpStatusText.SUCCESS,
+            data: {
+                patients,
+                total: await Patient.countDocuments(),
+                pages: Math.ceil((await Patient.countDocuments()) / limit)
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching patients:', error);
+        res.status(500).json({ status: httpStatusText.ERROR, message: 'An error occurred while fetching patients' });
+    }
+});
+
 module.exports = {
     registerPatient,
     login,
-    getProfile
+    getProfile,
+    getAllPatients
 }
