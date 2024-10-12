@@ -19,7 +19,7 @@ router.route('/resetPassword/:token')
 router.route('/')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), nursesController.getAllNurses)
 
-router.route('/me')
+router.route('/profile')
     .get(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR, userRoles.ADMIN), nursesController.getProfile);
 
 router.route('/dashboard')

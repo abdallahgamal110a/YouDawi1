@@ -291,7 +291,7 @@ const updateDoctorSchedule = asyncHandler(async(req, res, next) => {
 });
 
 const getProfile = asyncHandler(async(req, res, next) => {
-    const { id } = req.params;
+    const { id } = req.currentUser;
     const doctor = await Doctor.findById(id);
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });

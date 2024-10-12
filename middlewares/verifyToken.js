@@ -13,10 +13,12 @@ const verifyToken = (req, res, next) => {
     try {
 
         const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        console.log("Current User from Token:", currentUser);
         req.currentUser = currentUser;
         next();
 
     } catch (err) {
+        console.error("Token Verification Error:", err);
         const error = appError.create('Invalid token', 401, httpStatusText.ERROR)
         return next(error);
     }   
