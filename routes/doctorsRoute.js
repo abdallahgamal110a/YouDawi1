@@ -43,13 +43,19 @@ router.route('/:id/schedule')
 router.route('/:id/status')
     .put(verifyToken, allowedTo(userRoles.ADMIN),doctorsController.updateDoctorStatus);
 
-router.route('/me')
+router.route('/profile')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.getProfile);
 
 router.route('/dashboard')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.getDoctorDashboard);
 
 router.route('/registerNurse')
-    .post(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.registerNurse)
+    .post(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.registerNurse);
+
+router.route('/:id/rate')
+    .post(verifyToken, allowedTo(userRoles.PATIENT, userRoles.ADMIN), doctorsController.rateDoctor);
+
+router.route('/:id/ratings')
+    .get(doctorsController.getDoctorRatings);
 
 module.exports = router;

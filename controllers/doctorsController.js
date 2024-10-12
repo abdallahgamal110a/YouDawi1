@@ -291,7 +291,8 @@ const updateDoctorSchedule = asyncHandler(async(req, res, next) => {
 });
 
 const getProfile = asyncHandler(async(req, res, next) => {
-    const doctor = await Doctor.findById(req.currentUser.id);
+    const { id } = req.params;
+    const doctor = await Doctor.findById(id);
     if (!doctor) {
         return res.status(404).json({ status: httpStatusText.FAIL, message: 'Doctor not found' });
     }
@@ -353,6 +354,44 @@ const registerNurse = asyncHandler(async(req, res, next) => {
     }
 });
 
+const rateDoctor = asyncHandler(async (req, res, next) => {
+    const { rating } = req.body;
+    const doctorId = req.params.id;
+    if (!rating || rating < 1 || rating > 5) {
+        return next(appError.create('Please provide a rating between 1 and 5', 400));
+    }
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+        return next(appError.create('Doctor not found', 404));
+    }
+    const newTotalRatings = doctor.totalRating + 1;
+    doctor.averageRating = ((doctor.averageRating * doctor.totalRating) + rating) / newTotalRatings;
+    doctor.totalRating = newTotalRatings;
+    await doctor.save();
+    res.status(200).json({
+        status: 'success',
+        data: {
+            averageRating: doctor.averageRating,
+            totalRating: doctor.totalRating
+        }
+    });
+});
+
+const getDoctorRatings = asyncHandler(async (req, res, next) => {
+    const doctorId = req.params.id;
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+        return next(appError.create('Doctor not found', 404));
+    }
+    res.status(200).json({
+        status: 'success',
+        data: {
+            averageRating: doctor.averageRating,
+            totalRating: doctor.totalRating
+        }
+    });
+});
+
 
 module.exports = {
     register,
@@ -371,5 +410,7 @@ module.exports = {
     updateDoctorSchedule,
     getProfile,
     getDoctorDashboard,
-    registerNurse
+    registerNurse,
+    rateDoctor,
+    getDoctorRatings
 }

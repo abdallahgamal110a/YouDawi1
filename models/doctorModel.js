@@ -80,6 +80,7 @@ const DoctorSchema = new mongoose.Schema({
     totalRating: {
         type: Number,
         default: 0,
+        
     },
     appointment: {
         type: mongoose.Schema.Types.ObjectId,
