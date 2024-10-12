@@ -20,20 +20,12 @@ const postAppointment = asyncHandler(async(req, res, next) => {
     const { patientId, doctorId, appointmentDate, appointmentTime } = req.body;
     const appointmentCheck = await validateAppointmentTime(appointmentTime, doctorId, patientId, appointmentDate);
     if (!appointmentCheck) {
-        const err = appError.create('This time is already booked', 400, httpStatusText.FAIL);
+        const err = appError.create('This time is already booked or does not align with doctor Schedule', 400, httpStatusText.FAIL);
         return next(err);
     }
     const appointment = new Appointment({ patientId, doctorId, appointmentDate, appointmentTime, status: 'Pending'});
     const newAppointment = await appointment.save();
 
-    // Send a push notification to the patient
-    const patient = await Patient.findById(patientId);
-    if (patient && patient.pushSubscription) {
-        sendPushNotification(patient.pushSubscription, {
-            title: 'New Appointment Scheduled',
-            message: `You have scheduled an appointment on ${appointmentDate} at ${appointmentTime}.`
-        });
-    }
 
     res.status(201).json({ status: httpStatusText.SUCCESS, data: { appointment: newAppointment } });
 })

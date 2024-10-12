@@ -47,6 +47,7 @@ const sendPasswordResetEmail = async (Email, URL) => {
     }
 };
 
+
 module.exports = {
     sendPasswordResetEmail
 };
