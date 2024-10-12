@@ -5,8 +5,8 @@ import "./Banner.css";
 import myImage1 from '../pics/banner1.jpg';
 import myImage2 from '../pics/banner2.jpg';
 import myImage3 from '../pics/banner3.jpg';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
 

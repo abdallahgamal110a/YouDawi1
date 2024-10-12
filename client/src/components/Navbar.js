@@ -5,29 +5,29 @@ import myImage from '../pics/logo2.jpg';
 
 const Navbar = () => {
   return (
-  
+
     <nav className="bg-white-600 p-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
-                            {/* <i className="fas fa-bars text-xl mr-4"></i> */}
-           <img src={myImage} alt="Healthcare" width="40" height="50" />           
+          {/* <i className="fas fa-bars text-xl mr-4"></i> */}
+          <img src={myImage} alt="Healthcare" width="40" height="50" />
           {/* <img src={myImage} alt="Healthgrades logo" className="h-10 w-10 rounded-full"/> */}
-        </div>       
-        
+        </div>
+
 
         {/* Menu Items */}
         <div className="space-x-4">
           <Link to="/" className="text-sky-600 hover:text-sky-600">
             Home
           </Link>
-          <Link to="/doctors-login" className="text-sky-600 hover:text-sky-600">
-            Are you Doctors?
+          <Link to="/doctor-register" className="text-sky-600 hover:text-sky-600">
+            Are you a Doctor?
           </Link>
-           <a href="#about" className="navbar-links">
+          <a href="#about" className="navbar-links">
             About
           </a>
-           <a href="#reviews" className="navbar-links">
+          <a href="#reviews" className="navbar-links">
             Reviews
           </a>
           <Link to="/login" className="text-sky-600 hover:text-sky-600">

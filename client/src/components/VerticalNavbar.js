@@ -13,13 +13,13 @@ function VerticalNavbar({ onOpenModal }) {
 
     const navItems = [
         { path: '/home', label: 'Home', icon: <FaHome /> },
-        { path: '/doctors', label: 'Doctors', icon: <FaUserMd /> },
+        { path: '/doctor-register', label: 'Doctors', icon: <FaUserMd /> },
         { path: '/appointments', label: 'Appointments', icon: <FaCalendarAlt /> },
         { path: '/patients', label: 'Patients', icon: <FaUserInjured /> },
     ];
 
     return (
-        <nav className={`vertical-navbar bg-primary-40 h-full p-2 flex flex-col justify-between transition-all duration-300 ${toggleClasses}`}>
+        <nav className={`vertical-navbar bg-primary-10 h-full p-2 flex flex-col justify-between transition-all duration-300 ${toggleClasses}`}>
             <div>
                 {/* Logo */}
                 <div className={`border-solid border-black border-0.25 text-blue text-center mb-4 ${isOpen ? 'text-lg' : 'text-sm'}`}>

@@ -20,8 +20,8 @@ function Layout() {
     };
 
     return (
-        <div className="absolute inset-0 layout p-2">
-            <div className="absolute inset-2 flex-1 flex p-2 bg-gray-100 border-2 border-blue rounded-md">
+        <div className="absolute inset-0 layout p-2 bg-primary-60">
+            <div className="absolute inset-2 flex-1 flex p-2 border-solid border-0.25 border-primary-10 rounded-md">
                 {/* Pass openModal function to VerticalNavbar */}
                 <VerticalNavbar onOpenModal={openModal} />
 

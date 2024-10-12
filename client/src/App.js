@@ -10,7 +10,8 @@ import Home from './components/Home';
 import Appointements from './components/Appointements';
 import Patients from './components/Patients';
 import ComponentsPreview from './components/ComponentsPreview';
-
+import DoctorLogin from './components/DoctorLogin';
+import DoctorRegister from './components/DoctorRegister';
 function App() {
 
   return (
@@ -30,6 +31,8 @@ function App() {
         {/* Public routes (outside of layout) */}
         <Route path="components-preview" element={<ComponentsPreview />} />
         <Route path="public-home" element={<LandingPage />} />
+        <Route path="doctor-register" element={<DoctorRegister />} />
+        <Route path="doctor-login" element={<DoctorLogin />} />
         <Route path="about" element={<About />} />
         <Route path="register" element={<Register />} />
         <Route path="login" element={<Login />} />

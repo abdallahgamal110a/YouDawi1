@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { CiSearch } from "react-icons/ci";
+
+
 
 const SearchBar = ({ onSearch, placeholder = "Search..." }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,10 +36,10 @@ const SearchBar = ({ onSearch, placeholder = "Search..." }) => {
       />
       <button
         onClick={() => onSearch(searchTerm)}
-        className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition absolute top-0 right-0"
+        className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition absolute top-0 bottom-0 right-0"
         aria-label="Search button"
       >
-        Search
+        <CiSearch />
       </button>
     </div>
   );

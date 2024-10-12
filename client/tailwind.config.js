@@ -1,14 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  important: true,
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
         primary: {
-          '10': 'hsl(349, 89%, 71%)',
-          '20': 'hsl(315, 79%, 76%)',
-          '40': 'hsl(256, 64%, 72%)',
-          '60': 'hsl(215, 66%, 70%)',
+          '10': '#004481',
+          '20': '#004481',
+          '40': '#97CBDC',
+          '60': '#DEE8F1',
           '80': 'hsl(184, 58%, 66%)',
           '100': 'hsl(214, 100%, 96%)',
         },
@@ -50,6 +51,7 @@ module.exports = {
         '72': '72rem', // 576px
         '80': '80rem', // 640px
         '96': '96rem', // 768px,
+        '100': '100rem', // 800px
       }
     },
   },
