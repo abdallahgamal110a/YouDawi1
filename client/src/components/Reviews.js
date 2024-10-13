@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { customerReviews } from "./reviews_src";
+import { customerReviews } from "./ReviewsSrc";
 import "./Reviews.css";
 
 function Reviews() {
