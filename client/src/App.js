@@ -12,20 +12,50 @@ import Patients from './components/Patients';
 import ComponentsPreview from './components/ComponentsPreview';
 import DoctorLogin from './components/DoctorLogin';
 import DoctorRegister from './components/DoctorRegister';
-function App() {
+import ProtectedRoute from './components/ProtectedRoute';  // Import ProtectedRoute
 
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        {/* Protected routes inside Layout */}
+        <Route path="/" element={<Layout role="doctor" />}>
           {/* Redirect root to /components-preview */}
           <Route index element={<Navigate to="/components-preview" />} />
 
-          {/* Define all your routes inside this Route */}
-          <Route path="home" element={<Home />} />
-          <Route path="doctors" element={<DoctorList />} />
-          <Route path="appointments" element={<Appointements />} />
-          <Route path="patients" element={<Patients />} />
+          {/* Doctor routes */}
+          <Route
+            path="home"
+            element={
+              <ProtectedRoute allowedRoles={['doctor']}>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="doctors"
+            element={
+              <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
+                <DoctorList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="appointments"
+            element={
+              <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
+                <Appointements />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="patients"
+            element={
+              <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
+                <Patients />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         {/* Public routes (outside of layout) */}
@@ -38,11 +68,10 @@ function App() {
         <Route path="login" element={<Login />} />
 
         {/* Catch-all route for unmatched paths */}
-        {/* You can uncomment this if you need a default redirect */}
-        {/* <Route path="*" element={<Navigate to="/login" />} /> */}
-        {/*myproject*/}
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );
 }
+
 export default App;
