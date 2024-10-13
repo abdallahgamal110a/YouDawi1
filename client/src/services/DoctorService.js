@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/doctors'; // Update this with your actual API URL
+const API_URL = 'http://localhost:5000/api/doctors'; // todo: Update this
 
 // Register a new doctor
 export const registerDoctor = async (doctorData) => {
