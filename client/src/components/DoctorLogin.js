@@ -1,15 +1,34 @@
-// DoctorLogin.js
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginDoctor } from '../services/DoctorService';  // Import the login service
 
 const DoctorLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();  // To redirect after login
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add login logic here
+
+    const loginData = {
+      email,  // Email from state
+      password // Password from state
+    };
+
+    try {
+      const response = await loginDoctor(loginData);  // Pass loginData as an object
+      setMessage('Login successful!');
+      
+      // Save the token or any other information if needed
+      localStorage.setItem('doctorToken', response.data.token); // Access token correctly
+      console.log(response);
+
+      // Redirect to the dashboard or home page after successful login
+      navigate('/home');  
+    } catch (error) {
+      setMessage('Error logging in: ' + (error.response?.data?.message || error.message));
+    }
   };
 
   return (
@@ -28,6 +47,7 @@ const DoctorLogin = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -42,6 +62,7 @@ const DoctorLogin = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
 
@@ -52,15 +73,20 @@ const DoctorLogin = () => {
             Login
           </button>
 
+          {message && <p className="mt-4 text-center text-red-500">{message}</p>}  {/* Display login error or success message */}
+
           <div className="text-center mt-4">
             <a href="#" className="text-blue-600 hover:underline">
               Forgot Password?
             </a>
           </div>
-          <div className="flex justify-center">Or<br />
-          </div>
-          <div className='flex justify-center'><Link to="/doctor-register">Sign Up</Link></div>
 
+          <div className="flex justify-center mt-4">
+            Or
+          </div>
+          <div className="flex justify-center">
+            <Link to="/doctor-register">Sign Up</Link>
+          </div>
         </form>
       </div>
     </div>
