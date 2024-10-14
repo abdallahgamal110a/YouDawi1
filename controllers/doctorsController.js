@@ -124,11 +124,17 @@ const login = asyncHandler(async(req, res, next) => {
         const error = appError.create('Email and Password are required', 400, httpStatusText.FAIL);
         return next(error);
     }
-    const doctor = await Doctor.findOne({email: email});
+    const doctor = await Doctor.findOne({email: email}).select('+password');
     if (!doctor) {
         const error = appError.create('Doctor not found', 404, httpStatusText.FAIL);
         return next(error);
     }
+    const matchedPassword = await bcrypt.compare(password, doctor.password);
+    if (!matchedPassword) {
+        const error = appError.create('Invalid credentials', 401, httpStatusText.FAIL);
+        return next(error);
+    }
+    
     if (doctor.status === 'pending') {
         const error = appError.create('Doctor is not approved yet', 403, httpStatusText.FAIL);
         return next(error);
@@ -136,14 +142,9 @@ const login = asyncHandler(async(req, res, next) => {
         const error = appError.create('Doctor account has been cancelled', 403, httpStatusText.FAIL);
         return next(error);
     }
-    const matchedPassword = await bcrypt.compare(password, doctor.password);
-    if (matchedPassword) {
-        const token = await generateJWT({ email: doctor.email, id: doctor._id, role: doctor.role });
-        return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
-    } else {
-        const error = appError.create('Invalid credentials', 401, httpStatusText.FAIL);
-        return next(error);
-    }
+    
+    const token = await generateJWT({ email: doctor.email, id: doctor._id, role: doctor.role });
+    return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
 });
 
 const getAllDoctors = asyncHandler(async(req, res, next) => {

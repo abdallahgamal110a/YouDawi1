@@ -44,7 +44,7 @@ router.route('/:id/status')
     .put(verifyToken, allowedTo(userRoles.ADMIN),doctorsController.updateDoctorStatus);
 
 router.route('/profile')
-    .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.getProfile);
+    .get(verifyToken, allowedTo(userRoles.DOCTOR), doctorsController.getProfile);
 
 router.route('/dashboard')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.getDoctorDashboard);
