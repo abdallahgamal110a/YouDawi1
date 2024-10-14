@@ -2,7 +2,6 @@ const Prescription = require('../models/prescriptionModel')
 const Patient = require('../models/patientModel');
 const asyncHandler = require('../middlewares/asyncHandler')
 const httpStatusText = require('../utils/httpStatusText')
-const appError = require('../utils/appError')
 
 const getAllprescriptions = asyncHandler(async(req, res) => {
     const query = req.query

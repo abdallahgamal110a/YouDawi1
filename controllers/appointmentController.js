@@ -3,7 +3,6 @@ const Patient = require('../models/patientModel')
 const asyncHandler = require('../middlewares/asyncHandler')
 const httpStatusText = require('../utils/httpStatusText')
 const { validateAppointmentTime } = require('../utils/appointmentUtils');
-const { sendPushNotification } = require('../utils/notificationUtils');
 const appError = require('../utils/appError')
 const { authorizeUserAccess } = require('../utils/authUserAccess');
 const userRoles = require('../utils/userRoles')

@@ -12,7 +12,16 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const sendPasswordResetEmail = async (Email, URL) => {
+const transporter2 = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    auth: {
+        user: process.env.USER_NAME,
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+const sendPasswordResetEmail = async(Email, URL) => {
     const mailOptions = {
         to: Email,
         from: process.env.EMAIL_USER,
@@ -47,7 +56,50 @@ const sendPasswordResetEmail = async (Email, URL) => {
     }
 };
 
+const sendAppointmentEmail = async(email, approveURL, cancelURL, patientName, doctorName, appointmentTime) => {
+    const mailOptions = {
+        to: email,
+        from: process.env.EMAIL_USER,
+        subject: 'Appointment Reminder',
+        html: `
+<div style="font-family: Arial, sans-serif; background-color: #DDEBF0; padding: 20px; border-radius: 10px; max-width: 100%; width: 100%; box-sizing: border-box; margin: auto;">
+    <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 10px;">
+        <h2 style="color: #004581; text-align: center; margin-bottom: 20px;">Appointment Reminder</h2>
+        <p style="color: #333333; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">Dear ${patientName} ,</p>
+        <p style="color: #333333; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+            This is a reminder that you have an appointment with  doctor ${doctorName} tomorrow at <strong>${appointmentTime}</strong>.
+        </p>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="display: inline-block; width: 70%; margin: 5px 2.5%;">
+                <a href="${approveURL}" style="background-color: #60A940; color: #ffffff; padding: 6px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: block; text-align: center;">Approve Appointment</a>
+            </div>
+            <div style="display: inline-block; width: 70%; margin: 5px 2.5%;">
+                <a href="${cancelURL}" style="background-color: #FF5733; color: #ffffff; padding: 6px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: block; text-align: center;">Cancel Appointment</a>
+            </div>
+        </div>
+        <p style="color: #333333; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+            If you did not schedule this appointment, please contact us immediately.
+        </p>
+        <p style="color: #333333; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+            Thank you,<br><strong>The Medical Team</strong>
+        </p>
+    </div>
+</div>
+    `,
+    };
+
+    try {
+        const info = await transporter2.sendMail(mailOptions);
+        console.log(`Appointment reminder email sent successfully to ${email}`);
+        return true;
+    } catch (error) {
+        console.error(`Error sending appointment reminder email to ${email}:`, error);
+        throw new Error(`Failed to send appointment reminder email to ${email}`);
+    }
+};
+
 
 module.exports = {
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    sendAppointmentEmail
 };
