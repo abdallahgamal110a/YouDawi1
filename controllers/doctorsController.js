@@ -9,7 +9,7 @@ const generateJWT = require("../utils/generateJWT");
 const appError = require("../utils/appError");
 const userRoles = require("../utils/userRoles");
 const crypto = require('crypto');
-const { sendPasswordResetEmail } = require('../utils/mailUtils')
+const { sendPasswordResetEmail, sendNurseRegistrationEmail } = require('../utils/mailUtils')
 
 
 
@@ -323,10 +323,10 @@ const getDoctorDashboard = asyncHandler(async(req, res, next) => {
 });
 
 const registerNurse = asyncHandler(async(req, res, next) => {
-    console.log('Request body:', req.body);
+    //console.log('Request body:', req.body);
 
     const { firstName, lastName, email, password, phone } = req.body;
-    console.log(req.body);
+    //console.log(req.body);
     const nurse = await Nurse.findOne({email: email});
     console.log('finding nurs')
     if (nurse) {
@@ -335,7 +335,7 @@ const registerNurse = asyncHandler(async(req, res, next) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    console.log(hashedPassword)
+    // console.log(hashedPassword)
     const newNurse = new Nurse({
         firstName,
         lastName,
@@ -348,6 +348,7 @@ const registerNurse = asyncHandler(async(req, res, next) => {
         const token = await generateJWT({ email: newNurse.email, id: newNurse._id, role: newNurse.role });
         newNurse.token = token;
         await newNurse.save();
+        await sendNurseRegistrationEmail(newNurse.email, `http://${req.headers.host}/api/nurses/login`, password);
         res.status(201).json({ status: httpStatusText.SUCCESS, data: { nurse: newNurse } });
     } catch (err) {
         const error = appError.create('Failed to register the nurse', 500, httpStatusText.ERROR);

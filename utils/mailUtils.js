@@ -98,8 +98,49 @@ const sendAppointmentEmail = async(email, approveURL, cancelURL, patientName, do
     }
 };
 
+const sendNurseRegistrationEmail = async(Email, URL, password) => {
+    const mailOptions = {
+        to: Email,
+        from: process.env.EMAIL_USER,
+        subject: 'Nurse Account Created - Login Instructions',
+        html: `
+            <div style="font-family: Arial, sans-serif; background-color: #F4F7F9; padding: 30px; border-radius: 10px; max-width: 600px; margin: auto;">
+                <h2 style="color: #004581; text-align: center;">Your Account Has Been Created</h2>
+                <p style="color: #333; font-size: 16px;">Dear Nurse,</p>
+                <p style="color: #333; font-size: 16px;">
+                    This is to inform you that a doctor has created an account for you on our platform.
+                </p>
+                <p style="color: #333; font-size: 16px;">
+                    Your login details are as follows:
+                    <ul style="padding-left: 20px;">
+                        <li>Email: ${Email}</li>
+                        <li>Password: ${password}</li>
+                    </ul>
+                </p>
+                <p style="color: #333; font-size: 16px;">
+                    Please use these credentials to log in to your account. You can find the login page at:
+                    <a href="${URL}" target="_blank" style="color: #018ABD; text-decoration: underline;">${URL}</a>
+                </p>
+                <p style="color: #333; font-size: 16px;">
+                    If you did not authorize this account creation, please contact the doctor who created it.
+                </p>
+                <p style="color: #333; font-size: 16px;">Best regards,<br>The Support Team</p>
+            </div>
+    `,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Welcome email sent successfully to:', Email);
+    } catch (error) {
+        console.error('Error sending email:', error);
+        throw new Error('Email could not be sent');
+    }
+};
+
 
 module.exports = {
     sendPasswordResetEmail,
-    sendAppointmentEmail
+    sendAppointmentEmail,
+    sendNurseRegistrationEmail
 };
