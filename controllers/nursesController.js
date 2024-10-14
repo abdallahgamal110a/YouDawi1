@@ -24,18 +24,17 @@ const login= asyncHandler(async(req, res, next) => {
         const error = appError.create('Nurse not found', 404, httpStatusText.FAIL);
         return next(error);
     }
+    const matchedPassword = await bcrypt.compare(password, nurse.password);
+    if (!matchedPassword) {
+        const error = appError.create('Invalid credentials', 401, httpStatusText.FAIL);
+        return next(error);
+    }
     if (nurse.status !== 'Active') {
         const error = appError.create('Nurse status is inactive', 403, httpStatusText.FAIL);
         return next(error);
     }
-    const matchedPassword = await bcrypt.compare(password, nurse.password);
-    if (matchedPassword) {
-        const token = await generateJWT({ email: nurse.email, id: nurse._id, role: nurse.role });
-        return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
-    } else {
-        const error = appError.create('Invalid credentials', 401, httpStatusText.FAIL);
-        return next(error);
-    }
+    const token = await generateJWT({ email: nurse.email, id: nurse._id, role: nurse.role });
+    return res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } });
 });
 
 const requestResetPassword = asyncHandler(async(req, res, next) => {
