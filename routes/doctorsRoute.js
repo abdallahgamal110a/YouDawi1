@@ -52,6 +52,9 @@ router.route('/dashboard')
 router.route('/registerNurse')
     .post(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), doctorsController.registerNurse);
 
+router.route('/nurses')
+.get(verifyToken, allowedTo(userRoles.DOCTOR), doctorsController.getNursesByDoctor);
+
 router.route('/:id/rate')
     .post(verifyToken, allowedTo(userRoles.PATIENT, userRoles.ADMIN), doctorsController.rateDoctor);
 

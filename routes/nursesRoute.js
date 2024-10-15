@@ -17,7 +17,7 @@ router.route('/resetPassword/:token')
     .post(nursesController.resetPassword)
 
 router.route('/')
-    .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.ADMIN), nursesController.getAllNurses)
+    .get(verifyToken, allowedTo(userRoles.ADMIN), nursesController.getAllNurses)
 
 router.route('/profile')
     .get(verifyToken, allowedTo(userRoles.NURSE, userRoles.DOCTOR, userRoles.ADMIN), nursesController.getProfile);

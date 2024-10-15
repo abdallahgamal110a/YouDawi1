@@ -342,7 +342,8 @@ const registerNurse = asyncHandler(async(req, res, next) => {
         email,
         phone,
         password: hashedPassword,
-        role: userRoles.NURSE
+        role: userRoles.NURSE,
+        doctor: req.currentUser.id
     })
     try {
         const token = await generateJWT({ email: newNurse.email, id: newNurse._id, role: newNurse.role });
@@ -354,6 +355,23 @@ const registerNurse = asyncHandler(async(req, res, next) => {
         const error = appError.create('Failed to register the nurse', 500, httpStatusText.ERROR);
         return next(error);
     }
+});
+
+const getNursesByDoctor = asyncHandler(async(req, res) => {
+    const doctorId = req.currentUser.id || req.currentUser._id; // Handle both cases
+    console.log("Doctor ID from Token:", doctorId); // Debugging
+
+    const query = req.query;
+    const limit = query.limit || 5;
+    const page = query.page || 1;
+    const skip = (page - 1) * limit;
+    const nurses = await Nurse.find({ doctor: doctorId }, { '__v': false, 'password': false })
+                                .limit(limit)
+                                .skip(skip);
+    if (!nurses.length) {
+        return res.status(404).json({ status: httpStatusText.FAIL, message: 'No nurses found' });
+    }
+    res.json({ status: httpStatusText.SUCCESS, data: { nurses } });
 });
 
 const rateDoctor = asyncHandler(async (req, res, next) => {
@@ -413,6 +431,7 @@ module.exports = {
     getProfile,
     getDoctorDashboard,
     registerNurse,
+    getNursesByDoctor,
     rateDoctor,
     getDoctorRatings
 }
