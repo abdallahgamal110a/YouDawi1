@@ -52,6 +52,9 @@ router.route('/:id/schedule')
     .get(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.NURSE, userRoles.ADMIN), doctorsController.getDoctorSchedule)
     .put(verifyToken, allowedTo(userRoles.DOCTOR, userRoles.NURSE, userRoles.ADMIN), doctorsController.updateDoctorSchedule)
 
+router.route('/:id/freeSlots')
+    .get(doctorsController.getDoctorFreeSlots);
+
 router.route('/:id/status')
     .put(verifyToken, allowedTo(userRoles.ADMIN),doctorsController.updateDoctorStatus);
 

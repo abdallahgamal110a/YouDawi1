@@ -305,6 +305,31 @@ const getProfile = asyncHandler(async(req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { doctor } });
 });
 
+const getDoctorFreeSlots = asyncHandler(async(req, res, next) => {
+    const { id } = req.params;
+    const { date } = req.query;
+    console.log('Doctor ID:', id);
+    console.log('Date:', date);
+    const doctor = await Doctor.findById(id);
+    if (!doctor) {
+        return res.status(404).json({ status: 'error', message: 'Doctor not found' });
+    }
+    const appointments = await Appointment.find({
+        doctorId: id,
+        appointmentDate: date
+    });
+    const bookedTimes = appointments.map(app => app.appointmentTime);
+    const daySchedule = doctor.schedule.find(day => day.day === new Date(date).toLocaleDateString('en-US', { weekday: 'long' }));
+    if (!daySchedule) {
+        return res.status(404).json({ status: 'error', message: 'No schedule found for the selected day' });
+    }
+    const freeSlots = daySchedule.timeSlots.filter(slot => !bookedTimes.includes(slot.slot));
+    res.json({
+        status: 'success',
+        data: { freeSlots }
+    });
+});
+
 const getDoctorDashboard = asyncHandler(async(req, res, next) => {
     const doctorId = req.currentUser.id;
     const upcomingAppointments = await Appointment.find({
