@@ -458,6 +458,7 @@ module.exports = {
     updateDoctorStatus,
     deleteDoctor,
     getDoctorSchedule,
+    getDoctorFreeSlots,
     updateDoctorSchedule,
     getProfile,
     getDoctorDashboard,
