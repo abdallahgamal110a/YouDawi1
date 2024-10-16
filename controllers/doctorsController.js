@@ -1,6 +1,7 @@
 const Doctor = require("../models/doctorModel");
 const Nurse = require("../models/nurseModel");
 const Appointment = require("../models/appointmentModel");
+const Patient = require('../models/patientModel')
 const asyncHandler = require("../middlewares/asyncHandler");
 const httpStatusText = require('../utils/httpStatusText');
 const bcrypt = require("bcryptjs");
@@ -314,13 +315,14 @@ const getDoctorDashboard = asyncHandler(async(req, res, next) => {
     .populate('patientId', 'firstName lastName phone email')
     .populate('nurseId', 'firstName lastName')
 
-    const patients = await Appointment.find( { doctorId: doctorId })
-        .distinct('patientId')
-        .populate('patientId', 'firstName lastName email');
+    const patientIds = await Appointment.find({ doctorId: doctorId })
+        .distinct('patientId');
     
-    const nurses = await Appointment.find({ doctorId: doctorId })
-        .distinct(nurseId)
-        .populate('nurseId', 'firstName lastName');
+    const patients = await Patient.find({ _id: { $in: patientIds } })
+        .select('firstName lastName email phone');
+    
+    const nurses = await Nurse.find({ doctor: doctorId })
+        .select('firstName lastName email phone');
 
     const doctor = await Doctor.findById(doctorId)
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { upcomingAppointments, patients, nurses, schedule: doctor.schedule }})
