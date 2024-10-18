@@ -10,21 +10,21 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
-                            {/* <i className="fas fa-bars text-xl mr-4"></i> */}
-           <img src={myImage} alt="YouDawi" className="h-8 w-20"/>           
+          {/* <i className="fas fa-bars text-xl mr-4"></i> */}
+          <img src={myImage} alt="YouDawi" className="h-8 w-20" />
           {/* <img src={myImage} alt="Healthgrades logo" className="h-10 w-10 rounded-full"/> */}
         </div>
 
 
         {/* Menu Items */}
         <div className="space-x-4">
-          <Link to="/" className="text-sky-600 hover:text-sky-600">
+          <Link to="/public-home" className="text-sky-600 hover:text-sky-600">
             Home
           </Link>
           <Link to="/doctor-register" className="text-sky-600 hover:text-sky-600">
             Are you a Doctor?
           </Link>
-          <a href="#about" className="navbar-links">
+          <a href="/public-home#about" className="navbar-links">
             About
           </a>
           <a href="#reviews" className="navbar-links">

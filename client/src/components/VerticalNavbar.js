@@ -1,22 +1,44 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { FaHome, FaUserMd, FaCalendarAlt, FaUserInjured } from 'react-icons/fa'; // Importing some icons
+import { FaHome, FaUserMd, FaCalendarAlt, FaUserInjured, FaProcedures } from 'react-icons/fa'; // Added more icons
 import { MdMenuOpen } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 
 
-function VerticalNavbar({ onOpenModal }) {
+function VerticalNavbar({ onOpenModal, userRole }) {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation(); // Get current location
 
     const toggleClasses = isOpen ? 'w-30' : 'w-10'; // Adjust width based on toggle
     const linkTextClass = isOpen ? 'opacity-100' : 'opacity-0'; // Text visibility
 
-    const navItems = [
+    // Define different nav items for different roles
+    const commonNavItems = [
         { path: '/home', label: 'Home', icon: <FaHome /> },
-        { path: '/doctor-register', label: 'Doctors', icon: <FaUserMd /> },
         { path: '/appointments', label: 'Appointments', icon: <FaCalendarAlt /> },
+    ];
+
+    const doctorNavItems = [
+        { path: '/doctor-register', label: 'Doctors', icon: <FaUserMd /> },
+    ];
+
+    const patientNavItems = [
         { path: '/patients', label: 'Patients', icon: <FaUserInjured /> },
     ];
+
+    const nurseNavItems = [
+        { path: '/nurse-dashboard', label: 'Nurse Dashboard', icon: <FaProcedures /> },
+    ];
+
+    // Determine which nav items to display based on the user role
+    let navItems = [...commonNavItems];
+    if (userRole === 'doctor') {
+        navItems = [...navItems, ...doctorNavItems];
+    } else if (userRole === 'patient') {
+        navItems = [...navItems, ...patientNavItems];
+    } else if (userRole === 'nurse') {
+        navItems = [...navItems, ...nurseNavItems];
+    }
 
     return (
         <nav className={`vertical-navbar bg-primary-10 h-full p-2 flex flex-col justify-between transition-all duration-300 ${toggleClasses}`}>
@@ -27,8 +49,8 @@ function VerticalNavbar({ onOpenModal }) {
                 </div>
 
                 {/* Toggle Button */}
-                <div className="mb-4">
-                    <button className="flex items-center justify-center w-4 h-4 rounded-full bg-emerald-500 hover:bg-emerald-600 text-4xl" onClick={() => setIsOpen(!isOpen)}>
+                <div className="w-full flex items-start">
+                    <button className="flex items-center justify-center w-4 h-4 rounded-full bg-white text-3xl" onClick={() => setIsOpen(!isOpen)}>
                         <MdMenuOpen />
                     </button>
                 </div>
@@ -62,8 +84,8 @@ function VerticalNavbar({ onOpenModal }) {
             </div>
 
             {/* Avatar */}
-            <button className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white" onClick={onOpenModal}>
-                Avatar
+            <button className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white" onClick={onOpenModal}>
+                <FaUserCircle style={{ color: 'white', width: '48px', height: '48px' }} />
             </button>
         </nav>
     );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginDoctor } from '../services/DoctorService';  // Import the login service
+import Navbar from '../components/Navbar';
 
 const DoctorLogin = () => {
   const [email, setEmail] = useState('');
@@ -11,29 +12,28 @@ const DoctorLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const loginData = {
-      email,  // Email from state
-      password // Password from state
-    };
+    const loginData = { email, password };  // Email and password from state
 
     try {
-      const response = await loginDoctor(loginData);  // Pass loginData as an object
+      const response = await loginDoctor(loginData);  // Make API request to login
       setMessage('Login successful!');
       
-      // Save the token or any other information if needed
-      localStorage.setItem('doctorToken', response.data.token); // Access token correctly
-      console.log(response);
+      // Save the token to localStorage
+      localStorage.setItem('doctorToken', response.data.token);
 
-      // Redirect to the dashboard or home page after successful login
+      // Redirect to the dashboard/home page after successful login
       navigate('/home');  
     } catch (error) {
+      // Handle error: Display a message based on response or default to error.message
       setMessage('Error logging in: ' + (error.response?.data?.message || error.message));
     }
   };
 
   return (
+    <div className="">
+    <Navbar />
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-50 w-full">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-1/2 w-full">
         <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Doctor Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -43,7 +43,8 @@ const DoctorLogin = () => {
             <input
               type="email"
               id="email"
-              placeholder="Enter your email"
+              aria-label="Email"
+              placeholder="Enter your email address"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -58,6 +59,7 @@ const DoctorLogin = () => {
             <input
               type="password"
               id="password"
+              aria-label="Password"
               placeholder="Enter your password"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={password}
@@ -76,19 +78,20 @@ const DoctorLogin = () => {
           {message && <p className="mt-4 text-center text-red-500">{message}</p>}  {/* Display login error or success message */}
 
           <div className="text-center mt-4">
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link to="/forgot-password" className="text-blue-600 hover:underline">
               Forgot Password?
-            </a>
+            </Link>
           </div>
 
           <div className="flex justify-center mt-4">
-            Or
+            <span>Don't have an account?</span>
           </div>
           <div className="flex justify-center">
-            <Link to="/doctor-register">Sign Up</Link>
+            <Link to="/doctor-register" className="text-blue-600 hover:underline">Sign Up</Link>
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };

@@ -13,6 +13,8 @@ import ComponentsPreview from './components/ComponentsPreview';
 import DoctorLogin from './components/DoctorLogin';
 import DoctorRegister from './components/DoctorRegister';
 import ProtectedRoute from './components/ProtectedRoute';  // Import ProtectedRoute
+import LayoutWithBootstrap from './components/LayoutWithBootstrap';
+import PatientDashboard from './components/PatientDashboard';
 
 function App() {
   return (
@@ -28,7 +30,7 @@ function App() {
             path="home"
             element={
               <ProtectedRoute allowedRoles={['doctor']}>
-                <Home />
+                <PatientDashboard />
               </ProtectedRoute>
             }
           />
@@ -60,7 +62,7 @@ function App() {
 
         {/* Public routes (outside of layout) */}
         <Route path="components-preview" element={<ComponentsPreview />} />
-        <Route path="public-home" element={<LandingPage />} />
+        <Route path="public-home" element={ <LayoutWithBootstrap><LandingPage /></LayoutWithBootstrap>} />
         <Route path="doctor-register" element={<DoctorRegister />} />
         <Route path="doctor-login" element={<DoctorLogin />} />
         <Route path="about" element={<About />} />

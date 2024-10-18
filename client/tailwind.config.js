@@ -54,6 +54,9 @@ module.exports = {
         '80': '80rem', // 640px
         '96': '96rem', // 768px,
         '100': '100rem', // 800px
+
+      // Percentages
+      '1/2': '50%',
       }
     },
   },

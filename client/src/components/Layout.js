@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import VerticalNavbar from './VerticalNavbar';
 import Modal from './Modal';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ProfileSettings from './ProfileSettings';
 
 // Assuming role is either passed via props or fetched from localStorage/context
@@ -43,7 +43,7 @@ function Layout({ role }) {
 
                 <div className="flex-1 overflow-auto">
                     {/* Render the appropriate dashboard based on the user's role */}
-                    {renderDashboard()}
+                    {/* {renderDashboard()} */}
                     <Outlet />
                 </div>
             </div>
