@@ -11,6 +11,7 @@ import Appointements from './components/Appointements';
 import Patients from './components/Patients';
 import ComponentsPreview from './components/ComponentsPreview';
 import DoctorLogin from './components/DoctorLogin';
+import DoctorProfile from './components/DoctorProfile';
 import DoctorRegister from './components/DoctorRegister';
 import ProtectedRoute from './components/ProtectedRoute';  // Import ProtectedRoute
 import PatientDashboard from './components/PatientDashboard';
@@ -74,6 +75,15 @@ function App() {
           <Route path="/doctor-register" element={<DoctorRegister />} />
           <Route path="/public-home" element={<LandingPage />} />
           <Route path="/components-preview" element={<ComponentsPreview />} />
+        {/* Public routes (outside of layout) */}
+        <Route path="components-preview" element={<ComponentsPreview />} />
+        <Route path="public-home" element={ <LayoutWithBootstrap><LandingPage /></LayoutWithBootstrap>} />
+        <Route path="doctor-register" element={<DoctorRegister />} />
+        <Route path="doctor-login" element={<DoctorLogin />} />
+        <Route path="about" element={<About />} />
+        <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+        <Route path="doctorprofile" element={<DoctorProfile />} />
 
 
           {/* Catch-all route */}

@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 // import myImage2 from '../pics/home_visit.jpeg';
 // import myImage3 from '../pics/mobile.jpeg';
 import './style.css'
-import FooterH from './Footer';
+import Footer_H from './Footer_H';
 import Banner from './Banner';
 import About from './About';
 import Reviews from "./Reviews";
@@ -44,7 +44,7 @@ function LandingPage() {
       <Info />
       <About />
       <Reviews />
-      <FooterH />
+      <Footer_H />
     </div>
   );
 }
