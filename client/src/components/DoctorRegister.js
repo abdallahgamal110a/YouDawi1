@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { registerDoctor } from '../services/DoctorService';
-import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 
@@ -83,7 +82,6 @@ const DoctorRegisterForm = () => {
     };
 
     return (
-<<<<<<< HEAD
         <div className="">
             <Navbar />
             <div className="max-w-1/2 mx-auto bg-white p-6 rounded-md shadow-md mt-3">
@@ -99,7 +97,6 @@ const DoctorRegisterForm = () => {
                         required
                     />
                     {errors.firstName && <p className="text-red-500">{errors.firstName}</p>}
-=======
         <div>
            
         <div className="max-w-50 mx-auto bg-white p-6 rounded-md shadow-md">
@@ -127,7 +124,6 @@ const DoctorRegisterForm = () => {
                     required
                 />
                 {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
->>>>>>> edf9a11 (profile of doctors)
 
                     <input
                         type="text"
