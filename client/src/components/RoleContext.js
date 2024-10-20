@@ -9,3 +9,28 @@ export const RoleProvider = ({ role, children }) => (
 
 // Custom hook to use role context
 export const useRole = () => useContext(RoleContext);
+
+
+
+// import { RoleProvider } from './RoleContext';
+
+// const App = () => {
+//   const token = localStorage.getItem('doctorToken');
+//   let decodedToken = null;
+//   let role = null;
+
+//   if (token) {
+//     decodedToken = jwt_decode(token);
+//     role = decodedToken.role;
+//   }
+
+//   return (
+//     <RoleProvider role={role}>
+//       <Routes>
+//         <Route path="/admin" element={<AdminPage />} />
+//         <Route path="/doctor" element={<DoctorPage />} />
+//         {/* ... */}
+//       </Routes>
+//     </RoleProvider>
+//   );
+// };

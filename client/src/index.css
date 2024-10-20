@@ -24,6 +24,15 @@ body {
 
 }
 
+.back-black {
+  background-color: black;
+}
+
+.ls-none {
+  list-style-type: none;
+    
+}
+
 
 @tailwind base;
 @tailwind components;

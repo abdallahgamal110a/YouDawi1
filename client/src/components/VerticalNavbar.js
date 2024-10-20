@@ -19,7 +19,14 @@ function VerticalNavbar({ onOpenModal, userRole }) {
     ];
 
     const doctorNavItems = [
-        { path: '/doctor-register', label: 'Doctors', icon: <FaUserMd /> },
+        {
+            path: '/doctor-register'
+            , label: 'Doctors', icon: <FaUserMd />
+        },
+        {
+            path: '/patients'
+            , label: 'Patients', icon: <FaUserInjured />
+        },
     ];
 
     const patientNavItems = [
@@ -41,7 +48,7 @@ function VerticalNavbar({ onOpenModal, userRole }) {
     }
 
     return (
-        <nav className={`vertical-navbar bg-primary-10 h-full p-2 flex flex-col justify-between transition-all duration-300 ${toggleClasses}`}>
+        <nav className={`vertical-navbar bg-primary-20 h-full p-2 flex flex-col justify-between transition-all duration-300 ${toggleClasses}`}>
             <div>
                 {/* Logo */}
                 <div className={`border-solid border-black border-0.25 text-blue text-center mb-4 ${isOpen ? 'text-lg' : 'text-sm'}`}>

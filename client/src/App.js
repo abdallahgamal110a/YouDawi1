@@ -13,66 +13,74 @@ import ComponentsPreview from './components/ComponentsPreview';
 import DoctorLogin from './components/DoctorLogin';
 import DoctorRegister from './components/DoctorRegister';
 import ProtectedRoute from './components/ProtectedRoute';  // Import ProtectedRoute
-import LayoutWithBootstrap from './components/LayoutWithBootstrap';
 import PatientDashboard from './components/PatientDashboard';
 
+import DoctorNurseDashboard from './components/DoctorNurseDashboard';
+import { RoleProvider } from './components/RoleContext';
+import { jwtDecode } from 'jwt-decode';
+
 function App() {
+  const token = localStorage.getItem('doctorToken');
+  let decodedToken = null;
+  let role = null;
+
+  if (token) {
+    decodedToken = jwtDecode(token);  // Decode the token
+    role = decodedToken.role;  // Extract the role from the token
+  }
+
   return (
-    <Router>
-      <Routes>
-        {/* Protected routes inside Layout */}
-        <Route path="/" element={<Layout role="doctor" />}>
-          {/* Redirect root to /components-preview */}
-          <Route index element={<Navigate to="/components-preview" />} />
+    <RoleProvider role={role}>  {/* Provide role globally */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout role={role} />}>
+            {/* Redirect root to dashboard */}
+            <Route index element={<Navigate to="/dashboard" />} />
 
-          {/* Doctor routes */}
-          <Route
-            path="home"
-            element={
-              <ProtectedRoute allowedRoles={['doctor']}>
-                <PatientDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="doctors"
-            element={
-              <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
-                <DoctorList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="appointments"
-            element={
-              <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
-                <Appointements />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="patients"
-            element={
-              <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
-                <Patients />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
+            {/* Shared Doctor and Nurse Dashboard */}
+            <Route
+              path="dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
+                  <DoctorNurseDashboard role={role} />  {/* Pass role as a prop */}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="patients"
+              element={
+                <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
+                  <Patients />
+                </ProtectedRoute>
+              }
+            />
 
-        {/* Public routes (outside of layout) */}
-        <Route path="components-preview" element={<ComponentsPreview />} />
-        <Route path="public-home" element={ <LayoutWithBootstrap><LandingPage /></LayoutWithBootstrap>} />
-        <Route path="doctor-register" element={<DoctorRegister />} />
-        <Route path="doctor-login" element={<DoctorLogin />} />
-        <Route path="about" element={<About />} />
-        <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login />} />
+            {/* Patient Dashboard */}
+            <Route
+              path="patient-dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['patient']}>
+                  <PatientDashboard />
+                </ProtectedRoute>
+              }
 
-        {/* Catch-all route for unmatched paths */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </Router>
+            />
+          </Route>
+
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/doctor-login" element={<DoctorLogin />} />
+          <Route path="/doctor-register" element={<DoctorRegister />} />
+          <Route path="/public-home" element={<LandingPage />} />
+          <Route path="/components-preview" element={<ComponentsPreview />} />
+
+
+          {/* Catch-all route */}
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </Router>
+    </RoleProvider >
   );
 }
 

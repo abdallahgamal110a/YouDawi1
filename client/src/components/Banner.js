@@ -23,7 +23,7 @@ const Banner = () => {
         <img className="d-block w-100 fixed-height" src={myImage1} alt="First slide" />
         <Carousel.Caption className="caption rounded-2">
           <h3>YouDawi</h3>
-          <p>We ensures the best  Doctors ,Find The Best Doctor Near By You</p>
+          <p>We ensures the best Doctors, Find The Best Doctor Near By You</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
@@ -31,7 +31,7 @@ const Banner = () => {
 
         <Carousel.Caption className="caption">
           <h3>YouDawi</h3>
-          <p>We ensures the best  Doctors ,Find The Best Doctor Near By You</p>
+          <p>We ensures the best Doctors, Find The Best Doctor Near By You</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
@@ -39,7 +39,7 @@ const Banner = () => {
 
         <Carousel.Caption className="caption">
           <h3>YouDawi</h3>
-          <p>We ensures the best  Doctors ,Find The Best Doctor Near By You</p>
+          <p>We ensures the best Doctors, Find The Best Doctor Near By You</p>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>

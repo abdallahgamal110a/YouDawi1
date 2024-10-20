@@ -4,9 +4,7 @@ import Modal from './Modal';
 import { useState } from 'react';
 import ProfileSettings from './ProfileSettings';
 
-// Assuming role is either passed via props or fetched from localStorage/context
 function Layout({ role }) {
-    // State for controlling modal visibility
     const [isModalVisible, setModalVisible] = useState(false);
 
     // Function to open the modal
@@ -19,7 +17,7 @@ function Layout({ role }) {
         setModalVisible(false);
     };
 
-    // Logic to render the dashboard based on role
+    // Function to render dashboard based on the user's role
     const renderDashboard = () => {
         switch (role) {
             case 'doctor':
@@ -43,8 +41,8 @@ function Layout({ role }) {
 
                 <div className="flex-1 overflow-auto">
                     {/* Render the appropriate dashboard based on the user's role */}
-                    {/* {renderDashboard()} */}
-                    <Outlet />
+                    {renderDashboard()}
+                    <Outlet /> {/* Outlet for nested routes */}
                 </div>
             </div>
 
@@ -61,7 +59,7 @@ function Layout({ role }) {
     );
 }
 
-// Dummy components for each role's dashboard
+// Dummy dashboard components for each role
 function DoctorDashboard() {
     return <div>Doctor Dashboard</div>;
 }
