@@ -75,15 +75,15 @@ function App() {
           <Route path="/doctor-register" element={<DoctorRegister />} />
           <Route path="/public-home" element={<LandingPage />} />
           <Route path="/components-preview" element={<ComponentsPreview />} />
-        {/* Public routes (outside of layout) */}
-        <Route path="components-preview" element={<ComponentsPreview />} />
-        <Route path="public-home" element={ <LayoutWithBootstrap><LandingPage /></LayoutWithBootstrap>} />
-        <Route path="doctor-register" element={<DoctorRegister />} />
-        <Route path="doctor-login" element={<DoctorLogin />} />
-        <Route path="about" element={<About />} />
-        <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login />} />
-        <Route path="doctorprofile" element={<DoctorProfile />} />
+          {/* Public routes (outside of layout) */}
+          <Route path="components-preview" element={<ComponentsPreview />} />
+          <Route path="public-home" element={<LandingPage />} />
+          <Route path="doctor-register" element={<DoctorRegister />} />
+          <Route path="doctor-login" element={<DoctorLogin />} />
+          <Route path="about" element={<About />} />
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
+          <Route path="doctorprofile" element={<DoctorProfile />} />
 
 
           {/* Catch-all route */}

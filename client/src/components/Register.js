@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
 import patientService from '../services/PatientService';
 import Navbar from '../components/Navbar';
 
 
-=======
-import Navbar from './Navbar';
->>>>>>> edf9a11 (profile of doctors)
 
 const Register = () => {
     const { register, handleSubmit, reset } = useForm();
@@ -49,52 +45,11 @@ const Register = () => {
     };
 
     return (
-<<<<<<< HEAD
         <div className="">
             <Navbar />
             <div className="mx-auto max-w-1/2 bg-white shadow-md p-10">
                 <div className="bg-blue-600 text-white text-center py-2 rounded-t-lg">
                     <h2 className="text-lg font-semibold">Register</h2>
-=======
-        <div className='flex flex-col items-center justify-center'>
-
-              <Navbar />
-            <h2>Register</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                {/* <div>
-                    <label>
-                        <input
-                            type="radio"
-                            value="patient"
-                            checked={role === 'patient'}
-                            onChange={() => setRole('patient')}
-                        />
-                        Patient
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="doctor"
-                            checked={role === 'doctor'}
-                            onChange={() => setRole('doctor')}
-                        />
-                        Doctor
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="nurse"
-                            checked={role === 'nurse'}
-                            onChange={() => setRole('nurse')}
-                        />
-                        Nurse
-                    </label>
-                </div> */}
-
-                <div>
-                    <label>Name:</label>
-                    <input type="text" {...register('name')} required />
->>>>>>> edf9a11 (profile of doctors)
                 </div>
 
                 {/* Success and error messages */}

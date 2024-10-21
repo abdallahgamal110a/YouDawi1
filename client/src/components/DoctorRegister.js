@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { registerDoctor } from '../services/DoctorService';
+import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
 
 const DoctorRegisterForm = () => {
-     
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -97,33 +96,6 @@ const DoctorRegisterForm = () => {
                         required
                     />
                     {errors.firstName && <p className="text-red-500">{errors.firstName}</p>}
-        <div>
-           
-        <div className="max-w-50 mx-auto bg-white p-6 rounded-md shadow-md">
-            
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Register Doctor</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    placeholder="First Name"
-                    className={`w-full p-3 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
-                    required
-                />
-                {errors.firstName && <p className="text-red-500">{errors.firstName}</p>}
-                
-                <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    placeholder="Last Name"
-                    className={`w-full p-3 border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
-                    required
-                />
-                {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
 
                     <input
                         type="text"
@@ -243,7 +215,6 @@ const DoctorRegisterForm = () => {
                     <Link to="/doctor-login">Login</Link>
                 </div>
             </div>
-        </div>
         </div>
     );
 };
