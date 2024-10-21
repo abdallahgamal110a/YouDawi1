@@ -2,7 +2,7 @@ import { faFacebookF, faInstagram, faLinkedin, faTelegram, faTwitter } from '@fo
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
-function Footer_h() {
+function Footer_H() {
     return (
     <footer className="bg-blue-800 text-white py-4">
             <div className="container mx-auto flex justify-between">
@@ -48,4 +48,4 @@ function Footer_h() {
     );
 }
 
-export default Footer_h;
+export default Footer_H;
