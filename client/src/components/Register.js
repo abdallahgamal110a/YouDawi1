@@ -4,32 +4,32 @@ import { Link } from 'react-router-dom';
 import patientService from '../services/PatientService';
 import Navbar from '../components/Navbar';
 
-
-
 const Register = () => {
     const { register, handleSubmit, reset } = useForm();
     const [gender, setGender] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
+    const [avatar, setAvatar] = useState(null); // For avatar file upload
 
     const onSubmit = async (data) => {
-        try {
-            // Prepare data for API call
-            const patientData = {
-                firstName: data.firstName,
-                lastName: data.lastName,
-                email: data.email,
-                password: data.password,
-                phone: data.phone,
-                gender: gender,
-                dataOfBirth: data.dataOfBirth,
-                age: data.age,
-                address: data.address,
-                healthHistory: data.healthHistory
-            };
+        const formData = new FormData(); // Using FormData to handle file uploads
 
+        // Append form data
+        formData.append('firstName', data.firstName);
+        formData.append('lastName', data.lastName);
+        formData.append('email', data.email);
+        formData.append('password', data.password);
+        formData.append('phone', data.phone);
+        formData.append('gender', gender);
+        formData.append('dateOfBirth', data.dateOfBirth); // Updated field name
+        formData.append('age', data.age);
+        formData.append('address', data.address);
+        formData.append('healthHistory', data.healthHistory);
+        if (avatar) formData.append('avatar', avatar); // Append avatar if uploaded
+
+        try {
             // Call the patient registration service
-            const response = await patientService.registerPatient(patientData);
+            const response = await patientService.registerPatient(formData);
             console.log('Patient registered successfully:', response);
 
             // Reset form on successful registration
@@ -56,7 +56,7 @@ const Register = () => {
                 {success && <div className="text-green-600">Registration successful!</div>}
                 {error && <div className="text-red-600">Error: {error}</div>}
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4" encType="multipart/form-data">
                     {/* First Name */}
                     <div>
                         <label className="block text-gray-700">First Name<span className="text-red-500">*</span></label>
@@ -141,14 +141,55 @@ const Register = () => {
                         />
                     </div>
 
-                    {/* Password */}
+                    {/* Date of Birth */}
                     <div>
-                        <label className="block text-gray-700">Password<span className="text-red-500">*</span></label>
+                        <label className="block text-gray-700">Date of Birth<span className="text-red-500">*</span></label>
                         <input
-                            type="password"
-                            {...register('password')}
+                            type="date"
+                            {...register('dateOfBirth')} // Updated field name
                             className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                             required
+                        />
+                    </div>
+
+                    {/* Age */}
+                    <div>
+                        <label className="block text-gray-700">Age<span className="text-red-500">*</span></label>
+                        <input
+                            type="number"
+                            {...register('age')}
+                            className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                            required
+                        />
+                    </div>
+
+                    {/* Address */}
+                    <div>
+                        <label className="block text-gray-700">Address<span className="text-red-500">*</span></label>
+                        <input
+                            type="text"
+                            {...register('address')}
+                            className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                            required
+                        />
+                    </div>
+
+                    {/* Health History */}
+                    <div>
+                        <label className="block text-gray-700">Health History</label>
+                        <textarea
+                            {...register('healthHistory')}
+                            className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                        />
+                    </div>
+
+                    {/* Avatar */}
+                    <div>
+                        <label className="block text-gray-700">Upload Avatar</label>
+                        <input
+                            type="file"
+                            onChange={(e) => setAvatar(e.target.files[0])}
+                            className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                         />
                     </div>
 
@@ -160,13 +201,6 @@ const Register = () => {
                         REGISTER
                     </button>
                 </form>
-
-                {/* Divider */}
-                <div className="flex items-center my-4">
-                    <hr className="flex-grow border-gray-300" />
-                    <span className="mx-2 text-gray-500">or</span>
-                    <hr className="flex-grow border-gray-300" />
-                </div>
 
                 {/* Redirect to Login */}
                 <div className="text-center mt-4">
