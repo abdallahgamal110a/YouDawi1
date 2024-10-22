@@ -71,7 +71,7 @@ const Login = () => {
                 <div className="flex items-center mt-2">
                     <input type="checkbox" className="mr-2" />
                     <label className="text-gray-700">Remember Me</label>
-                    <a href="/" className="ml-auto text-blue-500">
+                    <a href="/forgetpassword" className="ml-auto text-blue-500">
                         Forgot Your Password?
                     </a>
                 </div>
