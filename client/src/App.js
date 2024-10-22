@@ -19,6 +19,7 @@ import PatientDashboard from './components/PatientDashboard';
 import DoctorNurseDashboard from './components/DoctorNurseDashboard';
 import { RoleProvider } from './components/RoleContext';
 import { jwtDecode } from 'jwt-decode';
+import ForgetPassword from './components/ForgetPassword';
 
 function App() {
   const token = localStorage.getItem('doctorToken');
@@ -84,7 +85,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="doctorprofile" element={<DoctorProfile />} />
-
+          <Route path="forgetpassword" element={<ForgetPassword />} />  
 
           {/* Catch-all route */}
           <Route path="*" element={<Navigate to="/login" />} />
