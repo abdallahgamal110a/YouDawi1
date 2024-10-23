@@ -13,8 +13,12 @@ import ComponentsPreview from './components/ComponentsPreview';
 import DoctorLogin from './components/DoctorLogin';
 import DoctorProfile from './components/DoctorProfile';
 import DoctorRegister from './components/DoctorRegister';
-import ProtectedRoute from './components/ProtectedRoute';  // Import ProtectedRoute
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
 import PatientDashboard from './components/PatientDashboard';
+import NurseLogin from './components/NurseLogin';
+import PatientProfile from './components/PatientProfile';
+import PatientAppointments from './components/PatientAppointments';
+
 
 import DoctorNurseDashboard from './components/DoctorNurseDashboard';
 import { RoleProvider } from './components/RoleContext';
@@ -22,77 +26,137 @@ import { jwtDecode } from 'jwt-decode';
 import ForgetPassword from './components/ForgetPassword';
 
 function App() {
-  const token = localStorage.getItem('doctorToken');
-  let decodedToken = null;
-  let role = null;
+    const token = localStorage.getItem('token');
+    let decodedToken = null;
+    let role = null;
+    let userId = "";
 
-  if (token) {
-    decodedToken = jwtDecode(token);  // Decode the token
-    role = decodedToken.role;  // Extract the role from the token
-  }
+    if (token) {
+        decodedToken = jwtDecode(token); // Decode the token
+        role = decodedToken.role; // Extract the role from the token
+        userId = decodedToken.id;
+    }
 
-  return (
-    <RoleProvider role={role}>  {/* Provide role globally */}
-      <Router>
-        <Routes>
-          <Route path="/" element={<Layout role={role} />}>
-            {/* Redirect root to dashboard */}
-            <Route index element={<Navigate to="/dashboard" />} />
-
-            {/* Shared Doctor and Nurse Dashboard */}
-            <Route
-              path="dashboard"
-              element={
-                <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
-                  <DoctorNurseDashboard role={role} />  {/* Pass role as a prop */}
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="patients"
-              element={
-                <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
-                  <Patients />
-                </ProtectedRoute>
-              }
+    return ( <
+        RoleProvider role = { role } > { /* Provide role globally */ } <
+        Router >
+        <
+        Routes >
+        <
+        Route path = "/"
+        element = { < Layout role = { role }
+            />}> { /* Redirect root to dashboard */ } <
+            Route index element = { < Navigate to = "/dashboard" / > }
             />
 
-            {/* Patient Dashboard */}
-            <Route
-              path="patient-dashboard"
-              element={
-                <ProtectedRoute allowedRoles={['patient']}>
-                  <PatientDashboard />
-                </ProtectedRoute>
-              }
+            { /* Shared Doctor and Nurse Dashboard */ } <
+            Route
+            path = "dashboard"
+            element = { <
+                ProtectedRoute allowedRoles = {
+                    ['doctor', 'nurse'] } >
+                <
+                DoctorNurseDashboard role = { role }
+                />  {/ * Pass role as a prop * /} <
+                /ProtectedRoute>
+            }
+            /> <
+            Route
+            path = "patients"
+            element = { <
+                ProtectedRoute allowedRoles = {
+                    ['doctor', 'nurse'] } >
+                <
+                Patients / >
+                <
+                /ProtectedRoute>
+            }
+            />
+
+            { /* Patient Dashboard */ } <
+            Route
+            path = "patient-dashboard"
+            element = { <
+                ProtectedRoute allowedRoles = {
+                    ['patient'] } >
+                <
+                PatientDashboard / >
+                <
+                /ProtectedRoute>
+            }
 
             />
-          </Route>
 
-          {/* Public routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/doctor-login" element={<DoctorLogin />} />
-          <Route path="/doctor-register" element={<DoctorRegister />} />
-          <Route path="/public-home" element={<LandingPage />} />
-          <Route path="/components-preview" element={<ComponentsPreview />} />
-          {/* Public routes (outside of layout) */}
-          <Route path="components-preview" element={<ComponentsPreview />} />
-          <Route path="public-home" element={<LandingPage />} />
-          <Route path="doctor-register" element={<DoctorRegister />} />
-          <Route path="doctor-login" element={<DoctorLogin />} />
-          <Route path="about" element={<About />} />
-          <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
-          <Route path="doctorprofile" element={<DoctorProfile />} />
-          <Route path="forgetpassword" element={<ForgetPassword />} />  
+            { /* Doctors */ } <
+            Route
+            path = "doctors"
+            element = { <
+                ProtectedRoute allowedRoles = {
+                    ['patient'] } >
+                <
+                DoctorList / >
+                <
+                /ProtectedRoute>
+            }
 
-          {/* Catch-all route */}
-          <Route path="*" element={<Navigate to="/login" />} />
-        </Routes>
-      </Router>
-    </RoleProvider >
-  );
-}
+            />
 
-export default App;
+            { /* Patient Appointments */ } <
+            Route
+            path = "patient-appointments"
+            element = { <
+                ProtectedRoute allowedRoles = {
+                    ['patient'] } >
+                <
+                PatientAppointments patientId = { userId }
+                /> <
+                /ProtectedRoute>
+            }
+
+            /> <
+            /Route>
+
+            { /* Public routes */ } <
+            Route path = "/login"
+            element = { < Login / > }
+            /> <
+            Route path = "/register"
+            element = { < Register / > }
+            /> <
+            Route path = "/doctor-login"
+            element = { < DoctorLogin / > }
+            /> <
+            Route path = "/doctor-register"
+            element = { < DoctorRegister / > }
+            /> <
+            Route path = "/nurse-login"
+            element = { < NurseLogin / > }
+            /> <
+            Route path = "/public-home"
+            element = { < LandingPage / > }
+            /> <
+            Route path = "/components-preview"
+            element = { < ComponentsPreview / > }
+            /> <
+            Route path = "doctor-profile"
+            element = { < DoctorProfile / > }
+            /> <
+            Route path = "patient-profile"
+            element = { < PatientProfile / > }
+            /> <
+            Route path = "forgetpassword"
+            element = { < ForgetPassword / > }
+            />
+
+
+            { /* Catch-all route */ } <
+            Route path = "*"
+            element = { < Navigate to = "/login" / > }
+            /> <
+            /Routes> <
+            /Router> <
+            /RoleProvider >
+        );
+    }
+
+    export default App;

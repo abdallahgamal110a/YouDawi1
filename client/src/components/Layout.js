@@ -35,7 +35,7 @@ function Layout({ role }) {
         <div className="absolute inset-0 layout pl-2 bg-primary-30">
             <div className="absolute inset-2 flex-1 flex border-solid border-0.25 border-primary-10 rounded-md">
                 {/* Pass openModal function to VerticalNavbar */}
-                <VerticalNavbar onOpenModal={openModal} />
+                <VerticalNavbar onOpenModal={openModal} userRole={role} />
 
                 {/* <div className="w-2 min-w-2"></div> */}
 

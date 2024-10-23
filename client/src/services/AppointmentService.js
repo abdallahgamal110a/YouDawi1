@@ -105,7 +105,25 @@ const appointmentService = {
      */
     getAppointmentsByPatientId: async (patientId, params) => {
         try {
-            const response = await axios.get(`${API_URL}/patient/${patientId}`, { params });
+            // Retrieve token from local storage
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                throw new Error('No token found, user not authorized');
+            }
+
+            // Set the headers to include Authorization
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add token to Authorization header
+                    'Content-Type': 'application/json'
+                },
+                params
+            };
+
+            // Make the API call with the headers and pagination params
+            const response = await axios.get(`${API_URL}/patient/${patientId}`, config);
+
             return response.data.data.patientAppointments;
         } catch (error) {
             console.error('Error fetching patient appointments:', error.response?.data || error.message);

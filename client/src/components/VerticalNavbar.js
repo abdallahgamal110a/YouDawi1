@@ -21,6 +21,10 @@ function VerticalNavbar({ onOpenModal, userRole }) {
 
   const doctorNavItems = [
     {
+      path: '/dashboard'
+      , label: 'Home', icon: <FaHome />
+    },
+    {
       path: '/doctor-register'
       , label: 'Doctors', icon: <FaUserMd />
     },
@@ -31,7 +35,10 @@ function VerticalNavbar({ onOpenModal, userRole }) {
   ];
 
   const patientNavItems = [
-    { path: '/patients', label: 'Patients', icon: <FaUserInjured /> },
+    { path: '/patient-dashboard', label: 'Home', icon: <FaHome /> },
+    { path: '/doctors', label: 'Doctors', icon: <FaUserInjured /> },
+    { path: '/patient-appointments', label: 'My Appointments', icon: <FaCalendarAlt /> },
+    { path: '/patient-health-history', label: 'Health History', icon: <FaUserCircle /> },
   ];
 
   const nurseNavItems = [
