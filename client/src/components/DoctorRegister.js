@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { registerDoctor } from '../services/DoctorService';
-import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
 const DoctorRegisterForm = () => {
@@ -22,7 +21,7 @@ const DoctorRegisterForm = () => {
 
     const cities = [
         'Alexandria', 'Aswan', 'Abydos', 'Avaris', 'Port Said', 'Faiyum',
-        'Elephantine', 'Amarna', 'Asyut', 'Giza', 'Luxor', 'Heliopolis',
+        'Elephantine', 'Amarna', 'Asyut', 'Damietta', 'Giza', 'Luxor', 'Heliopolis',
         'Sharm El-Sheikh', 'El-Mansoura', 'Akhetaten', 'Crocodiloplis city',
         'Cairo', 'Minya', 'Thebes', 'Memphis', 'Zagazig', 'Edfu',
         'Al Mahallah Al Kubra', 'Hermopolis'
@@ -76,15 +75,16 @@ const DoctorRegisterForm = () => {
             console.log(response);
             setErrors({});
         } catch (error) {
-            setMessage('Error registering doctor: ' + (error.response?.data?.message || error.message));
+          setMessage('Error registering doctor: ' + (error.response?.data?.message || error.message));
+
         }
     };
 
     return (
-        <div className="">
-            <Navbar />
-            <div className="max-w-1/2 mx-auto bg-white p-6 rounded-md shadow-md mt-3">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">Register Doctor</h2>
+        <div className="min-h-screen flex items-center justify-center bg-primary-35">
+          <div className="flex w-4/5 h-4/5 max-h-70 bg-white opacity-90 rounded-2xl shadow-lg overflow-hidden">
+            <div className="w-1/2 p-8">
+                <h2 className="text-5xl font-bold text-primary-30 text-center mb-1">Register Doctor</h2>
                 <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
                     <input
                         type="text"
@@ -92,7 +92,7 @@ const DoctorRegisterForm = () => {
                         value={formData.firstName}
                         onChange={handleInputChange}
                         placeholder="First Name"
-                        className={`w-full p-3 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
+                        className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.firstName ? 'border-red-500' : 'border-gray-300'}`}
                         required
                     />
                     {errors.firstName && <p className="text-red-500">{errors.firstName}</p>}
@@ -103,7 +103,7 @@ const DoctorRegisterForm = () => {
                         value={formData.lastName}
                         onChange={handleInputChange}
                         placeholder="Last Name"
-                        className={`w-full p-3 border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
+                        className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.lastName ? 'border-red-500' : 'border-gray-300'}`}
                         required
                     />
                     {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
@@ -114,7 +114,7 @@ const DoctorRegisterForm = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="Email"
-                        className={`w-full p-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
+                        className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.email ? 'border-red-500' : 'border-gray-300'} `}
                         required
                     />
                     {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -125,7 +125,7 @@ const DoctorRegisterForm = () => {
                         value={formData.password}
                         onChange={handleInputChange}
                         placeholder="Password"
-                        className={`w-full p-3 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
+                        className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
                         required
                     />
                     {errors.password && <p className="text-red-500">{errors.password}</p>}
@@ -136,7 +136,7 @@ const DoctorRegisterForm = () => {
                         value={formData.adresse}
                         onChange={handleInputChange}
                         placeholder="Adresse"
-                        className={`w-full p-3 border ${errors.adresse ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
+                        className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.adresse ? 'border-red-500' : 'border-gray-300'}`}
                         required
                     />
                     {errors.adresse && <p className="text-red-500">{errors.adresse}</p>}
@@ -146,7 +146,7 @@ const DoctorRegisterForm = () => {
                         name="city"
                         value={formData.city}
                         onChange={handleInputChange}
-                        className={`w-full p-3 border ${errors.city ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
+                        className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.city ? 'border-red-500' : 'border-gray-300'}`}
                         required
                     >
                         <option value="" disabled>Select City</option>
@@ -164,7 +164,7 @@ const DoctorRegisterForm = () => {
                         value={formData.phone}
                         onChange={handleInputChange}
                         placeholder="Phone"
-                        className={`w-full p-3 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
+                        className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
                         required
                     />
                     {errors.phone && <p className="text-red-500">{errors.phone}</p>}
@@ -174,7 +174,7 @@ const DoctorRegisterForm = () => {
                         name="specialization"
                         value={formData.specialization}
                         onChange={handleInputChange}
-                        className={`w-full p-3 border ${errors.specialization ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:border-blue-500`}
+                        className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 ${errors.specialization ? 'border-red-500' : 'border-gray-300'}`}
                         required
                     >
                         <option value="" disabled>Select Specialization</option>
@@ -193,12 +193,12 @@ const DoctorRegisterForm = () => {
                         name="avatar"
                         accept="image/*"
                         onChange={handleFileChange}
-                        className="w-full p-3 border border-gray-300 rounded-md"
+                        className="w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition-colors"
+                        className="w-full bg-primary-30 text-white py-1 rounded-lg font-semibold shadow-lg hover:bg-[#00263d] transition"
                     >
                         Register
                     </button>
@@ -208,13 +208,23 @@ const DoctorRegisterForm = () => {
                     <p className="mt-4 text-center text-gray-700">{message}</p>
                 )}
 
-                <div className="flex justify-center">
-                    Or
+                <div className="flex items-center my-2">
+                        <hr className="flex-grow border-gray-300" />
+                        <span className="mx-2 text-gray-500">or</span>
+                        <hr className="flex-grow border-gray-300" />
                 </div>
-                <div className="flex justify-center">
-                    <Link to="/doctor-login">Login</Link>
+                  <div className="text-center mt-2">
+                <Link to="/doctor-login">Login</Link>
                 </div>
             </div>
+            <div className="w-1/2 relative">
+                    <img
+                        src="doctor register-login.png"
+                        alt="Transparent overlay"
+                        className="relative z-10 mx-auto my-8 opacity-75"
+                    />
+                </div>
+        </div>
         </div>
     );
 };
