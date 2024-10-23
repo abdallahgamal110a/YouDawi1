@@ -32,19 +32,17 @@ function Layout({ role }) {
     };
 
     return (
-        <div className="absolute inset-0 layout pl-2 bg-primary-30">
-            <div className="absolute inset-2 flex-1 flex border-solid border-0.25 border-primary-10 rounded-md">
+      <div className="flex h-screen bg-primary-30">
                 {/* Pass openModal function to VerticalNavbar */}
                 <VerticalNavbar onOpenModal={openModal} userRole={role} />
 
                 {/* <div className="w-2 min-w-2"></div> */}
 
-                <div className="flex-1 overflow-auto bg-primary-60">
+                <div className="flex-1 overflow-auto border-7 rounded-3xl border-primary-30  bg-gray-100 p-6">
                     {/* Render the appropriate dashboard based on the user's role */}
                     {renderDashboard()}
-                    <Outlet /> {/* Outlet for nested routes */}
+                    <Outlet />
                 </div>
-            </div>
 
             {/* Profile Component - Triggered within layout */}
             {isModalVisible && (
@@ -55,7 +53,7 @@ function Layout({ role }) {
                     content={<ProfileSettings />}
                 />
             )}
-        </div>
+            </div>
     );
 }
 
