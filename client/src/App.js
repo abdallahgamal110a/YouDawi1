@@ -25,6 +25,8 @@ import { RoleProvider } from './components/RoleContext';
 import { jwtDecode } from 'jwt-decode';
 import ForgetPassword from './components/ForgetPassword';
 import NurseRegisterForm from './components/registerNurse';
+import WritePrescription from './components/WritePrescription';
+import PatientDetailPage from './components/PatientDetailPage';
 
 function App() {
     const token = localStorage.getItem('token');
@@ -115,6 +117,25 @@ function App() {
 
             /> <
             /Route>
+
+            <Route
+                path="health-history"
+                element={
+                    // <ProtectedRoute allowedRoles={['doctor']}>
+                        <PatientDetailPage />
+                    // </ProtectedRoute>
+                }
+            />
+
+            {/* WritePrescription route */}
+            <Route
+                path="write-prescription/:doctorId/:patientId"
+                element={
+                //<ProtectedRoute allowedRoles={['doctor']}>
+                    <WritePrescription />
+                //</ProtectedRoute>
+                }
+            />
 
             { /* Public routes */ } <
             Route path = "/login"
