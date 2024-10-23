@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AppointmentForm from './components/AppointmentForm';
+import AppointmentForm from './AppointmentForm';
 
 function BookAppointment() {
   return (
