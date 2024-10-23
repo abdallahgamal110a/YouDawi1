@@ -24,6 +24,7 @@ import DoctorNurseDashboard from './components/DoctorNurseDashboard';
 import { RoleProvider } from './components/RoleContext';
 import { jwtDecode } from 'jwt-decode';
 import ForgetPassword from './components/ForgetPassword';
+import NurseRegisterForm from './components/registerNurse';
 
 function App() {
     const token = localStorage.getItem('token');
@@ -52,13 +53,12 @@ function App() {
             { /* Shared Doctor and Nurse Dashboard */ } <
             Route
             path = "dashboard"
-            element = { <
-                ProtectedRoute allowedRoles = {
-                    ['doctor', 'nurse'] } >
+            element = {
+                // <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
                 <
                 DoctorNurseDashboard role = { role }
-                />  {/ * Pass role as a prop * /} <
-                /ProtectedRoute>
+                />
+                // </ProtectedRoute>
             }
             /> <
             Route
@@ -146,6 +146,9 @@ function App() {
             /> <
             Route path = "forgetpassword"
             element = { < ForgetPassword / > }
+            /> <
+            Route path = "/nurse-register"
+            element = { < NurseRegisterForm / > }
             />
 
 

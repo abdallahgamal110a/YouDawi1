@@ -39,8 +39,8 @@ const DoctorLogin = () => {
         setMessage('Login failed: Token not provided.');
       }
     } catch (error) {
-      setMessage('Error logging in: ' + (error.response?.data?.message || error.message));
-      console.error(error.response?.data?.message || error.message);
+      setMessage('Error registering doctor: ' + (error.response && error.response.data ? error.response.data.message : error.message));
+
     }
     
   };
@@ -88,7 +88,7 @@ const DoctorLogin = () => {
               Login
             </button>
 
-            {message && <p className="mt-4 text-center text-red-500">{message}</p>}
+            {/* {message && <p className="mt-4 text-center text-red-500">{message}</p>} */}
 
             <div className="mt-2">
               <Link to="/forgot-password" className="ml-auto text-blue-500">
