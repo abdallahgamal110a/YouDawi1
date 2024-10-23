@@ -13,12 +13,12 @@ function VerticalNavbar({ onOpenModal, userRole }) {
     const linkTextClass = isOpen ? 'opacity-100' : 'opacity-0'; // Text visibility
 
     // Define different nav items for different roles
-    const commonNavItems = [
-        { path: '/home', label: 'Home', icon: <FaHome /> },
-        { path: '/appointments', label: 'Appointments', icon: <FaCalendarAlt /> },
-    ];
 
     const doctorNavItems = [
+        {
+            path: '/dashboard'
+            , label: 'Home', icon: <FaHome />
+        },
         {
             path: '/doctor-register'
             , label: 'Doctors', icon: <FaUserMd />
@@ -30,21 +30,24 @@ function VerticalNavbar({ onOpenModal, userRole }) {
     ];
 
     const patientNavItems = [
-        { path: '/patients', label: 'Patients', icon: <FaUserInjured /> },
+        { path: '/patient-dashboard', label: 'Home', icon: <FaHome /> },
+        { path: '/doctors', label: 'Doctors', icon: <FaUserInjured /> },
+        { path: '/patient-appointments', label: 'My Appointments', icon: <FaCalendarAlt /> },
+        { path: '/patient-health-history', label: 'Health History', icon: <FaUserCircle /> },
     ];
 
     const nurseNavItems = [
-        { path: '/nurse-dashboard', label: 'Nurse Dashboard', icon: <FaProcedures /> },
+        { path: '/dashboard', label: 'Home', icon: <FaHome /> },
     ];
 
     // Determine which nav items to display based on the user role
-    let navItems = [...commonNavItems];
+    let navItems = [];
     if (userRole === 'doctor') {
-        navItems = [...navItems, ...doctorNavItems];
+        navItems = doctorNavItems;
     } else if (userRole === 'patient') {
-        navItems = [...navItems, ...patientNavItems];
+        navItems = patientNavItems;
     } else if (userRole === 'nurse') {
-        navItems = [...navItems, ...nurseNavItems];
+        navItems = nurseNavItems;
     }
 
     return (

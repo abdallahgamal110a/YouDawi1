@@ -28,7 +28,7 @@ const DoctorLogin = () => {
       const { token } = response.data.data;
 
       if (token) {
-        localStorage.setItem('doctorToken', token);  // Fix token storage
+        localStorage.setItem('token', token);  // Fix token storage
         const doctorData = jwtDecode(token);
         console.log(doctorData.role);
         console.log(token);
