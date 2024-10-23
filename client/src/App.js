@@ -88,7 +88,7 @@ function App() {
               path="patient-appointments"
               element={
                 <ProtectedRoute allowedRoles={['patient']}>
-                  <PatientAppointments />
+                  <PatientAppointments patientId={decodedToken.id} />
                 </ProtectedRoute>
               }
 

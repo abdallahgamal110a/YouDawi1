@@ -13,6 +13,8 @@ const PatientAppointments = ({ patientId }) => {
     const [page, setPage] = useState(1);
     const [limit] = useState(10); // Adjust the limit for pagination
 
+
+
     useEffect(() => {
         fetchAppointments();
     }, [page]);
@@ -26,6 +28,7 @@ const PatientAppointments = ({ patientId }) => {
         try {
             const data = await appointmentService.getAppointmentsByPatientId(patientId, params);
             setAppointments(data);
+            console.log('Appointments fetched:', data);
         } catch (err) {
             setError('Error fetching appointments. Please try again.');
         } finally {
