@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import './App.css';
@@ -78,7 +79,6 @@ function App() {
                   <PatientDashboard />
                 </ProtectedRoute>
               }
-
             />
 
             {/* Doctors */}
@@ -89,7 +89,6 @@ function App() {
                   <DoctorList />
                 </ProtectedRoute>
               }
-
             />
 
             {/* Patient Appointments */}
@@ -100,48 +99,6 @@ function App() {
                   <PatientAppointments patientId={userId} />
                 </ProtectedRoute>
               }
-
-            />
-            </Route>
-
-            { /* Public routes */ } <
-            Route path = "/login"
-            element = { < Login / > }
-            /> <
-            Route path = "/register"
-            element = { < Register / > }
-            /> <
-            Route path = "/doctor-login"
-            element = { < DoctorLogin / > }
-            /> <
-            Route path = "/doctor-register"
-            element = { < DoctorRegister / > }
-            /> <
-            Route path = "/nurse-login"
-            element = { < NurseLogin / > }
-            /> <
-            Route path = "/public-home"
-            element = { < LandingPage / > }
-            /> <
-            Route path = "/components-preview"
-            element = { < ComponentsPreview / > }
-            /> <
-            Route path = "doctor-profile"
-            element = { < DoctorProfile / > }
-            /> <
-            Route path = "patient-profile"
-            element = { < PatientProfile / > }
-            /> <
-            Route path = "forgetpassword"
-            element = { < ForgetPassword / > }
-                />
-             <
-            Route path = "confirmnewpassword"
-            element = { < ConfirmNewPassword / > }
-                />
-            <
-            Route path = "bookappointment"
-            element = { < BookAppointment/ > }
             />
           </Route>
 
@@ -153,13 +110,13 @@ function App() {
           <Route path="/nurse-login" element={<NurseLogin />} />
           <Route path="/public-home" element={<LandingPage />} />
           <Route path="/components-preview" element={<ComponentsPreview />} />
-          <Route path="doctor-profile" element={<DoctorProfile />} />
-          <Route path="patient-profile" element={<PatientProfile />} />
-          <Route path="forgetpassword" element={<ForgetPassword />} />
-          <Route path="forgetpassword" element={<ForgetPassword />} />
+          <Route path="/doctor-profile" element={<DoctorProfile />} />
+          <Route path="/patient-profile" element={<PatientProfile />} />
+          <Route path="/forgetpassword" element={<ForgetPassword />} />
+          <Route path="/confirmnewpassword" element={<ConfirmNewPassword />} />
+          <Route path="/bookappointment" element={<BookAppointment />} />
           <Route path="/nurse-register" element={<NurseRegisterForm />} />
           <Route path="/admin-login" element={<AdminLogin />} />
-
 
           {/* Catch-all route */}
           <Route path="*" element={<Navigate to="/login" />} />
