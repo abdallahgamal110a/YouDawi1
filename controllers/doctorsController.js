@@ -28,10 +28,8 @@ const getAll_Doctors = asyncHandler(async(req, res, next) => {
 const getDoctorsBy = asyncHandler(async (req, res, next) => {
     const { name, city, specialty, page = 1, limit = 5 } = req.query;
 
-    // Initialize an empty query object
     let query = { status: 'approved' };
     
-    // Add name search condition
     if (name && name.trim()) {
         const nameParts = name.trim().split(' ');
         if (nameParts.length === 1) {
@@ -48,31 +46,20 @@ const getDoctorsBy = asyncHandler(async (req, res, next) => {
             ];
         }
     }
-
-    // Add city search condition
     if (city && city.trim()) {
         query.city = city.trim();
     }
 
-    // Add specialty search condition
     if (specialty && specialty.trim()) {
         query.specialization = specialty.trim();
     }
-
-    // Pagination
     const skip = (page - 1) * limit;
-
-    // Fetch doctors based on the query
     const doctors = await Doctor.find(query, { '__v': false, 'password': false })
         .limit(Number(limit))
         .skip(skip);
-
-    // Check if no doctors are found
     if (!doctors || doctors.length === 0) {
         return next(appError.create('No doctors found with the provided criteria', 404, 'Not Found'));
     }
-
-    // Return the response
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
 });
 
