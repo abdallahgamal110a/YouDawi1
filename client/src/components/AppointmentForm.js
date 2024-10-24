@@ -1,6 +1,7 @@
 // components/AppointmentForm.js
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import TimePicker from './TimePicker';
 
 const AppointmentForm = () => {
@@ -20,12 +21,13 @@ const AppointmentForm = () => {
   };
 
   return (
-    <form className="max-w-md mx-auto mt-8 bg-white shadow-lg rounded-lg p-8">
-      <h2 className="text-2xl font-bold mb-4">Book Your Appointment</h2>
+    <form className="w-100 mx-auto mt-8 bg-white shadow-lg rounded-lg p-8">
+      <h2 className="text-6xl font-bold mb-4">Book Your Appointment</h2>
 
       <div className="mb-4">
-        <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
-          Select Day:
+        <label htmlFor="date" value="Choose Date" className="block text-lg font-medium text-gray-700 mb-1">
+                  {/* Add more options as needed */}
+                  <h2 className="text-2xl">Choose Date:</h2>
         </label>
         <DatePicker
           selected={selectedDate}
@@ -36,14 +38,14 @@ const AppointmentForm = () => {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="time" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="time" className="block text-2xl font-medium text-gray-700 mb-1">
           Available Hours:
         </label>
         <TimePicker availableSlots={availableSlots} />
       </div>
 
-      <button type="submit" className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-        Book Appointment
+      <button type="submit" className="bg-sky-500 hover:bg-sky-800 text-white font-bold py-2 px-4 rounded">
+        Confirm
       </button>
     </form>
   );

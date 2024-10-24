@@ -24,6 +24,7 @@ function ComponentsPreview() {
             <Link label='Prescription' path='/Write-prescription/1/1' />
              <Link label='doctorprofile' path='/doctorprofile' />
              <Link label='bookappointment' path='/bookappointment' />
+             <Link label='confirmnewpassword' path='/confirmnewpassword' />
             
 
             <h2 className="text-3xl font-bold mb-4">Components</h2>

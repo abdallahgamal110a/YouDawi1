@@ -22,7 +22,7 @@ import PatientAppointments from './components/PatientAppointments';
 import AdminLogin from './components/AdminLogin'
 =======
 import BookAppointment from './components/BookAppointment';
->>>>>>> 82d00d8 (bookappointment file)
+import ConfirmNewPassword from './components/ConfirmNewPassword';
 
 
 import DoctorNurseDashboard from './components/DoctorNurseDashboard';
@@ -136,6 +136,10 @@ function App() {
             /> <
             Route path = "forgetpassword"
             element = { < ForgetPassword / > }
+                />
+             <
+            Route path = "confirmnewpassword"
+            element = { < ConfirmNewPassword / > }
                 />
             <
             Route path = "bookappointment"

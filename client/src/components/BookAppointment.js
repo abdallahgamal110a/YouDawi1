@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import AppointmentForm from './AppointmentForm';
+import Navbar from './Navbar';
 
 function BookAppointment() {
-  return (
-    <div className="min-h-screen bg-gray-100">
+    return (
+        <div>
+         <Navbar />
+      <div className="min-h-screen bg-gray-100">
+     
       <AppointmentForm />
+    </div>
     </div>
   );
 }
