@@ -6,12 +6,12 @@ import myImage from '../pics/file.png';
 const Navbar = () => {
   return (
 
-    <nav className="bg-white-600 p-4">
+    <nav className="bg-white-600">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
           {/* <i className="fas fa-bars text-xl mr-4"></i> */}
-          <img src={myImage} alt="YouDawi" className="h-8 w-20" />
+          <img src={myImage} alt="YouDawi" className="h-6 w-20" />
           {/* <img src={myImage} alt="Healthgrades logo" className="h-10 w-10 rounded-full"/> */}
         </div>
 
@@ -24,10 +24,10 @@ const Navbar = () => {
           <Link to="/doctor-register" className="text-sky-600 hover:text-sky-600">
             Are you a Doctor?
           </Link>
-          <a href="/public-home#about" className="navbar-links">
+          <a href="/public-home#about" className="text-sky-600 hover:text-sky-600">
             About
           </a>
-          <a href="#reviews" className="navbar-links">
+          <a href="#reviews" className="text-sky-600 hover:text-sky-600">
             Reviews
           </a>
           <Link to="/login" className="text-sky-600 hover:text-sky-600">

@@ -29,7 +29,7 @@ const Login = () => {
     };
 
     return (
-      <>
+      <div className="bg-primary-30">
       <Navbar/>
         <div className="min-h-screen flex items-center rounded-2xl justify-center bg-primary-35">
 
@@ -110,7 +110,7 @@ const Login = () => {
                 </div>
             </div>
         </div>
-</>
+</div>
     );
 };
 
