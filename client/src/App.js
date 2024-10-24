@@ -101,6 +101,29 @@ function App() {
               }
 
             />
+
+            {/* Health history */}
+            <Route
+              path="health-history"
+              element={
+          //      <ProtectedRoute allowedRoles={['patient', 'doctor']}>
+                  <PatientDetailPage />
+           //     </ProtectedRoute>
+              }
+
+            />
+
+            {/* Prescription */}
+            <Route
+              path="write-prescription/:doctorId/:patientId"
+              element={
+          //      <ProtectedRoute allowedRoles={['doctor']}>
+                  <WritePrescription />
+           //     </ProtectedRoute>
+              }
+
+            />
+
             </Route>
 
             { /* Public routes */ }
