@@ -8,7 +8,7 @@ const Register = () => {
         const [gender, setGender] = useState('');
         const [error, setError] = useState(null);
         const [success, setSuccess] = useState(false);
-        const [avatar, setAvatar] = useState(null); // For avatar file upload
+        const [avatar, setAvatar] = useState(); // For avatar file upload
 
         const onSubmit = async(data) => {
             const formData = new FormData(); // Using FormData to handle file uploads
@@ -21,9 +21,9 @@ const Register = () => {
             formData.append('phone', data.phone);
             formData.append('gender', gender);
             formData.append('dateOfBirth', data.dateOfBirth); // Updated field name
-            formData.append('age', data.age);
+            // formData.append('age', data.age);
             formData.append('address', data.address);
-            formData.append('healthHistory', data.healthHistory);
+            // formData.append('healthHistory', data.healthHistory);
             if (avatar) formData.append('avatar', avatar); // Append avatar if uploaded
 
             try {
@@ -85,11 +85,12 @@ const Register = () => {
                             required
                         />
                     </div>
-
+                    <label className="block mb-1 text-gray-700">Password<span className="text-red-500">*</span></label>
                     <input
                         type="password"
                         name="password"
                         placeholder="Password"
+                        {...register('Password')}
                         className={`w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400`}
                         required
                     />
@@ -151,14 +152,14 @@ const Register = () => {
                     <div>
                         <label className="block mb-1 text-gray-700">Date of Birth<span className="text-red-500">*</span></label>
                         <input
-                            type="date"
+                            // type="date"
                             {...register('dateOfBirth')} // Updated field name
                             className="w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required
                         />
                     </div>
 
-                    {/* Age */}
+                    {/* Age
                     <div>
                         <label className="block mb-1 text-gray-700">Age<span className="text-red-500">*</span></label>
                         <input
@@ -167,7 +168,7 @@ const Register = () => {
                             className="w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required
                         />
-                    </div>
+                    </div> */}
 
                     {/* Address */}
                     <div>
@@ -181,13 +182,13 @@ const Register = () => {
                     </div>
 
                     {/* Health History */}
-                    <div>
+                    {/* <div>
                         <label className="block mb-1 text-gray-700">Health History</label>
                         <textarea
                             {...register('healthHistory')}
                             className="w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-                    </div>
+                    </div> */}
 
                     {/* Avatar */}
                     <div>
