@@ -18,9 +18,7 @@ import PatientDashboard from './components/PatientDashboard';
 import NurseLogin from './components/NurseLogin';
 import PatientProfile from './components/PatientProfile';
 import PatientAppointments from './components/PatientAppointments';
-<<<<<<< HEAD
 import AdminLogin from './components/AdminLogin'
-=======
 import BookAppointment from './components/BookAppointment';
 import ConfirmNewPassword from './components/ConfirmNewPassword';
 
