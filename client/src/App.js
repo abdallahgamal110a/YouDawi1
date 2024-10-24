@@ -99,6 +99,48 @@ function App() {
                   <PatientAppointments patientId={userId} />
                 </ProtectedRoute>
               }
+
+            />
+            </Route>
+
+            { /* Public routes */ } <
+            Route path = "/login"
+            element = { < Login /> }
+            /> <
+            Route path = "/register"
+            element = { < Register /> }
+            /> <
+            Route path = "/doctor-login"
+            element = { < DoctorLogin /> }
+            /> <
+            Route path = "/doctor-register"
+            element = { < DoctorRegister /> }
+            /> <
+            Route path = "/nurse-login"
+            element = { < NurseLogin /> }
+            /> <
+            Route path = "/public-home"
+            element = { < LandingPage /> }
+            /> <
+            Route path = "/components-preview"
+            element = { < ComponentsPreview /> }
+            /> <
+            Route path = "doctor-profile"
+            element = { < DoctorProfile /> }
+            /> <
+            Route path = "patient-profile"
+            element = { < PatientProfile /> }
+            /> <
+            Route path = "forgetpassword"
+            element = { < ForgetPassword /> }
+                />
+             <
+            Route path = "confirmnewpassword"
+            element = { < ConfirmNewPassword /> }
+                />
+            <
+            Route path = "bookappointment"
+            element = { < BookAppointment/> }
             />
           </Route>
 
