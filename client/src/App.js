@@ -142,7 +142,7 @@ function App() {
             <Route path = "bookappointment"
             element = { < BookAppointment/> }
             />
-          </Route>
+          
 
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
