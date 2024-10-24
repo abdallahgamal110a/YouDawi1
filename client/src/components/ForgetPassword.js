@@ -38,19 +38,42 @@ function ForgetPassword({ role }) {
     };
 
     return (
-        <div id="root">
-            <Navbar />
-            <main>
-                <form className="space-y-4 mt-4 flex flex-col items-center">
-                    <div className="flex justify-between w-80 mb-4">
-                        <label className="text-4xl text-gray-700 mr-4">Enter Your Email:</label>
-                        <input className="w-3/4 h-8 border border-gray-700 p-2 focus:outline-none focus:border-blue-500" />
-                    </div>
-                    <button type="submit" className="w-30 h-7 bg-red-600 text-white py-2 rounded">Submit</button>
-                </form>
-            </main>
-            <FooterH />
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-primary-35">
+
+      <div className="flex w-4/5 h-3/4 max-h-70 bg-white opacity-90 rounded-2xl shadow-lg overflow-hidden">
+          <div className="w-1/2 p-8">
+              <h2 className="text-5xl font-bold text-primary-30 text-center mt-5 mb-4">Reset Password Request</h2>
+
+
+              <form className="space-y-4">
+                  <div>
+                      <label className="block mb-1 text-gray-700">
+                      Your Email<span className="text-red-500">*</span>
+                      </label>
+                      <input
+                          type="email"
+                          className="w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                          required
+                      />
+                  </div>
+  
+                  {/* Submit Button */}
+                  <button type="submit" className="w-full bg-primary-30 text-white py-1 rounded-lg font-semibold shadow-lg hover:bg-[#00263d] transition">
+                  Send Request
+                  </button>
+  
+              </form>
+              </div>
+  
+          <div className="w-1/2 relative">
+              <img
+                  src="trafalgar-illustration sec02 1.png"
+                  alt="Transparent overlay"
+                  className="relative z-10 mx-auto my-8 opacity-75"
+              />
+          </div>
+      </div>
+  </div>
     );
 }
 
