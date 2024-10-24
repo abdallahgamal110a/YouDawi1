@@ -86,8 +86,8 @@ function Banner() {
             <h2 className="text-3x1 font-semibold text-primary-32 pt-2 pl-2">Appointments Summary</h2>
             <div className='flex justify-start items-end h-28'>
                 <div id='inbannar' className="text-center bg-pramiry-60 round-fullr">
-                    <p className="mt-1 text-primary-32">Past Appointments</p>
-                    <p className="mt-1 text-4xl font-bold">12</p>
+                    <p className="mt-1 text-primary-32">Rating</p>
+                    <p className="mt-1 text-4xl font-bold">5</p>
                 </div>
                 <div id='inbannar' className="text-center bg-pramiry-60 round-full">
                     <p className="mt-1 text-primary-32">Upcoming Appointments</p>
@@ -143,10 +143,9 @@ function ListofNurses() {
                     <li id='TodayApp' key={appointment.id} className="flex justify-between p-4 border-b last:border-b-0">
                         <div>
                             <p className="font-semibold">{appointment.nurse}</p>
-                            <p className="text-gray-500">{appointment.status}</p>
                         </div>
-                        <button className="text-primary-60 rounded-full p-2 ml-20 hover:text-white bg-lime-500">Actived</button>
-                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-red-600">Deactive</button>
+                        <p className="text-primary-60 rounded-full p-2  bg-primary-10">{appointment.status}</p>
+
                     </li>
                 ))}
             </ul>
