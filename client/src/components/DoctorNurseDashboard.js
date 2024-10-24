@@ -1,35 +1,38 @@
 import React from 'react';
 import SearchBar from './Searchbar';
 import Bannarimg from '../pics/bannarDashboard.png';
+import './DoctorNurseDashboard.css';
 
 // Notification Bar Component
 function NotificationBar() {
     return (
-        <div className="bg-blue-500 text-white p-4 rounded-lg mb-6">
-            <h2 className="font-semibold">Notifications</h2>
-            <p>You have 3 upcoming appointments.</p>
+        <div className="bg-primary-10 text-white p-4 rounded-lg mb-6">
+            <h2 className="font-semibold text-">Notifications</h2>
+            <div>
+                <p>You have 3 upcoming appointments.</p>
+            </div>
         </div>
     );
 }
 
 // Appointments Summary Component
-function AppointmentsSummary() {
-    return (
-        <div className="bg-white shadow-lg p-6 rounded-lg mb-6">
-            <h2 className="text-xl font-semibold mb-4">Appointments Summary</h2>
-            <div className="flex justify-between items-center">
-                <div className="text-center">
-                    <p className="text-4xl font-bold">12</p>
-                    <p className="text-gray-500">Past Appointments</p>
-                </div>
-                <div className="text-center">
-                    <p className="text-4xl font-bold">3</p>
-                    <p className="text-gray-500">Upcoming Appointments</p>
-                </div>
-            </div>
-        </div>
-    );
-}
+// function AppointmentsSummary() {
+//     return (
+//         <div className="bg-white shadow-lg p-6 rounded-lg mb-6">
+//             <h2 className="text-xl font-semibold mb-4">Appointments Summary</h2>
+//             <div className="flex justify-between items-center">
+//                 <div className="text-center">
+//                     <p className="text-4xl font-bold">12</p>
+//                     <p className="text-gray-500">Past Appointments</p>
+//                 </div>
+//                 <div className="text-center">
+//                     <p className="text-4xl font-bold">3</p>
+//                     <p className="text-gray-500">Upcoming Appointments</p>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
 
 // Upcoming Appointments Component
 function UpcomingAppointments() {
@@ -77,23 +80,48 @@ function HealthRecords({ role }) {
 //  BANAR IN THE DOCTOR NURSE DASHBOARD
 function Banner() {
     return (
-        <div className=' w-3/4 round-full bg-primary-30 h-auto'>
-            <h2 className="text-xl font-semibold mb-4">Appointments Summary</h2>
-            <div className='flex justify-between items-center'>
-                <div className="text-center bg-pramiry-60 round-fullr">
-                    <p className="text-4xl font-bold">12</p>
-                    <p className="text-gray-500">Past Appointments</p>
+        <div id='bannar' className='mb-2 w-3/4 bg-gradient-to-r from-primary-40 to-primary-10'>
+            <h2 className="text-3x1 font-semibold text-primary-32 pt-2 pl-2">Appointments Summary</h2>
+            <div className='flex justify-start items-end h-28'>
+                <div id='inbannar' className="text-center bg-pramiry-60 round-fullr">
+                    <p className="mt-1 text-primary-32">Past Appointments</p>
+                    <p className="mt-1 text-4xl font-bold">12</p>
                 </div>
-                <div className="text-center bg-pramiry-60 round-full">
-                    <p className="text-4xl font-bold">3</p>
-                    <p className="text-gray-500">Upcoming Appointments</p>
+                <div id='inbannar' className="text-center bg-pramiry-60 round-full">
+                    <p className="mt-1 text-primary-32">Upcoming Appointments</p>
+                    <p className="mt-1 text-4xl font-bold">3</p>
                 </div>
-                <div className=''>
-                    <img className='w-30' src={Bannarimg} alt="Banner" />
+                <div className='relative w-50'>
+                    <img className='w-36 absolute bottom-2 right-6' src={Bannarimg} alt="Banner" />
                 </div>
             </div>
         </div>
 
+    );
+}
+
+function TodayAppointment() {
+    const upcomingAppointments = [
+        { id: 1, patient: 'Sarah Smith', date: '2024-10-20', time: '10:00 AM' },
+        { id: 2, patient: 'John Doe', date: '2024-10-22', time: '11:30 AM' },
+        { id: 3, patient: 'Emily Johnson', date: '2024-10-25', time: '2:00 PM' },
+    ];
+
+    return (
+        <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
+            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Today Appointments</h2>
+            <ul>
+                {upcomingAppointments.map(appointment => (
+                    <li id='TodayApp' key={appointment.id} className="flex justify-between p-4 border-b last:border-b-0">
+                        <div>
+                            <p className="font-semibold">{appointment.patient}</p>
+                            <p className="text-gray-500">{appointment.date} at {appointment.time}</p>
+                        </div>
+                        <button className="text-blue-500 hover:text-blue-700">View</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }
 
@@ -104,29 +132,27 @@ function DoctorNurseDashboard({ role }) {
         <div className="container mx-auto pl-2">
             <SearchBar />
             <h1 className="text-4x2 font-bold mb-5 pt-5">Hello Dr.Kim</h1>
-
             <Banner />
-            {/* Notification Bar */}
-            <NotificationBar />
+            {/* <NotificationBar /> */}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Left column */}
                 <div>
-                    {/* Appointments Summary */}
-                    <AppointmentsSummary />
-
                     {/* Health Records with role-based link */}
                     <HealthRecords role={role} />
                 </div>
 
                 {/* Right column */}
                 <div>
+
                     {/* Upcoming Appointments */}
-                    <UpcomingAppointments />
+                    <TodayAppointment />
                 </div>
             </div>
         </div>
     );
 }
+
+
 
 export default DoctorNurseDashboard;

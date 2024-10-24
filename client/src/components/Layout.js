@@ -32,17 +32,17 @@ function Layout({ role }) {
     };
 
     return (
-      <div className="flex h-screen bg-primary-30">
-                {/* Pass openModal function to VerticalNavbar */}
-                <VerticalNavbar onOpenModal={openModal} userRole={role} />
+        <div className="flex h-screen bg-gradient-to-r from-primary-10 to-primary-35 pt-1 pb-1">
+            {/* Pass openModal function to VerticalNavbar */}
+            <VerticalNavbar onOpenModal={openModal} userRole={role} />
 
-                {/* <div className="w-2 min-w-2"></div> */}
+            {/* <div className="w-2 min-w-2"></div> */}
 
-                <div className="flex-1 overflow-auto border-7 rounded-3xl border-primary-30  bg-gray-100 p-6">
-                    {/* Render the appropriate dashboard based on the user's role */}
-                    {renderDashboard()}
-                    <Outlet />
-                </div>
+            <div className="flex-1 overflow-auto border-7 rounded-3xl border-primary-30  bg-gray-100 p-6">
+                {/* Render the appropriate dashboard based on the user's role */}
+                {renderDashboard()}
+                <Outlet />
+            </div>
 
             {/* Profile Component - Triggered within layout */}
             {isModalVisible && (
@@ -53,7 +53,7 @@ function Layout({ role }) {
                     content={<ProfileSettings />}
                 />
             )}
-            </div>
+        </div>
     );
 }
 

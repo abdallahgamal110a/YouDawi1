@@ -52,7 +52,7 @@ function VerticalNavbar({ onOpenModal, userRole }) {
   }
 
   return (
-    <nav onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)} className={`vertical-navbar  bg-primary-30 h-full flex flex-col pr-1.5 pt-2 pb-2 justify-between transition-all duration-300 ${toggleClasses}`}>
+    <nav onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)} className={`vertical-navbar  bg-transparent h-full flex flex-col pl-1 pr-1.5 pt-2 pb-2 justify-between transition-all duration-300 ${toggleClasses}`}>
       <div className='items-center'>
         {/* Logo */}
         <div className={`border-solid border-black border-0.25 text-blue text-center mb-4 ${isOpen ? 'text-lg' : 'text-sm'}`}>
@@ -76,7 +76,7 @@ function VerticalNavbar({ onOpenModal, userRole }) {
                     <span className={`ml-2 text-5x4 transition-colors duration-300 ${isActive ? 'text-yellow-300' : 'text-gray-300'}`}>
                       {icon}
                     </span>
-                    <span className={`text-5x4 transition-opacity duration-300 ${linkTextClass} ${isActive ? 'text-white' : 'text-gray-200'}`}>
+                    <span className={`text-5x4 transition-opacity duration-300 ${linkTextClass} ${isActive ? 'text-yellow-300' : 'text-gray-300'}`}>
                       {label}
                     </span>
                   </div>
