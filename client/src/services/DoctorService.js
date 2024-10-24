@@ -224,3 +224,34 @@ const handleError = (error, defaultMessage) => {
     throw new Error('Error: ' + error.message);
   }
 };
+
+
+// Get doctors by specialty
+export const getPublicDoctorsBySpecialty = async (specialty) => {
+  try {
+    const response = await axios.get(`${API_URL}/doctors/specialty`, { params: { specialty } });
+    return response.data;
+  } catch (error) {
+    handleError(error, 'Error fetching doctors by specialty');
+  }
+};
+
+// Get doctors by name
+export const getPublicDoctorsByName = async (firstName, lastName) => {
+  try {
+    const response = await axios.get(`${API_URL}/doctors/name`, { params: { firstName, lastName } });
+    return response.data;
+  } catch (error) {
+    handleError(error, 'Error fetching doctors by name');
+  }
+};
+
+// Get doctors by location
+export const getPublicDoctorsByLocation = async (city) => {
+  try {
+    const response = await axios.get(`${API_URL}/doctors/location`, { params: { city } });
+    return response.data;
+  } catch (error) {
+    handleError(error, 'Error fetching doctors by location');
+  }
+};
