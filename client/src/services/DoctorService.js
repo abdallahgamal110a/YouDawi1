@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/doctors'; // todo: Update this
+const API_URL = 'http://localhost:5000/api/doctors';
 
 // Set JWT token for authorized requests
 const setAuthToken = (token) => {
@@ -225,31 +225,58 @@ const handleError = (error, defaultMessage) => {
   }
 };
 
+// ---------
+// 1. Get all doctors (with pagination)
+export const getAllPublicDoctors = async (page = 1, limit = 5) => {
+  try {
+    const response = await axios.get(`${API_URL}/all`, {
+      params: {
+        page,
+        limit
+      }
+    });
 
-// Get doctors by specialty
+    // The controller sends a response with a status and data containing doctors
+    if (response.data.status === 'SUCCESS') {
+      return response.data.data.doctors;
+    } else {
+      throw new Error('Failed to fetch doctors');
+    }
+  } catch (error) {
+    handleError(error, 'Error fetching all doctors');
+  }
+};
+
+
+// 2. Get doctors by specialty
 export const getPublicDoctorsBySpecialty = async (specialty) => {
   try {
-    const response = await axios.get(`${API_URL}/doctors/specialty`, { params: { specialty } });
+    if (!specialty) throw new Error('Specialty is required');
+    const response = await axios.get(`${API_URL}/bySpecialty`, { params: { specialty } });
     return response.data;
   } catch (error) {
     handleError(error, 'Error fetching doctors by specialty');
   }
 };
 
-// Get doctors by name
+// 3. Get doctors by name
 export const getPublicDoctorsByName = async (firstName, lastName) => {
   try {
-    const response = await axios.get(`${API_URL}/doctors/name`, { params: { firstName, lastName } });
+    if (!firstName || !lastName) throw new Error('First and last names are required');
+    const response = await axios.get(`${API_URL}/byName`, {
+      params: { firstName, lastName }
+    });
     return response.data;
   } catch (error) {
     handleError(error, 'Error fetching doctors by name');
   }
 };
 
-// Get doctors by location
+// 4. Get doctors by location
 export const getPublicDoctorsByLocation = async (city) => {
   try {
-    const response = await axios.get(`${API_URL}/doctors/location`, { params: { city } });
+    if (!city) throw new Error('City is required');
+    const response = await axios.get(`${API_URL}/byLocation`, { params: { city } });
     return response.data;
   } catch (error) {
     handleError(error, 'Error fetching doctors by location');

@@ -11,30 +11,23 @@ import Reviews from "./Reviews";
 import Info from './Info';
 
 function LandingPage() {
-    // useEffect(() => {
-    //   // Dynamically import Bootstrap CSS and JS only for this page
-    //   import('bootstrap/dist/css/bootstrap.min.css')
-    //     .then(() => {
-    //       return import('bootstrap/dist/js/bootstrap.bundle.min');
-    //     })
-    //     .catch((error) => console.error('Error loading Bootstrap', error));
-    // }, []); // Empty dependency array ensures this runs only once on component mount
 
-    return ( <
+
+    return (<
         div >
         <
-        Navbar / >
+            Navbar />
         <
-        Banner / >
+            Banner />
         <
-        Info / >
+            Info />
         <
-        About / >
+            About />
         <
-        Reviews / >
+            Reviews />
         <
-        Footer_H / >
-        </div>
+            Footer_H />
+    </div>
     );
 }
 
