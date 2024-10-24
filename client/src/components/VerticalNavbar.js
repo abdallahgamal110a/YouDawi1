@@ -13,11 +13,7 @@ function VerticalNavbar({ onOpenModal, userRole }) {
   const toggleClasses = isOpen ? 'w-30' : 'w-10'; // Adjust width based on toggle
   const linkTextClass = isOpen ? 'opacity-100' : 'opacity-0'; // Text visibility
 
-  // Define different nav items for different roles
-  const commonNavItems = [
-    { path: '/home', label: 'Home', icon: <FaHome /> },
-    { path: '/appointments', label: 'Appointments', icon: <FaCalendarAlt /> },
-  ];
+
 
   const doctorNavItems = [
     {
@@ -46,13 +42,13 @@ function VerticalNavbar({ onOpenModal, userRole }) {
   ];
 
   // Determine which nav items to display based on the user role
-  let navItems = [...commonNavItems];
+  let navItems = [];
   if (userRole === 'doctor') {
-    navItems = [...navItems, ...doctorNavItems];
+    navItems = doctorNavItems;
   } else if (userRole === 'patient') {
-    navItems = [...navItems, ...patientNavItems];
+    navItems = patientNavItems;
   } else if (userRole === 'nurse') {
-    navItems = [...navItems, ...nurseNavItems];
+    navItems = nurseNavItems;
   }
 
   return (
