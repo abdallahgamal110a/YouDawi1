@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { registerDoctor } from '../services/DoctorService';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 const DoctorRegisterForm = () => {
     const [formData, setFormData] = useState({
@@ -81,6 +82,8 @@ const DoctorRegisterForm = () => {
     };
 
     return (
+      <>
+      <Navbar/>
         <div className="min-h-screen flex items-center justify-center bg-primary-35">
           <div className="flex w-4/5 h-4/5 max-h-70 bg-white opacity-90 rounded-2xl shadow-lg overflow-hidden">
             <div className="w-1/2 p-8">
@@ -226,6 +229,7 @@ const DoctorRegisterForm = () => {
                 </div>
         </div>
         </div>
+        </>
     );
 };
 
