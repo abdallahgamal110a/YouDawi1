@@ -16,4 +16,13 @@
 #TodayApp {
   border-radius: 30px !important;
   border: 3px solid #004481;
+  margin-bottom: 10px;
+}
+
+#calendar {
+  border-radius: 30px !important;
+  border: 6px solid #004481 !important;
+  margin-bottom: 10px !important;
+  padding: 20px;
+  display: table-cell;
 }

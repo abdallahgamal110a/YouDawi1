@@ -2,6 +2,8 @@ import React from 'react';
 import SearchBar from './Searchbar';
 import Bannarimg from '../pics/bannarDashboard.png';
 import './DoctorNurseDashboard.css';
+import Calendar from 'react-calendar';
+
 
 // Notification Bar Component
 function NotificationBar() {
@@ -117,7 +119,7 @@ function TodayAppointment() {
                             <p className="font-semibold">{appointment.patient}</p>
                             <p className="text-gray-500">{appointment.date} at {appointment.time}</p>
                         </div>
-                        <button className="text-blue-500 hover:text-blue-700">View</button>
+                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-primary-10">View</button>
                     </li>
                 ))}
             </ul>
@@ -125,6 +127,32 @@ function TodayAppointment() {
     );
 }
 
+function ListofNurses() {
+    const upcomingAppointments = [
+        { id: 1, nurse: 'Sara Ali', status: 'Actived' },
+        { id: 2, nurse: 'Ahmed Osama', status: 'Deactive' },
+        { id: 3, nurse: 'Mona Ahmed', status: 'Actived' },
+
+    ];
+
+    return (
+        <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
+            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">List Nurses</h2>
+            <ul>
+                {upcomingAppointments.map(appointment => (
+                    <li id='TodayApp' key={appointment.id} className="flex justify-between p-4 border-b last:border-b-0">
+                        <div>
+                            <p className="font-semibold">{appointment.nurse}</p>
+                            <p className="text-gray-500">{appointment.status}</p>
+                        </div>
+                        <button className="text-primary-60 rounded-full p-2 ml-20 hover:text-white bg-lime-500">Actived</button>
+                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-red-600">Deactive</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
 
 // Main Doctor and Nurse Dashboard Component
 function DoctorNurseDashboard({ role }) {
@@ -132,14 +160,22 @@ function DoctorNurseDashboard({ role }) {
         <div className="container mx-auto pl-2">
             <SearchBar />
             <h1 className="text-4x2 font-bold mb-5 pt-5">Hello Dr.Kim</h1>
-            <Banner />
-            {/* <NotificationBar /> */}
+            <div className="flex justify-between items-center mb-6">
+                <Banner />
+                {/* <NotificationBar /> */}
+                <div id='calendar'>
+                    <Calendar />
+                </div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Left column */}
                 <div>
+
                     {/* Health Records with role-based link */}
-                    <HealthRecords role={role} />
+                    {/* <HealthRecords role={role} /> */}
+                    <ListofNurses />
+
                 </div>
 
                 {/* Right column */}
