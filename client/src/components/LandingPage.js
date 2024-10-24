@@ -13,21 +13,15 @@ import Info from './Info';
 function LandingPage() {
 
 
-    return (<
-        div >
-        <
-            Navbar />
-        <
-            Banner />
-        <
-            Info />
-        <
-            About />
-        <
-            Reviews />
-        <
-            Footer_H />
-    </div>
+    return (
+        < div >
+            <Navbar />
+            <Banner />
+            <Info />
+            < About />
+            < Reviews />
+            < Footer_H />
+        </div>
     );
 }
 

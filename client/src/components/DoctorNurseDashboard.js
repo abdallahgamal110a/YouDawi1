@@ -119,7 +119,7 @@ function TodayAppointment() {
                             <p className="font-semibold">{appointment.patient}</p>
                             <p className="text-gray-500">{appointment.date} at {appointment.time}</p>
                         </div>
-                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-primary-10">View</button>
+                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-primary-10">Book Now</button>
                     </li>
                 ))}
             </ul>
