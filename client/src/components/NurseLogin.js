@@ -83,7 +83,7 @@ const NurseLogin = () => {
             <div className="flex items-center mt-3">
                 <input type="checkbox" className="mr-2" />
                 <label className="text-gray-700">Remember Me</label>
-                    <a href="/forgetpassword" className="ml-auto text-blue-500">
+                    <a href="/forget-password" className="ml-auto text-blue-500">
                           Forgot Your Password?
                     </a>
             </div>

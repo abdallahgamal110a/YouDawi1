@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 // Base URL for API
-const API_URL = 'http://localhost:5000/api/patients'; // todo: Update this
-
+const API_URL = 'http://localhost:5000/api/patients'; // Update this with your actual API URL
 
 // PatientService object containing all functions related to patient operations
 const patientService = {
@@ -73,6 +72,57 @@ const patientService = {
             return response.data.data;
         } catch (error) {
             console.error('Error fetching patients:', error.response.data);
+            throw error.response.data;
+        }
+    },
+
+    /**
+     * Request password reset
+     * @param {String} email - Patient's email to request a password reset
+     * @returns {Promise} - Resolves when the password reset email is sent
+     */
+    requestResetPassword: async (email) => {
+        try {
+            const response = await axios.post(`${API_URL}/requestResetPassword`, { email });
+            return response.data;
+        } catch (error) {
+            console.error('Error requesting password reset:', error.response.data);
+            throw error.response.data;
+        }
+    },
+
+    /**
+     * Reset password using the reset token
+     * @param {Object} resetData - Data for resetting the password (token and new password)
+     * @returns {Promise} - Resolves when the password is successfully reset
+     */
+    resetPassword: async (resetData) => {
+        try {
+            const response = await axios.post(`${API_URL}/reset-password`, resetData);
+            return response.data;
+        } catch (error) {
+            console.error('Error resetting password:', error.response.data);
+            throw error.response.data;
+        }
+    },
+
+    /**
+     * Update patient profile
+     * @param {Object} updateData - Data for updating the patient profile
+     * @param {String} token - JWT token for authentication
+     * @returns {Promise} - Resolves to the updated patient data
+     */
+    updatePatientProfile: async (updateData, token) => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+            const response = await axios.put(`${API_URL}/profile`, updateData, config);
+            return response.data;
+        } catch (error) {
+            console.error('Error updating patient profile:', error.response.data);
             throw error.response.data;
         }
     }

@@ -34,19 +34,19 @@ import PatientDetailPage from './components/PatientDetailPage';
 
 
 function App() {
-    const token = localStorage.getItem('token');
-    let decodedToken = null;
-    let role = null;
-    let userId = "";
+  const token = localStorage.getItem('token');
+  let decodedToken = null;
+  let role = null;
+  let userId = "";
 
-    if (token) {
-        decodedToken = jwtDecode(token); // Decode the token
-        role = decodedToken.role; // Extract the role from the token
-        userId = decodedToken.id;
-    }
+  if (token) {
+    decodedToken = jwtDecode(token); // Decode the token
+    role = decodedToken.role; // Extract the role from the token
+    userId = decodedToken.id;
+  }
 
-    return (
-      <RoleProvider role={role}>  {/* Provide role globally */}
+  return (
+    <RoleProvider role={role}>  {/* Provide role globally */}
       <Router>
         <Routes>
           <Route path="/" element={<Layout role={role} />}>
@@ -177,9 +177,9 @@ function App() {
           <Route path="/components-preview" element={<ComponentsPreview />} />
           <Route path="/doctor-profile" element={<DoctorProfile />} />
           <Route path="/patient-profile" element={<PatientProfile />} />
-          <Route path="/forgetpassword" element={<ForgetPassword />} />
-          <Route path="/confirmnewpassword" element={<ConfirmNewPassword />} />
-          <Route path="/bookappointment" element={<BookAppointment />} />
+          <Route path="/forget-password" element={<ForgetPassword role={role} />} />
+          <Route path="/confirm-new-password" element={<ConfirmNewPassword />} />
+          <Route path="/book-appointment" element={<BookAppointment />} />
           <Route path="/nurse-register" element={<NurseRegisterForm />} />
           <Route path="/admin-login" element={<AdminLogin />} />
 
@@ -188,7 +188,7 @@ function App() {
         </Routes>
       </Router>
     </RoleProvider >
-        );
-    }
+  );
+}
 
-    export default App;
+export default App;
