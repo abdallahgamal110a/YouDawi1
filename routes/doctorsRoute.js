@@ -12,14 +12,8 @@ const upload = require('../utils/upload');
 router.route('/all')
     .get(doctorsController.getAll_Doctors);
 
-router.route('/bySpecialty')
-    .get(doctorsController.getDoctors_By_Specialty);
-
-router.route('/byName')
-    .get(doctorsController.getDoctors_By_Name);
-
-router.route('/byLocation')
-    .get(doctorsController.getDoctors_By_Location);
+router.route('/by')
+    .get(doctorsController.getDoctorsBy);
 
 
 //---------

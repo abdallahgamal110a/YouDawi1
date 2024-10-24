@@ -25,83 +25,57 @@ const getAll_Doctors = asyncHandler(async(req, res, next) => {
     res.json({ status: httpStatusText.SUCCESS, data: { doctors } });
 });
 
-const getDoctors_By_Specialty = asyncHandler(async (req, res, next) => {
-    const { specialty } = req.query;
-    // console.log(specialty);
-    if (!specialty || !specialty.trim()) {
-        return next(
-        appError.create('Specialty is required', 400, httpStatusText.FAIL)
-    );
-    }
-    const Condition = { specialization: specialty, status: 'approved' };
-    const doctors = await Doctor.find(Condition);
+const getDoctorsBy = asyncHandler(async (req, res, next) => {
+    const { name, city, specialty, page = 1, limit = 5 } = req.query;
+
+    // Initialize an empty query object
+    let query = { status: 'approved' };
     
-    if (!doctors || doctors.length === 0) {
-        return next(
-        appError.create('No doctors found for this specialty', 404, 'Not Found')
-    );
+    // Add name search condition
+    if (name && name.trim()) {
+        const nameParts = name.trim().split(' ');
+        if (nameParts.length === 1) {
+            const singleName = nameParts[0];
+            query.$or = [
+                { firstName: { $regex: singleName, $options: 'i' } },
+                { lastName: { $regex: singleName, $options: 'i' } }
+            ];
+        } else if (nameParts.length === 2) {
+            const [firstName, lastName] = nameParts;
+            query.$or = [
+                { firstName: { $regex: firstName, $options: 'i' } },
+                { lastName: { $regex: lastName, $options: 'i' } }
+            ];
+        }
     }
+
+    // Add city search condition
+    if (city && city.trim()) {
+        query.city = city.trim();
+    }
+
+    // Add specialty search condition
+    if (specialty && specialty.trim()) {
+        query.specialization = specialty.trim();
+    }
+
+    // Pagination
+    const skip = (page - 1) * limit;
+
+    // Fetch doctors based on the query
+    const doctors = await Doctor.find(query, { '__v': false, 'password': false })
+        .limit(Number(limit))
+        .skip(skip);
+
+    // Check if no doctors are found
+    if (!doctors || doctors.length === 0) {
+        return next(appError.create('No doctors found with the provided criteria', 404, 'Not Found'));
+    }
+
+    // Return the response
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
 });
 
-const getDoctors_By_Name = asyncHandler(async (req, res, next) => {
-    const { name } = req.query;
-
-    if (!name || !name.trim()) {
-        return next(
-            appError.create('Name is required', 400, httpStatusText.FAIL)
-        );
-    }
-
-    const nameParts = name.trim().split(' ');
-    let searchConditions = [];
-
-    if (nameParts.length === 1) {
-        const singleName = nameParts[0];
-        searchConditions.push(
-            { firstName: { $regex: singleName, $options: 'i' } },
-            { lastName: { $regex: singleName, $options: 'i' } }
-        );
-    } else if (nameParts.length === 2) {
-        const [firstName, lastName] = nameParts;
-        searchConditions.push(
-            { firstName: { $regex: firstName, $options: 'i' } },
-            { lastName: { $regex: lastName, $options: 'i' } }
-        );
-    }
-
-    const Condition = { status: 'approved' };
-
-    const doctors = await Doctor.find({
-        $or: searchConditions,
-        ...Condition
-    });
-
-    if (!doctors || doctors.length === 0) {
-        return next(
-            appError.create('No doctors found with this name', 404, 'Not Found')
-        );
-    }
-
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
-});
-
-const getDoctors_By_Location = asyncHandler(async (req, res, next) => {
-    const { city } = req.query;
-    if (!city || !city.trim()) {
-        return next(
-            appError.create('City is required', 400, httpStatusText.FAIL)
-        );
-    }
-    const Condition = { city, status: 'approved' };
-    const doctors = await Doctor.find(Condition);
-    if (!doctors || doctors.length === 0) {
-        return next(
-            appError.create('No doctors found in this location', 404, 'Not Found')
-        );
-    }
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: { doctors } });
-});
 // ---------------
 
 const register = asyncHandler(async(req, res, next) => {
@@ -568,9 +542,7 @@ const getDoctorRatings = asyncHandler(async (req, res, next) => {
 
 module.exports = {
     getAll_Doctors,
-    getDoctors_By_Specialty,
-    getDoctors_By_Name,
-    getDoctors_By_Location,
+    getDoctorsBy,
     register,
     requestResetPassword,
     resetPassword,
