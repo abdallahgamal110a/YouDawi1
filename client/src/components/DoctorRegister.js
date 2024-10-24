@@ -84,7 +84,7 @@ const DoctorRegisterForm = () => {
     return (
       <>
       <Navbar/>
-        <div className="min-h-screen flex items-center justify-center bg-primary-35">
+        <div className="min-h-screen flex items-center rounded-2xl justify-center bg-primary-35">
           <div className="flex w-4/5 h-4/5 max-h-70 bg-white opacity-90 rounded-2xl shadow-lg overflow-hidden">
             <div className="w-1/2 p-8">
                 <h2 className="text-5xl font-bold text-primary-30 text-center mb-1">Register Doctor</h2>

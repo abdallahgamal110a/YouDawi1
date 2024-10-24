@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import nurseService from '../services/NurseService';
+import Navbar from '../components/Navbar';
 
 const NurseLogin = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +33,9 @@ const NurseLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-primary-35">
+    <>
+    <Navbar/>
+    <div className="min-h-screen flex items-center justify-center rounded-2xl bg-primary-35">
       <div className="flex w-4/5 h-4/5 max-h-70 bg-white opacity-90 rounded-2xl shadow-lg overflow-hidden">
       <div className="w-1/2 p-8">
         <h2 className="text-5xl font-bold text-primary-30 text-center mt-2 mb-2">Nurse Login</h2>
@@ -95,6 +98,7 @@ const NurseLogin = () => {
                 </div>
       </div>
     </div>
+    </>
   );
 };
 
