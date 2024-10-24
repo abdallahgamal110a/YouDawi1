@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import VerticalNavbar from './VerticalNavbar';
 import Modal from './Modal';
 import { useState } from 'react';
-import ProfileSettings from './ProfileSettings';
+import ProfileSettings from './ProfileSettings_pat';
 
 function Layout({ role }) {
     const [isModalVisible, setModalVisible] = useState(false);

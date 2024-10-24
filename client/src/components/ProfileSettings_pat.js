@@ -5,7 +5,8 @@ const ProfileSettings = () => {
 
     // Profile info, passwords, and notifications state (same as before)
     const [profileInfo, setProfileInfo] = useState({
-        fullName: 'John Doe',
+        firstName: 'esraa',
+        lastName: 'Alaa',
         email: 'john.doe@example.com',
         phone: '123-456-7890',
     });
