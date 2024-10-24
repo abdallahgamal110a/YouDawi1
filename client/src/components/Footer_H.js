@@ -17,7 +17,6 @@ function Footer_H() {
                 <a href="#" className="text-zinc-200 font-serif text-lg">Are You A Doctor?</a>
                                
                 </div>
-                <pr />
               
                   <div>
                         <p>Address: Dhaka, Bangladesh</p>

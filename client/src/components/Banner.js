@@ -1,6 +1,19 @@
 import React, { useState } from "react";
 import myImage2 from '../pics/banner1.jpg';
-import { getPublicDoctorsBySpecialty, getPublicDoctorsByName, getPublicDoctorsByLocation, getAllPublicDoctors } from '../services/DoctorService';
+import { getPublicDoctorsBy } from '../services/DoctorService';
+
+const cities = [
+    'Alexandria', 'Aswan', 'Abydos', 'Avaris', 'Port Said', 'Faiyum',
+    'Elephantine', 'Amarna', 'Asyut', 'Giza', 'Luxor', 'Heliopolis',
+    'Sharm El-Sheikh', 'El-Mansoura', 'Akhetaten', 'Crocodiloplis city',
+    'Cairo', 'Minya', 'Thebes', 'Memphis', 'Zagazig', 'Edfu',
+    'Al Mahallah Al Kubra', 'Hermopolis'
+];
+
+const specializations =
+    ['Cardiology', 'Dermatology', 'Endocrinology', 'Gastroenterology', 'General Practice', 'Neurology', 'Oncology', 'Orthopedics', 'Pediatrics', 'Psychiatry', 'Pulmonology'
+    ];
+
 
 function Banner() {
     const [specialty, setSpecialty] = useState('');
@@ -10,49 +23,22 @@ function Banner() {
 
     const handleSearch = async () => {
         try {
-            let results = [];
+            // Call the getPublicDoctorsBy service with the entered values
+            const results = await getPublicDoctorsBy(specialty, doctor, location);
+            const doctorsList = results.data.doctors;
 
-            if (!specialty && !doctor && !location) {
-                // If no parameters are provided, fetch all doctors
-                const allDoctors = await getAllPublicDoctors();
-                console.log('All Doctors:', allDoctors); // Log all doctors response
-                // results = allDoctors; // Uncomment when ready to use results
+            if (doctorsList.length === 0) {
+                // If no doctors are found, set a user-friendly message
+                setDoctors([]);  // Clear the results
+                console.log('No doctors found with the provided criteria');
             } else {
-                // If a specialty is provided, search by specialty
-                if (specialty) {
-                    const specialtyResults = await getPublicDoctorsBySpecialty(specialty);
-                    console.log('Specialty Results:', specialtyResults); // Log specialty search response
-                    // results = [...results, ...specialtyResults]; // Uncomment when ready to use results
-                }
-
-                // If a doctor's name is provided, search by name
-                if (doctor) {
-                    const [firstName, lastName] = doctor.split(' ');
-                    const nameResults = await getPublicDoctorsByName(firstName, lastName);
-                    console.log('Name Results:', nameResults); // Log name search response
-                    // results = [...results, ...nameResults]; // Uncomment when ready to use results
-                }
-
-                // If a location is provided, search by location
-                if (location) {
-                    const locationResults = await getPublicDoctorsByLocation(location);
-                    const doctors = locationResults.data.doctors;
-                    console.log('Location Results:', doctors); // Log location search response
-                    console.log('Location Results:', locationResults); // Log location search response
-                    results = doctors; // Uncomment when ready to use results
-                    setDoctors(doctors);
-                }
+                console.log('Search Results:', doctorsList); // Log the results
+                setDoctors(doctorsList);  // Update the state with the search results
             }
-
-            // Remove duplicates (unique by doctor ID)
-            const uniqueResults = Array.from(new Set(results.map(doc => doc.id)))
-                .map(id => results.find(doc => doc.id === id));
-
-            console.log('Unique Results:', uniqueResults); // Log final unique results
-            // setDoctors(uniqueResults); // Uncomment when ready to set the results
-
         } catch (error) {
-            console.error('Error during search:', error);
+            // If the API throws an error, display a message to the user
+            console.error('Error during search:', error.message || error);
+            setDoctors([]);  // Clear any previous results
         }
     };
 
@@ -69,11 +55,17 @@ function Banner() {
                             value={specialty}
                             onChange={(e) => setSpecialty(e.target.value)}
                         >
-                            <option value="">Select Specialty</option>
-                            <option value="cardiology">Cardiology</option>
-                            <option value="neurology">Neurology</option>
-                            <option value="pediatrics">Pediatrics</option>
-                            {/* Add more options as needed */}
+                            <option value=''>
+                                Any Specialization
+                            </option>
+                            {specializations.map((specialization) => {
+                                const value = specialization.replace(/\s+/g, '-');
+                                return (
+                                    <option key={value} value={value}>
+                                        {specialization}
+                                    </option>
+                                );
+                            })}
                         </select>
 
                         <input
@@ -89,12 +81,17 @@ function Banner() {
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         >
-                            <option value="">Select Location</option>
-                            <option value="elmonfia">Elmonfia</option>
-                            <option value="port-said">Port Said</option>
-                            <option value="cairo">Cairo</option>
-                            <option value="Giza">Giza</option>
-                            {/* Add more options as needed */}
+                            <option value=''>
+                                Any Where
+                            </option>
+                            {cities.map((city) => {
+                                const value = city.replace(/\s+/g, '-');
+                                return (
+                                    <option key={value} value={value}>
+                                        {city}
+                                    </option>
+                                );
+                            })}
                         </select>
 
                         <button className="bg-blue-600 text-white px-4 py-2 rounded" onClick={handleSearch}>

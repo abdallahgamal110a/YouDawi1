@@ -249,6 +249,39 @@ export const getAllPublicDoctors = async (page = 1, limit = 5) => {
 
 
 // 2. Get doctors by specialty
+export const getPublicDoctorsBy = async (specialty, name, location, page = 1, limit = 5) => {
+  try {
+    // Prepare query parameters based on the input
+    const params = {
+      page,
+      limit
+    };
+
+    // Add specialty, name, and location to the query params if provided
+    if (specialty && specialty.trim()) {
+      params.specialty = specialty.trim();
+    }
+
+    if (name && name.trim()) {
+      params.name = name.trim();
+    }
+
+    if (location && location.trim()) {
+      params.city = location.trim();
+    }
+
+    // Make the GET request with the query params
+    const response = await axios.get(`${API_URL}/by`, { params });
+
+    return response.data;
+  } catch (error) {
+    // Handle the error gracefully
+    handleError(error, 'Error fetching doctors');
+  }
+};
+
+
+// 2. Get doctors by specialty
 export const getPublicDoctorsBySpecialty = async (specialty) => {
   try {
     if (!specialty) throw new Error('Specialty is required');
