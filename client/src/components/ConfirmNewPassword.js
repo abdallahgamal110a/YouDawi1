@@ -1,7 +1,10 @@
 import React from 'react';
+import Navbar from '../components/Navbar';
 
 function ConfirmNewPassword() {
   return (
+    <>
+    <Navbar/>
     <div className="min-h-screen flex items-center justify-center bg-primary-35">
 
     <div className="flex w-4/5 h-4/5 max-h-70 bg-white opacity-90 rounded-2xl shadow-lg overflow-hidden">
@@ -39,6 +42,7 @@ function ConfirmNewPassword() {
         </div>
     </div>
 </div>
+</>
   );
 }
 
