@@ -45,23 +45,35 @@ const getDoctors_By_Specialty = asyncHandler(async (req, res, next) => {
 });
 
 const getDoctors_By_Name = asyncHandler(async (req, res, next) => {
-    const { firstName, lastName } = req.query;
-    if (!firstName || !firstName.trim()) {
+    const { name } = req.query;
+
+    if (!name || !name.trim()) {
         return next(
-            appError.create('First name is required', 400, httpStatusText.FAIL)
+            appError.create('Name is required', 400, httpStatusText.FAIL)
         );
     }
-    if (!lastName || !lastName.trim()) {
-        return next(
-            appError.create('Last name is required', 400, httpStatusText.FAIL)
+
+    const nameParts = name.trim().split(' ');
+    let searchConditions = [];
+
+    if (nameParts.length === 1) {
+        const singleName = nameParts[0];
+        searchConditions.push(
+            { firstName: { $regex: singleName, $options: 'i' } },
+            { lastName: { $regex: singleName, $options: 'i' } }
         );
-    }
-    const Condition = { status: 'approved' };
-    const doctors = await Doctor.find({
-        $or: [
+    } else if (nameParts.length === 2) {
+        const [firstName, lastName] = nameParts;
+        searchConditions.push(
             { firstName: { $regex: firstName, $options: 'i' } },
             { lastName: { $regex: lastName, $options: 'i' } }
-        ],
+        );
+    }
+
+    const Condition = { status: 'approved' };
+
+    const doctors = await Doctor.find({
+        $or: searchConditions,
         ...Condition
     });
 
@@ -258,25 +270,36 @@ const getDoctorsBySpecialty = asyncHandler(async (req, res, next) => {
 });
 
 const getDoctorsByName = asyncHandler(async (req, res, next) => {
-    const { firstName, lastName } = req.query;
-    if (!firstName || !firstName.trim()) {
+    const { name } = req.query;
+
+    if (!name || !name.trim()) {
         return next(
-            appError.create('First name is required', 400, httpStatusText.FAIL)
+            appError.create('Name is required', 400, httpStatusText.FAIL)
         );
     }
-    if (!lastName || !lastName.trim()) {
-        return next(
-            appError.create('Last name is required', 400, httpStatusText.FAIL)
+
+    const nameParts = name.trim().split(' ');
+    let searchConditions = [];
+
+    if (nameParts.length === 1) {
+        const singleName = nameParts[0];
+        searchConditions.push(
+            { firstName: { $regex: singleName, $options: 'i' } },
+            { lastName: { $regex: singleName, $options: 'i' } }
+        );
+    } else if (nameParts.length === 2) {
+        const [firstName, lastName] = nameParts;
+        searchConditions.push(
+            { firstName: { $regex: firstName, $options: 'i' } },
+            { lastName: { $regex: lastName, $options: 'i' } }
         );
     }
     const { role } = req.currentUser;
-    const statusCondition = role === 'admin' ? {} : { status: 'approved' };
+    const Condition = role === 'admin' ? {} : { status: 'approved' };
+
     const doctors = await Doctor.find({
-        $or: [
-            { firstName: { $regex: firstName, $options: 'i' } },
-            { lastName: { $regex: lastName, $options: 'i' } }
-        ],
-        ...statusCondition
+        $or: searchConditions,
+        ...Condition
     });
 
     if (!doctors || doctors.length === 0) {
