@@ -192,6 +192,7 @@ function App() {
           <Route path="/book-appointment" element={<BookAppointment />} />
           <Route path="/nurse-register" element={<NurseRegisterForm />} />
           <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/patient-data" element={<PatientDetailPage />} />
 
           {/* Catch-all route */}
           <Route path="*" element={<Navigate to="/login" />} />

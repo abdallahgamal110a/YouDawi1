@@ -5,11 +5,13 @@ import Calendar from 'react-calendar';
 import React, { useState, useEffect } from 'react';
 import { getProfile } from '../services/DoctorService'; // Assuming getProfile is the service function to fetch the doctor's profile
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 function DoctorNurseDashboard({ role }) {
     const [dashboardData, setDashboardData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    
 
     useEffect(() => {
         // Fetch doctor dashboard data using the token from localStorage
@@ -142,6 +144,7 @@ function UpcomingAppointments() {
 
 // Health Records Component with role-based link to Patient History
 function HealthRecords({ role }) {
+    const navigate = useNavigate();
     return (
         <div className="bg-white shadow-lg p-6 rounded-lg mb-6">
             <h2 className="text-xl font-semibold mb-4">Health Records</h2>
@@ -149,9 +152,12 @@ function HealthRecords({ role }) {
 
             {/* Show patient history link if role is doctor or nurse */}
             {(role === 'doctor' || role === 'nurse') && (
-                <button className="mt-4 text-blue-500 hover:text-blue-700">
-                    View Patient History
-                </button>
+               <button 
+            className="mt-4 text-blue-500 hover:text-blue-700" 
+            onClick={() => navigate('/patient-data')}
+          >
+            View Patient History
+          </button>
             )}
         </div>
     );
