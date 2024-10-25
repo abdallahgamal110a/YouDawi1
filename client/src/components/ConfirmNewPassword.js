@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
 
 function ConfirmNewPassword() {
   return (
@@ -30,8 +29,6 @@ function ConfirmNewPassword() {
         </button>
       </div>
     </div>
-</div>
-</>
   );
 }
 
