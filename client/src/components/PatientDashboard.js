@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getPublicDoctorsBy } from '../services/DoctorService';
+import { jwtDecode } from 'jwt-decode';
+
 
 
 // Notification Bar Component
@@ -240,9 +242,64 @@ function HealthRecords() {
 
 // Main Patient Dashboard Component
 function PatientDashboard() {
+    const [dashboardData, setDashboardData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        // Fetch doctor dashboard data using the token from localStorage
+        const fetchDashboardData = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwtDecode(token);
+                try {
+                    const response = await fetch(`http://localhost:5000/api/patients/dashboard`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error fetching dashboard data');
+                    }
+
+                    const data = await response.json();
+                    console.log('Dashboard Data:', data.data);
+                    setDashboardData(data.data); // Assuming the response structure has data
+                } catch (err) {
+                    setError('Error fetching dashboard data');
+                    console.error(err);
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                setError('No token found');
+                setLoading(false);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
+
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
+    const { topRatedDoctors, numUpcomingAppointments, patientName, upcomingAppointments } = dashboardData || {};
+
+
     return (
         <div className="container mx-auto p-6">
-
+            <h1 className="text-4xl font-bold mb-5 pt-5">
+                Hello {patientName}
+            </h1>
             {/* Notification Bar */}
             <SeacrhDoctor />
 
