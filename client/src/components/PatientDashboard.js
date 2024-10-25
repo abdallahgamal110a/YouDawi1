@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { getPublicDoctorsBy } from '../services/DoctorService';
 import { FcSearch } from "react-icons/fc";
 import { jwtDecode } from 'jwt-decode';
-
+import './DoctorNurseDashboard.css';
+import Calendar from 'react-calendar';
 import Bannarimg from '../pics/patient.png';
 
 function Banner() {
@@ -326,9 +327,12 @@ function PatientDashboard() {
             <h1 className="text-4xl font-bold mb-5 pt-5">
                 Hello {patientName}
             </h1>
-
-            <Banner />
-
+            <div className="flex justify-between items-center mb-6">
+                <Banner />
+                <div id='calendar'>
+                    <Calendar />
+                </div>
+            </div>
             {/* Notification Bar */}
             <SeacrhDoctor />
 
