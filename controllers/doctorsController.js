@@ -392,28 +392,60 @@ const getDoctorFreeSlots = asyncHandler(async(req, res, next) => {
     });
 });
 
-const getDoctorDashboard = asyncHandler(async(req, res, next) => {
+const getDoctorDashboard = asyncHandler(async (req, res, next) => {
     const doctorId = req.currentUser.id;
+
+    // Fetch upcoming appointments
     const upcomingAppointments = await Appointment.find({
         doctorId: doctorId,
         appointmentDate: { $gte: new Date() },
-        status: 'confirmed'  // Better to change to scheduled in the model
+        status: 'confirmed' // Change this to 'scheduled' if updated in the model
     })
     .populate('patientId', 'firstName lastName phone email')
-    .populate('nurseId', 'firstName lastName')
+    .populate('nurseId', 'firstName lastName');
 
+    // Fetch today's appointments
+    const today = new Date();
+    const startOfToday = new Date(today.setHours(0, 0, 0, 0));
+    const endOfToday = new Date(today.setHours(23, 59, 59, 999));
+
+    const todaysAppointments = await Appointment.find({
+        doctorId: doctorId,
+        appointmentDate: { $gte: startOfToday, $lt: endOfToday },
+        status: 'confirmed' // Change this to 'scheduled' if updated in the model
+    })
+    .populate('patientId', 'firstName lastName phone email')
+    .populate('nurseId', 'firstName lastName');
+
+    // Fetch distinct patient IDs
     const patientIds = await Appointment.find({ doctorId: doctorId })
         .distinct('patientId');
     
     const patients = await Patient.find({ _id: { $in: patientIds } })
         .select('firstName lastName email phone');
     
+    // Fetch nurses
     const nurses = await Nurse.find({ doctor: doctorId })
         .select('firstName lastName email phone');
 
-    const doctor = await Doctor.findById(doctorId)
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: { upcomingAppointments, patients, nurses, doctor}})
+    // Fetch the doctor including the average rating
+    const doctor = await Doctor.findById(doctorId).select('firstName lastName averageRating');
+
+    res.status(200).json({
+        status: httpStatusText.SUCCESS,
+        data: {
+            upcomingAppointments,
+            todaysAppointments, // Added today's appointments
+            patients,
+            nurses,
+            doctor: {
+                ...doctor._doc, // Spread doctor data
+                averageRating: doctor.averageRating // Include average rating
+            }
+        }
+    });
 });
+
 
 const registerNurse = asyncHandler(async(req, res, next) => {
     //console.log('Request body:', req.body);
