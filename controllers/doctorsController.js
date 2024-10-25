@@ -398,53 +398,51 @@ const getDoctorDashboard = asyncHandler(async (req, res, next) => {
     // Fetch upcoming appointments
     const upcomingAppointments = await Appointment.find({
         doctorId: doctorId,
-        appointmentDate: { $gte: new Date() },
-        status: 'confirmed' // Change this to 'scheduled' if updated in the model
+        appointmentDate: { $gte: new Date() }
     })
     .populate('patientId', 'firstName lastName phone email')
     .populate('nurseId', 'firstName lastName');
 
-    // Fetch today's appointments
     const today = new Date();
     const startOfToday = new Date(today.setHours(0, 0, 0, 0));
     const endOfToday = new Date(today.setHours(23, 59, 59, 999));
 
+    // Fetch today's appointments
     const todaysAppointments = await Appointment.find({
         doctorId: doctorId,
-        appointmentDate: { $gte: startOfToday, $lt: endOfToday },
-        status: 'confirmed' // Change this to 'scheduled' if updated in the model
+        appointmentDate: { $gte: startOfToday, $lt: endOfToday }
     })
     .populate('patientId', 'firstName lastName phone email')
     .populate('nurseId', 'firstName lastName');
 
-    // Fetch distinct patient IDs
-    const patientIds = await Appointment.find({ doctorId: doctorId })
-        .distinct('patientId');
-    
-    const patients = await Patient.find({ _id: { $in: patientIds } })
-        .select('firstName lastName email phone');
-    
-    // Fetch nurses
-    const nurses = await Nurse.find({ doctor: doctorId })
-        .select('firstName lastName email phone');
+    // Fetch patient IDs and related data
+    const patientIds = await Appointment.find({ doctorId: doctorId }).distinct('patientId');
+    const patients = await Patient.find({ _id: { $in: patientIds } }).select('firstName lastName email phone');
+    const nurses = await Nurse.find({ doctor: doctorId }).select('firstName lastName email phone');
 
-    // Fetch the doctor including the average rating
+    // Fetch doctor's information including average rating
     const doctor = await Doctor.findById(doctorId).select('firstName lastName averageRating');
+    console.log('Doctor Data:', doctor);
+
+    const counttodaysAppointments = todaysAppointments.length;
 
     res.status(200).json({
         status: httpStatusText.SUCCESS,
         data: {
             upcomingAppointments,
-            todaysAppointments, // Added today's appointments
+            counttodaysAppointments,
             patients,
             nurses,
-            doctor: {
-                ...doctor._doc, // Spread doctor data
-                averageRating: doctor.averageRating // Include average rating
-            }
+            todaysAppointments,
+            doctor: doctor ? { 
+                firstName: doctor.firstName, 
+                lastName: doctor.lastName, 
+                averageRating: doctor.averageRating 
+            } : null
         }
     });
 });
+
 
 
 const registerNurse = asyncHandler(async(req, res, next) => {

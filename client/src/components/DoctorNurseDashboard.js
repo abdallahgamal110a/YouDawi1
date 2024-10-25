@@ -56,7 +56,7 @@ function DoctorNurseDashboard({ role }) {
         return <p>{error}</p>;
     }
 
-    const { upcomingAppointments, patients, nurses, doctor } = dashboardData || {};
+    const { upcomingAppointments, todaysAppointments, patients, nurses, doctor } = dashboardData || {};
 
     return (
         <div className="container mx-auto pl-2">
@@ -65,7 +65,7 @@ function DoctorNurseDashboard({ role }) {
                 Hello {doctor ? `Dr. ${doctor.firstName} ${doctor.lastName}` : 'Doctor'}
             </h1>
             <div className="flex justify-between items-center mb-6">
-                <Banner />
+                <Banner averageRating={doctor.averageRating} todaysAppointments={todaysAppointments} /> {/* Pass averageRating and todaysAppointments as props */}
                 <div id="calendar">
                     <Calendar />
                 </div>
@@ -73,17 +73,15 @@ function DoctorNurseDashboard({ role }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <ListofNurses upcomingAppointments={upcomingAppointments} />
+                    <ListofNurses todaysAppointments={todaysAppointments} />
                 </div>
                 <div>
-                    <TodayAppointment />
+                    <TodayAppointment nurses={nurses} />
                 </div>
             </div>
         </div>
     );
 }
-
-
 
 // Notification Bar Component
 function NotificationBar() {
@@ -160,46 +158,45 @@ function HealthRecords({ role }) {
 }
 
 //  BANAR IN THE DOCTOR NURSE DASHBOARD
-function Banner() {
+function Banner({ averageRating, todaysAppointments }) {
     return (
         <div id='bannar' className='mb-2 w-3/4 bg-gradient-to-r from-primary-40 to-primary-10'>
             <h2 className="text-3x1 font-semibold text-primary-32 pt-2 pl-2">Appointments Summary</h2>
             <div className='flex justify-start items-end h-28'>
                 <div id='inbannar' className="text-center bg-pramiry-60 round-fullr">
                     <p className="mt-1 text-primary-32">Rating</p>
-                    <p className="mt-1 text-4xl font-bold">5</p>
+                    <p className="mt-1 text-4xl font-bold">{averageRating || 'New'}</p> {/* Display averageRating dynamically */}
                 </div>
                 <div id='inbannar' className="text-center bg-pramiry-60 round-full">
-                    <p className="mt-1 text-primary-32">Upcoming Appointments</p>
-                    <p className="mt-1 text-4xl font-bold">3</p>
+                    <p className="mt-1 text-primary-32">Today's Appointments</p>
+                    <p className="mt-1 text-4xl font-bold">{todaysAppointments.length || 0}</p> {/* Display today's appointments dynamically */}
                 </div>
                 <div className='relative w-50'>
                     <img className='w-36 absolute bottom-2 right-6' src={Bannarimg} alt="Banner" />
                 </div>
             </div>
         </div>
-
     );
 }
 
-function TodayAppointment() {
-    const upcomingAppointments = [
-        { id: 1, patient: 'Sarah Smith', date: '2024-10-20', time: '10:00 AM' },
-        { id: 2, patient: 'John Doe', date: '2024-10-22', time: '11:30 AM' },
-        { id: 3, patient: 'Emily Johnson', date: '2024-10-25', time: '2:00 PM' },
-    ];
+function TodayAppointment({nurses}) {
+    // const upcomingAppointments = [
+    //     { id: 1, patient: 'Sarah Smith', date: '2024-10-20', time: '10:00 AM' },
+    //     { id: 2, patient: 'John Doe', date: '2024-10-22', time: '11:30 AM' },
+    //     { id: 3, patient: 'Emily Johnson', date: '2024-10-25', time: '2:00 PM' },
+    // ];
 
     return (
         <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
-            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Today Appointments</h2>
+            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">List of Nurses</h2>
             <ul>
-                {upcomingAppointments.map(appointment => (
-                    <li id='TodayApp' key={appointment.id} className="flex justify-between p-4 border-b last:border-b-0">
+                {nurses.map(nurse => (
+                    <li id='TodayApp' key={nurse.id} className="flex justify-between p-4 border-b last:border-b-0">
                         <div>
-                            <p className="font-semibold">{appointment.patient}</p>
-                            <p className="text-gray-500">{appointment.date} at {appointment.time}</p>
+                            <p className="font-semibold">{nurse.firstName} {nurse.lastName}</p>
+                            <p className="text-gray-500">{nurse.email}</p>
                         </div>
-                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-primary-10">Book Now</button>
+                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-primary-10">Update status</button>
                     </li>
                 ))}
             </ul>
@@ -207,7 +204,7 @@ function TodayAppointment() {
     );
 }
 
-function ListofNurses({upcomingAppointments}) {
+function ListofNurses({todaysAppointments}) {
     // const upcomingAppointments = [
     //     { id: 1, nurse: 'Sara Ali', status: 'Actived' },
     //     { id: 2, nurse: 'Ahmed Osama', status: 'Deactive' },
@@ -217,15 +214,20 @@ function ListofNurses({upcomingAppointments}) {
 
     return (
         <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
-            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">List Nurses</h2>
+            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Today's Appointments</h2>
             <ul>
-                {upcomingAppointments.map(appointment => (
+                {todaysAppointments.map(appointment => (
                     <li id='TodayApp' key={appointment.id} className="flex justify-between p-4 border-b last:border-b-0">
                         <div>
-                            <p className="font-semibold">{appointment.nurse}</p>
-                        </div>
-                        <p className="text-primary-60 rounded-full p-2  bg-primary-10">{appointment.status}</p>
+                            <p className="font-semibold">{appointment.patientId.firstName} {appointment.patientId.lastName}</p>
+                            <p className="text-gray-500">{new Date(appointment.appointmentDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at{' '}
+                                {new Date(`1970-01-01T${appointment.appointmentTime}:00Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
 
+                            </p>
+                        </div>
+                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-primary-10">View records</button>
+
+                        
                     </li>
                 ))}
             </ul>
