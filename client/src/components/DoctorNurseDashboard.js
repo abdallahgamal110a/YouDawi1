@@ -217,7 +217,7 @@ function ListofNurses({todaysAppointments}) {
     //     { id: 3, nurse: 'Mona Ahmed', status: 'Actived' },
 
     // ];
-
+    const navigate = useNavigate(); 
     return (
         <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
             <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Today's Appointments</h2>
