@@ -176,7 +176,7 @@ const Register = () => {
                     {/* Health History */}
                     {/* <div>
                         <label className="block mb-1 text-gray-700">Health History</label>
-                        <textarea
+                      <textarea
                             {...register('healthHistory')}
                             className="w-full px-2 py-1 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />

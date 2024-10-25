@@ -43,6 +43,7 @@ function App() {
     decodedToken = jwtDecode(token); // Decode the token
     role = decodedToken.role; // Extract the role from the token
     userId = decodedToken.id;
+    console.log(role);
   }
 
   return (
@@ -106,9 +107,9 @@ function App() {
             <Route
               path="health-history"
               element={
-          //      <ProtectedRoute allowedRoles={['patient', 'doctor']}>
-                  <PatientDetailPage />
-           //     </ProtectedRoute>
+                //      <ProtectedRoute allowedRoles={['patient', 'doctor']}>
+                <PatientDetailPage />
+                //     </ProtectedRoute>
               }
 
             />
@@ -117,55 +118,55 @@ function App() {
             <Route
               path="write-prescription/:doctorId/:patientId"
               element={
-          //      <ProtectedRoute allowedRoles={['doctor']}>
-                  <WritePrescription />
-           //     </ProtectedRoute>
+                //      <ProtectedRoute allowedRoles={['doctor']}>
+                <WritePrescription />
+                //     </ProtectedRoute>
               }
 
             />
 
-            </Route>
+          </Route>
 
-            { /* Public routes */ }
-            <Route path = "/login"
-            element = { < Login /> }
-            />
-            <Route path = "/register"
-            element = { < Register /> }
-            />
-            <Route path = "/doctor-login"
-            element = { < DoctorLogin /> }
-            />
-            <Route path = "/doctor-register"
-            element = { < DoctorRegister /> }
-            />
-            <Route path = "/nurse-login"
-            element = { < NurseLogin /> }
-            />
-            <Route path = "/public-home"
-            element = { < LandingPage /> }
-            />
-            <Route path = "/components-preview"
-            element = { < ComponentsPreview /> }
-            />
-            <Route path = "doctor-profile"
-            element = { < DoctorProfile /> }
-            />
-            <Route path = "patient-profile"
-            element = { < PatientProfile /> }
-            /> 
-            <Route path = "forgetpassword"
-            element = { < ForgetPassword /> }
-                />
-             
-            <Route path = "confirmnewpassword"
-            element = { < ConfirmNewPassword /> }
-                />
-            
-            <Route path = "bookappointment"
-            element = { < BookAppointment/> }
-            />
-          
+          { /* Public routes */}
+          <Route path="/login"
+            element={< Login />}
+          />
+          <Route path="/register"
+            element={< Register />}
+          />
+          <Route path="/doctor-login"
+            element={< DoctorLogin />}
+          />
+          <Route path="/doctor-register"
+            element={< DoctorRegister />}
+          />
+          <Route path="/nurse-login"
+            element={< NurseLogin />}
+          />
+          <Route path="/public-home"
+            element={< LandingPage />}
+          />
+          <Route path="/components-preview"
+            element={< ComponentsPreview />}
+          />
+          <Route path="doctor-profile"
+            element={< DoctorProfile />}
+          />
+          <Route path="patient-profile"
+            element={< PatientProfile />}
+          />
+          <Route path="forgetpassword"
+            element={< ForgetPassword />}
+          />
+
+          <Route path="confirmnewpassword"
+            element={< ConfirmNewPassword />}
+          />
+
+          <Route path="bookappointment"
+            element={< BookAppointment />}
+          />
+
 
           {/* Public routes */}
           <Route path="/login" element={<Login />} />

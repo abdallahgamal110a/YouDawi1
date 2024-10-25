@@ -56,7 +56,7 @@ const DoctorSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['pending', 'approved', 'cancelled'],
-        default: 'pending'
+        default: 'approved'
     },
     schedule: [
         {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginDoctor } from '../services/DoctorService';  
 import Navbar from '../components/Navbar';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';

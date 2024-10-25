@@ -3,9 +3,12 @@ import VerticalNavbar from './VerticalNavbar';
 import Modal from './Modal';
 import { useState } from 'react';
 import ProfileSettings from './ProfileSettings_pat';
+import DoctorNurseDashboard from './DoctorNurseDashboard';
+import PatientDashboard from './PatientDashboard';
 
 function Layout({ role }) {
     const [isModalVisible, setModalVisible] = useState(false);
+
 
     // Function to open the modal
     const openModal = () => {
@@ -21,11 +24,11 @@ function Layout({ role }) {
     const renderDashboard = () => {
         switch (role) {
             case 'doctor':
-                return <DoctorDashboard />;
+                return <DoctorNurseDashboard role={role} />;
             case 'patient':
                 return <PatientDashboard />;
             case 'nurse':
-                return <NurseDashboard />;
+                return <DoctorNurseDashboard role={role} />;
             default:
                 return <DefaultDashboard />;
         }
@@ -40,7 +43,7 @@ function Layout({ role }) {
 
             <div className="flex-1 overflow-auto border-7 rounded-3xl border-primary-30  bg-gray-100 p-6">
                 {/* Render the appropriate dashboard based on the user's role */}
-                {renderDashboard()}
+                {/* {renderDashboard()} */}
                 <Outlet />
             </div>
 
@@ -57,18 +60,6 @@ function Layout({ role }) {
     );
 }
 
-// Dummy dashboard components for each role
-function DoctorDashboard() {
-    // return <div>Doctor Dashboard</div>;
-}
-
-function PatientDashboard() {
-    return <div>Patient Dashboard</div>;
-}
-
-function NurseDashboard() {
-    return <div>Nurse Dashboard</div>;
-}
 
 function DefaultDashboard() {
     return <div>Default Dashboard</div>;

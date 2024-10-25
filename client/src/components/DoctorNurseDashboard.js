@@ -1,8 +1,87 @@
-import React from 'react';
 import SearchBar from './Searchbar';
 import Bannarimg from '../pics/bannarDashboard.png';
 import './DoctorNurseDashboard.css';
 import Calendar from 'react-calendar';
+import React, { useState, useEffect } from 'react';
+import { getProfile } from '../services/DoctorService'; // Assuming getProfile is the service function to fetch the doctor's profile
+import { jwtDecode } from 'jwt-decode';
+
+function DoctorNurseDashboard({ role }) {
+    const [doctor, setDoctor] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        // Fetch doctor profile using the token from localStorage
+        const fetchProfile = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwtDecode(token);
+                try {
+                    const response = await fetch(`http://localhost:5000/api/doctors/profile`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error fetching profile');
+                    }
+
+                    const profile = await response.json();
+                    const doctor = profile.data.doctor;
+                    setDoctor(doctor);
+                    console.log('Profile:', doctor);
+                } catch (err) {
+                    setError('Error fetching profile');
+                    console.error(err);
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                setError('No token found');
+                setLoading(false);
+            }
+        };
+
+        fetchProfile();
+    }, []);
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
+    return (
+        <div className="container mx-auto pl-2">
+            <SearchBar />
+            <h1 className="text-4xl font-bold mb-5 pt-5">
+                Hello {doctor ? `Dr. ${doctor.firstName} ${doctor.lastName}` : 'Doctor'}
+            </h1>
+            <div className="flex justify-between items-center mb-6">
+                <Banner />
+                <div id="calendar">
+                    <Calendar />
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <ListofNurses />
+                </div>
+                <div>
+                    <TodayAppointment />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 
 
 // Notification Bar Component
@@ -153,40 +232,40 @@ function ListofNurses() {
     );
 }
 
-// Main Doctor and Nurse Dashboard Component
-function DoctorNurseDashboard({ role }) {
-    return (
-        <div className="container mx-auto pl-2">
-            <SearchBar />
-            <h1 className="text-4x2 font-bold mb-5 pt-5">Hello Dr.Kim</h1>
-            <div className="flex justify-between items-center mb-6">
-                <Banner />
-                {/* <NotificationBar /> */}
-                <div id='calendar'>
-                    <Calendar />
-                </div>
-            </div>
+// // Main Doctor and Nurse Dashboard Component
+// function DoctorNurseDashboard({ role }) {
+//     return (
+//         <div className="container mx-auto pl-2">
+//             <SearchBar />
+//             <h1 className="text-4x2 font-bold mb-5 pt-5">Hello Dr.Kim</h1>
+//             <div className="flex justify-between items-center mb-6">
+//                 <Banner />
+//                 {/* <NotificationBar /> */}
+//                 <div id='calendar'>
+//                     <Calendar />
+//                 </div>
+//             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Left column */}
-                <div>
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//                 {/* Left column */}
+//                 <div>
 
-                    {/* Health Records with role-based link */}
-                    {/* <HealthRecords role={role} /> */}
-                    <ListofNurses />
+//                     {/* Health Records with role-based link */}
+//                     {/* <HealthRecords role={role} /> */}
+//                     <ListofNurses />
 
-                </div>
+//                 </div>
 
-                {/* Right column */}
-                <div>
+//                 {/* Right column */}
+//                 <div>
 
-                    {/* Upcoming Appointments */}
-                    <TodayAppointment />
-                </div>
-            </div>
-        </div>
-    );
-}
+//                     {/* Upcoming Appointments */}
+//                     <TodayAppointment />
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
 
 
 
