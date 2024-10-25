@@ -216,7 +216,7 @@ const getDashboard = asyncHandler(async (req, res, next) => {
   const patientId = req.currentUser.id;
 
   try {
-      // Fetch upcoming confirmed appointments
+    
       const upcomingAppointments = await Appointment.find({
           patientId: patientId,
           appointmentDate: { $gte: new Date() },
@@ -225,6 +225,7 @@ const getDashboard = asyncHandler(async (req, res, next) => {
       .populate('doctorId', 'firstName lastName specialization averageRating')  // Include specialization and averageRating of the doctor
       .populate('nurseId', 'firstName lastName');
 
+      console.log('upcomingApp:', upcomingAppointments)
       // Fetch top-rated doctors with their stored average rating and specialization
       const topRatedDoctors = await Doctor.find({ totalRating: { $gt: 0 } })  // Ensure that we only fetch doctors with ratings
           .select('firstName lastName specialization averageRating')  // Fetch the stored average rating from the DB

@@ -205,23 +205,27 @@ function TopDoctor({topRatedDoctors = []}) {
 
 }
 
-function NextAppointment() {
-    const NextAppointment = [
-        { id: 1, patint: 'Dr.Sara Ali', date: '2024-10-22', time: '11:30 AM' },
-        { id: 2, patint: 'Dr.Ahmed Osama', date: '2024-10-22', time: '11:30 AM' },
-        { id: 3, patint: 'Dr.Mona Ahmed', date: '2024-10-22', time: '11:30 AM' },
+function NextAppointment({upcomingAppointments = []}) {
+    // const NextAppointment = [
+    //     { id: 1, patint: 'Dr.Sara Ali', date: '2024-10-22', time: '11:30 AM' },
+    //     { id: 2, patint: 'Dr.Ahmed Osama', date: '2024-10-22', time: '11:30 AM' },
+    //     { id: 3, patint: 'Dr.Mona Ahmed', date: '2024-10-22', time: '11:30 AM' },
 
-    ];
+    // ];
 
     return (
         <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
-            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Next Appointment</h2>
+            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Next Appointments</h2>
             <ul>
-                {NextAppointment.map(appointment => (
+                {upcomingAppointments.map(appointment => (
                     <li id='TodayApp' key={appointment.id} className="flex justify-between p-4 border-b last:border-b-0">
                         <div>
-                            <p className="font-semibold">{appointment.patint}</p>
-                            <p className="text-gray-500">{appointment.date} at {appointment.time}</p>
+                            <p className="font-semibold">{appointment.doctorId.firstName} {appointment.doctorId.lastName}</p>
+                            <p className="text-gray-500">{new Date(appointment.appointmentDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at{' '}
+                            {new Date(`1970-01-01T${appointment.appointmentTime}:00Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            
+                            </p>
+                            <p>Status: {appointment.status}</p>
                         </div>
                         <p className="text-primary-60 rounded-full p-2  bg-primary-10"> View</p>
                     </li>
@@ -311,7 +315,7 @@ function PatientDashboard() {
                 {/* Left column */}
                 <div>
                     {/* Appointments Summary */}
-                    <NextAppointment />
+                    <NextAppointment upcomingAppointments={upcomingAppointments} />
                 </div>
 
                 {/* Right column */}
