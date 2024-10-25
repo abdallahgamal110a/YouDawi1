@@ -11,6 +11,9 @@ const router = express.Router();
 router.route('/login')
     .post(adminController.login);
 
+router.route('/dashboard')
+    .get(adminController.getAdminDashboard)
+
 router.route('/doctors')
     .get(verifyToken, allowedTo(userRoles.ADMIN), doctorsController.getAllDoctors)
     .post(upload.single('avatar'), allowedTo(userRoles.ADMIN), doctorsController.register);

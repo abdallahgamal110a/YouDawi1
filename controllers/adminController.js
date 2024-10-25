@@ -1,5 +1,9 @@
 require('dotenv').config({ path: '../.env' });
 const Admin = require('../models/adminModel');
+const Patient = require('../models/patientModel'); 
+const Doctor = require('../models/doctorModel'); 
+const Nurse = require('../models/nurseModel'); 
+const Appointment = require('../models/appointmentModel'); 
 const asyncHandler = require('../middlewares/asyncHandler');
 const doctorsController = require('../controllers/doctorsController');
 const httpStatusText = require('../utils/httpStatusText');
@@ -67,8 +71,50 @@ const login = asyncHandler(async (req, res, next) => {
   }
 });
 
+const getAdminDashboard = async (req, res, next) => {
+  try {
+    const totalPatients = await Patient.countDocuments();
+    
+    const totalDoctors = await Doctor.countDocuments();
+    const pendingDoctors = await Doctor.countDocuments({ status: 'pending' });
+    const approvedDoctors = await Doctor.countDocuments({ status: 'approved' });
+    const cancelledDoctors = await Doctor.countDocuments({ status: 'cancelled' });
+
+    const totalNurses = await Nurse.countDocuments();
+    const activeNurses = await Nurse.countDocuments({ status: 'active' });
+    const inactiveNurses = await Nurse.countDocuments({ status: 'inactive' });
+
+    const totalAppointments = await Appointment.countDocuments();
+
+    // Fetch the list of pending doctors
+    const pendingDoctorList = await Doctor.find({ status: 'pending' }).select('firstName lastName email'); // Select fields you want to return
+
+    const dashboardData = {
+      totalPatients,
+      totalDoctors,
+      pendingDoctors,
+      approvedDoctors,
+      cancelledDoctors,
+      totalNurses,
+      activeNurses,
+      inactiveNurses,
+      totalAppointments,
+      pendingDoctorList,
+    };
+
+    res.status(200).json({
+      status: 'success',
+      data: dashboardData,
+    });
+  } catch (error) {
+    return next(appError.create('Failed to get dashboard data', 500, 'ERROR'));
+  }
+};
+
+
 
 
 module.exports = {
-  login
+  login,
+  getAdminDashboard
 }
