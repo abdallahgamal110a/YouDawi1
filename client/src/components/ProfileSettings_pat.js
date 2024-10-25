@@ -9,6 +9,8 @@ const ProfileSettings = () => {
         lastName: 'Alaa',
         email: 'john.doe@example.com',
         phone: '123-456-7890',
+        address: 'adress',
+
     });
 
     const [passwords, setPasswords] = useState({
@@ -26,7 +28,7 @@ const ProfileSettings = () => {
     const handleProfileChange = (e) => setProfileInfo({ ...profileInfo, [e.target.name]: e.target.value });
     const handlePasswordChange = (e) => setPasswords({ ...passwords, [e.target.name]: e.target.value });
     const handleNotificationChange = (e) => setNotifications({ ...notifications, [e.target.name]: e.target.checked });
-    
+
     // Navigation for slider view
     const handleSlideChange = (index) => setCurrentSlide(index);
 
@@ -61,6 +63,16 @@ const ProfileSettings = () => {
                             type="tel"
                             name="phone"
                             value={profileInfo.phone}
+                            onChange={handleProfileChange}
+                            className="mt-1 block w-full p-2 border rounded-md"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Address</label>
+                        <input
+                            type="tel"
+                            name="address"
+                            value={profileInfo.address}
                             onChange={handleProfileChange}
                             className="mt-1 block w-full p-2 border rounded-md"
                         />
@@ -110,37 +122,8 @@ const ProfileSettings = () => {
                     </button>
                 </form>
             ),
-        },
-        {
-            label: 'Notification Preferences',
-            content: (
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Email Notifications</label>
-                        <input
-                            type="checkbox"
-                            name="emailNotifications"
-                            checked={notifications.emailNotifications}
-                            onChange={handleNotificationChange}
-                            className="mt-1"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">SMS Notifications</label>
-                        <input
-                            type="checkbox"
-                            name="smsNotifications"
-                            checked={notifications.smsNotifications}
-                            onChange={handleNotificationChange}
-                            className="mt-1"
-                        />
-                    </div>
-                    <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-                        Save Preferences
-                    </button>
-                </form>
-            ),
-        },
+        }
+
     ];
 
     return (
@@ -159,9 +142,8 @@ const ProfileSettings = () => {
                             className="hidden"
                         />
                         <span
-                            className={`cursor-pointer inline-block w-4 h-4 rounded-full ${
-                                currentSlide === index ? 'bg-blue-500' : 'bg-gray-400'
-                            }`}
+                            className={`cursor-pointer inline-block w-4 h-4 rounded-full ${currentSlide === index ? 'bg-blue-500' : 'bg-gray-400'
+                                }`}
                         ></span>
                     </label>
                 ))}
