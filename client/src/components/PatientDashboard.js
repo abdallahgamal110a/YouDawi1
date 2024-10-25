@@ -324,7 +324,7 @@ function PatientDashboard() {
 
     return (
         <div className="container mx-auto p-6">
-            <h1 className="text-4xl font-bold mb-5 pt-5">
+            <h1 className="text-3xl font-bold mb-5 pt-5">
                 Hello {patientName}
             </h1>
             <div className="flex justify-between items-center mb-6">
