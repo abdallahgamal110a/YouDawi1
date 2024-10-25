@@ -231,7 +231,8 @@ function ListofNurses({todaysAppointments}) {
 
                             </p>
                         </div>
-                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-primary-10">View records</button>
+                        <button className="text-primary-60 rounded-full p-2 hover:text-white bg-primary-10" onClick = {() => navigate('/patient-data')}
+                        >View records</button>
 
                         
                     </li>
