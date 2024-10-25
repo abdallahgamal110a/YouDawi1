@@ -43,11 +43,11 @@ function Banner() {
     };
 
     return (
-        <div className="relative min-h-screen">
+        <div className="relative min-h-screen mt-1">
             <img src={myImage2} alt="A doctor holding an elderly person's hand" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black opacity-30"></div>
             <div className="relative z-10 flex flex-col items-center justify-center h-full">
-                <div className="bg-white bg-opacity-85 p-11 rounded-lg shadow-lg text-center">
+                <div className="bg-white bg-opacity-85 p-4 mt-4 rounded-lg shadow-lg text-center">
                     <h1 className="text-4xl font-bold text-blue-700 mb-4">Find the care you need</h1>
                     <div className="flex space-x-4 mb-4">
                         <select
