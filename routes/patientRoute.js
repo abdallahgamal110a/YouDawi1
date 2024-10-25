@@ -21,6 +21,9 @@ router.route('/resetPassword/:token')
 router.route('/profile')
   .get(verifyToken, allowedTo(userRoles.ADMIN, userRoles.PATIENT), patientController.getProfile);
 
+router.route('/dashboard')
+  .get(verifyToken, patientController.getDashboard)
+
 router.route('/')
   .get(verifyToken, patientController.getAllPatients);
 

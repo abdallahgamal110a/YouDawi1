@@ -1,4 +1,6 @@
 const Patient = require('../models/patientModel')
+const Appointment = require('../models/appointmentModel')
+const Doctor = require('../models/doctorModel');
 const asyncHandler = require('../middlewares/asyncHandler')
 const httpStatusText = require('../utils/httpStatusText')
 const appError = require('../utils/appError')
@@ -8,6 +10,7 @@ const crypto = require('crypto');
 const { sendPasswordResetEmail, sendNurseRegistrationEmail } = require('../utils/mailUtils')
 
 const registerPatient = asyncHandler(async (req, res, next) => {
+  console.log('Request Body:', req.body);
   const { firstName, lastName, email, password, phone, gender, dateOfBirth, address, healthHistory } = req.body;
   const patient = await Patient.findOne({ email: email });
   if (patient) {
@@ -80,7 +83,9 @@ const requestResetPassword = asyncHandler(async (req, res, next) => {
     patient.resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex');
     patient.resetPasswordExpires = Date.now() + 3600000;
 
+    // Save without validating the unset field
     await patient.save();
+
     const resetURL = `http://${req.headers.host}/resetPassword/${token}`;
     await sendPasswordResetEmail(patient.email, resetURL);
     res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Password reset email sent' });
@@ -121,14 +126,33 @@ const getProfile = asyncHandler(async (req, res, next) => {
   res.json({ status: httpStatusText.SUCCESS, data: { patient } });
 });
 
+// const resetPassword = asyncHandler(async (req, res, next) => {
+//   const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+//   const patient = await Patient.findOne({
+//     resetPasswordToken: hashedToken,
+//     resetPasswordExpires: { $gt: Date.now() },
+//   });
+//   if (!patient) {
+//     return next(appError.create('Password reset token is invalid or has expired', 400, httpStatusText.FAIL));
+//   }
+//   const { password } = req.body;
+//   const salt = await bcrypt.genSalt(10);
+//   const hashedPassword = await bcrypt.hash(password, salt);
+//   patient.password = hashedPassword;
+//   patient.resetPasswordToken = undefined;
+//   patient.resetPasswordExpires = undefined;
+//   await patient.save();
+//   res.status(200).json({ status: httpStatusText.SUCCESS, message: 'Password has been reset successfully' });
+// });
+
 const resetPassword = asyncHandler(async (req, res, next) => {
   const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
   const patient = await Patient.findOne({
-    resetPasswordToken: hashedToken,
-    resetPasswordExpires: { $gt: Date.now() },
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
   });
   if (!patient) {
-    return next(appError.create('Password reset token is invalid or has expired', 400, httpStatusText.FAIL));
+      return next(appError.create('Password reset token is invalid or has expired', 400, httpStatusText.FAIL));
   }
   const { password } = req.body;
   const salt = await bcrypt.genSalt(10);
@@ -187,6 +211,63 @@ const deletePatient = asyncHandler(async (req, res, next) => {
   res.json({ status: httpStatusText.SUCCESS, data: null });
 });
 
+
+const getDashboard = asyncHandler(async (req, res, next) => {
+  const patientId = req.currentUser.id;
+
+  try {
+      // Fetch upcoming confirmed appointments
+      const upcomingAppointments = await Appointment.find({
+          patientId: patientId,
+          appointmentDate: { $gte: new Date() },
+          status: 'Confirmed'
+      })
+      .populate('doctorId', 'firstName lastName specialization averageRating')  // Include specialization and averageRating of the doctor
+      .populate('nurseId', 'firstName lastName');
+
+      // Fetch top-rated doctors with their stored average rating and specialization
+      const topRatedDoctors = await Doctor.find({ totalRating: { $gt: 0 } })  // Ensure that we only fetch doctors with ratings
+          .select('firstName lastName specialization averageRating')  // Fetch the stored average rating from the DB
+          .sort({ averageRating: -1 })  // Sort by average rating in descending order
+          .limit(3);  // Limit to top 3 rated doctors
+
+      // Fetch patient profile data
+      const patient = await Patient.findById(patientId)
+          .select('firstName lastName email phone');
+
+      if (!patient) {
+          return res.status(404).json({
+              status: httpStatusText.ERROR,
+              message: 'Patient not found'
+          });
+      }
+
+      const numUpcomingAppointments = upcomingAppointments.length;
+
+      // Return dashboard data
+      res.status(200).json({
+          status: httpStatusText.SUCCESS,
+          data: {
+              patientName: `${patient.firstName} ${patient.lastName}`,
+              numUpcomingAppointments,
+              upcomingAppointments,
+              topRatedDoctors  // Return top-rated doctors with stored average rating and specialization
+          }
+      });
+  } catch (error) {
+      console.error('Error fetching patient dashboard:', error);
+      return res.status(500).json({
+          status: httpStatusText.ERROR,
+          message: 'Failed to get patient dashboard',
+      });
+  }
+});
+
+
+
+
+
+
 module.exports = {
   registerPatient,
   login,
@@ -196,5 +277,6 @@ module.exports = {
   getAllPatients,
   getPatientById,
   updatePatient,
-  deletePatient
+  deletePatient,
+  getDashboard
 }
