@@ -34,7 +34,7 @@ function VerticalNavbar({ onOpenModal, userRole }) {
     { path: '/patient-dashboard', label: 'Home', icon: <FaHome /> },
     { path: '/doctors', label: 'Doctors', icon: <FaUserInjured /> },
     { path: '/patient-appointments', label: 'My Appointments', icon: <FaCalendarAlt /> },
-    { path: '/patient-health-history', label: 'Health History', icon: <FaUserCircle /> },
+    { path: '/patient-data', label: 'Health History', icon: <FaUserCircle /> },
   ];
 
   const nurseNavItems = [

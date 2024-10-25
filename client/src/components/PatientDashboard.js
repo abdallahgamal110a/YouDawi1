@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import './DoctorNurseDashboard.css';
 import Calendar from 'react-calendar';
 import Bannarimg from '../pics/patient.png';
+import { useNavigate } from 'react-router-dom';
 
 function Banner() {
     return (
@@ -201,10 +202,10 @@ function TopDoctor({ topRatedDoctors = [] }) {
 
     // ];
     console.log("Top Rated Doctors:", topRatedDoctors);
-
+const navigate = useNavigate(); 
     return (
         <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
-            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Top Doctor</h2>
+            <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Top Doctors</h2>
             <ul>
                 {topRatedDoctors.map(doctor => (
                     <li id='TodayApp' key={doctor.id} className="flex justify-between p-4 border-b last:border-b-0">
@@ -214,7 +215,7 @@ function TopDoctor({ topRatedDoctors = [] }) {
                             <p className="text-gray-500">Rate {doctor.averageRating}/5</p>
 
                         </div>
-                        <button className="text-primary-60 rounded-3x1 p-2 hover:text-white bg-primary-10">Book Now</button>
+                        <button className="text-primary-60 rounded-3x1 p-2 hover:text-white bg-primary-10 " onClick={() => navigate('/bookappointment')}>Book Now</button>
 
                     </li>
                 ))}
