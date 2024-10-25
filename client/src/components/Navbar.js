@@ -6,7 +6,7 @@ import myImage from '../pics/logo-rbg.png';
 const Navbar = () => {
   return (
 
-    <nav className="absolute w-full bg-primary-30 px-2 py-2 h-10 ">
+    <nav className="w-full bg-primary-30 py-2  h-10">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
