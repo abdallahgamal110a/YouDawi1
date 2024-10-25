@@ -16,23 +16,8 @@ const ProfileSettingspat = () => {
         diagnosis: "Hypertension Stage 1",
         treatment: "Medication",
     });
-
-    const [passwords, setPasswords] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmNewPassword: '',
-    });
-
-    const [notifications, setNotifications] = useState({
-        emailNotifications: true,
-        smsNotifications: false,
-    });
-
     // Handling changes and form submissions
     const handleProfileChange = (e) => setProfileInfo({ ...profileInfo, [e.target.name]: e.target.value });
-    const handlePasswordChange = (e) => setPasswords({ ...passwords, [e.target.name]: e.target.value });
-    const handleNotificationChange = (e) => setNotifications({ ...notifications, [e.target.name]: e.target.checked });
-
     // Navigation for slider view
     const handleSlideChange = (index) => setCurrentSlide(index);
 
@@ -42,11 +27,21 @@ const ProfileSettingspat = () => {
             content: (
                 <form onSubmit={(e) => e.preventDefault()}>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Full Name</label>
+                        <label className="block text-gray-700">firstName</label>
                         <input
                             type="text"
-                            name="fullName"
-                            value={profileInfo.fullName}
+                            name="firstName"
+                            value={profileInfo.firstName}
+                            onChange={handleProfileChange}
+                            className="mt-1 block w-full p-2 border rounded-md"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">lastName</label>
+                        <input
+                            type="text"
+                            name="lastName"
+                            value={profileInfo.lastName}
                             onChange={handleProfileChange}
                             className="mt-1 block w-full p-2 border rounded-md"
                         />
@@ -87,47 +82,6 @@ const ProfileSettingspat = () => {
                 </form>
             ),
         },
-        {
-            label: 'Change Password',
-            content: (
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Current Password</label>
-                        <input
-                            type="password"
-                            name="currentPassword"
-                            value={passwords.currentPassword}
-                            onChange={handlePasswordChange}
-                            className="mt-1 block w-full p-2 border rounded-md"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">New Password</label>
-                        <input
-                            type="password"
-                            name="newPassword"
-                            value={passwords.newPassword}
-                            onChange={handlePasswordChange}
-                            className="mt-1 block w-full p-2 border rounded-md"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Confirm New Password</label>
-                        <input
-                            type="password"
-                            name="confirmNewPassword"
-                            value={passwords.confirmNewPassword}
-                            onChange={handlePasswordChange}
-                            className="mt-1 block w-full p-2 border rounded-md"
-                        />
-                    </div>
-                    <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-                        Update Password
-                    </button>
-                </form>
-            ),
-        }
-
     ];
 
     return (
