@@ -7,18 +7,18 @@ import { getProfile } from '../services/DoctorService'; // Assuming getProfile i
 import { jwtDecode } from 'jwt-decode';
 
 function DoctorNurseDashboard({ role }) {
-    const [doctor, setDoctor] = useState(null);
+    const [dashboardData, setDashboardData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        // Fetch doctor profile using the token from localStorage
-        const fetchProfile = async () => {
+        // Fetch doctor dashboard data using the token from localStorage
+        const fetchDashboardData = async () => {
             const token = localStorage.getItem('token');
             if (token) {
                 const decodedToken = jwtDecode(token);
                 try {
-                    const response = await fetch(`http://localhost:5000/api/doctors/profile`, {
+                    const response = await fetch(`http://localhost:5000/api/doctors/dashboard`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -27,15 +27,14 @@ function DoctorNurseDashboard({ role }) {
                     });
 
                     if (!response.ok) {
-                        throw new Error('Error fetching profile');
+                        throw new Error('Error fetching dashboard data');
                     }
 
-                    const profile = await response.json();
-                    const doctor = profile.data.doctor;
-                    setDoctor(doctor);
-                    console.log('Profile:', doctor);
+                    const data = await response.json();
+                    console.log('Dashboard Data:', data.data);
+                    setDashboardData(data.data); // Assuming the response structure has data
                 } catch (err) {
-                    setError('Error fetching profile');
+                    setError('Error fetching dashboard data');
                     console.error(err);
                 } finally {
                     setLoading(false);
@@ -46,7 +45,7 @@ function DoctorNurseDashboard({ role }) {
             }
         };
 
-        fetchProfile();
+        fetchDashboardData();
     }, []);
 
     if (loading) {
@@ -56,6 +55,8 @@ function DoctorNurseDashboard({ role }) {
     if (error) {
         return <p>{error}</p>;
     }
+
+    const { upcomingAppointments, patients, nurses, doctor } = dashboardData || {};
 
     return (
         <div className="container mx-auto pl-2">

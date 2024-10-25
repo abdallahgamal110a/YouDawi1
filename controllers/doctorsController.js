@@ -412,7 +412,7 @@ const getDoctorDashboard = asyncHandler(async(req, res, next) => {
         .select('firstName lastName email phone');
 
     const doctor = await Doctor.findById(doctorId)
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: { upcomingAppointments, patients, nurses, schedule: doctor.schedule }})
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { upcomingAppointments, patients, nurses, doctor}})
 });
 
 const registerNurse = asyncHandler(async(req, res, next) => {
