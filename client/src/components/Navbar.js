@@ -6,7 +6,7 @@ import myImage from '../pics/file.png';
 const Navbar = () => {
   return (
 
-    <nav className="bg-white-600">
+    <nav className="bg-primary-30 px-2">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
@@ -18,24 +18,24 @@ const Navbar = () => {
 
         {/* Menu Items */}
         <div className="space-x-4">
-          <Link to="/public-home" className="text-sky-600 hover:text-sky-600">
+          <Link to="/public-home" className="text-white">
             Home
           </Link>
-          <Link to="/doctor-register" className="text-sky-600 hover:text-sky-600">
+          <Link to="/doctor-register" className="text-white">
             Are you a Doctor?
           </Link>
-          <a href="/public-home#about" className="text-sky-600 hover:text-sky-600">
+          <a href="/public-home#about" className="text-white">
             About
           </a>
-          <a href="#reviews" className="text-sky-600 hover:text-sky-600">
+          <a href="/public-home#reviews" className="text-white">
             Reviews
           </a>
-          <Link to="/login" className="text-sky-600 hover:text-sky-600">
-            Login
+          <Link to="/login" className="text-white">
+            Sign In
           </Link>
-          {/* <Link to="/register" className="text-sky-600 hover:text-sky-600">
-            Register
-          </Link> */}
+          <Link to="/register" className="text-white">
+            Sign Up
+          </Link>
 
         </div>
       </div>
