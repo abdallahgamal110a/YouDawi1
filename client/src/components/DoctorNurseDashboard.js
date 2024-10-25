@@ -73,7 +73,7 @@ function DoctorNurseDashboard({ role }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <ListofNurses />
+                    <ListofNurses upcomingAppointments={upcomingAppointments} />
                 </div>
                 <div>
                     <TodayAppointment />
@@ -207,13 +207,13 @@ function TodayAppointment() {
     );
 }
 
-function ListofNurses() {
-    const upcomingAppointments = [
-        { id: 1, nurse: 'Sara Ali', status: 'Actived' },
-        { id: 2, nurse: 'Ahmed Osama', status: 'Deactive' },
-        { id: 3, nurse: 'Mona Ahmed', status: 'Actived' },
+function ListofNurses({upcomingAppointments}) {
+    // const upcomingAppointments = [
+    //     { id: 1, nurse: 'Sara Ali', status: 'Actived' },
+    //     { id: 2, nurse: 'Ahmed Osama', status: 'Deactive' },
+    //     { id: 3, nurse: 'Mona Ahmed', status: 'Actived' },
 
-    ];
+    // ];
 
     return (
         <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">

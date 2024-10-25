@@ -22,7 +22,7 @@ import PatientAppointments from './components/PatientAppointments';
 import AdminLogin from './components/AdminLogin'
 import BookAppointment from './components/BookAppointment';
 import ConfirmNewPassword from './components/ConfirmNewPassword';
-
+import Appointments from './components/Appointements';
 
 import DoctorNurseDashboard from './components/DoctorNurseDashboard';
 import { RoleProvider } from './components/RoleContext';
@@ -60,6 +60,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
                   <DoctorNurseDashboard role={role} />  {/* Pass role as a prop */}
+                </ProtectedRoute>
+              }
+            />
+            {/* Shared */}
+            <Route
+              path="appointments"
+              element={
+                <ProtectedRoute allowedRoles={['doctor', 'nurse']}>
+                  <Appointments /> {/* Pass role as a prop */}
                 </ProtectedRoute>
               }
             />

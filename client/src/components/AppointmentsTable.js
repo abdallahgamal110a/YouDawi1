@@ -1,36 +1,8 @@
 import React from 'react';
 import { useTable } from 'react-table';
 
-// Dummy data
-const appointmentsData = [
-  {
-    id: 1,
-    doctorName: 'Dr. John Smith',
-    patientName: 'Emily Davis',
-    appointmentDate: '2024-10-20',
-    appointmentTime: '10:30 AM',
-    status: 'Confirmed',
-  },
-  {
-    id: 2,
-    doctorName: 'Dr. Sarah Johnson',
-    patientName: 'Michael Brown',
-    appointmentDate: '2024-10-21',
-    appointmentTime: '11:00 AM',
-    status: 'Pending',
-  },
-  {
-    id: 3,
-    doctorName: 'Dr. James Wilson',
-    patientName: 'Sophia Johnson',
-    appointmentDate: '2024-10-22',
-    appointmentTime: '02:30 PM',
-    status: 'Cancelled',
-  },
-];
-
 // Table component
-const AppointmentsTable = () => {
+const AppointmentsTable = ({ appointmentsData }) => {
   const columns = React.useMemo(
     () => [
       {
@@ -57,7 +29,8 @@ const AppointmentsTable = () => {
     []
   );
 
-  const data = React.useMemo(() => appointmentsData, []);
+  // التأكد من أن appointmentsData مصفوفة
+  const data = React.useMemo(() => Array.isArray(appointmentsData) ? appointmentsData : [], [appointmentsData]);
 
   const {
     getTableProps,
@@ -89,23 +62,31 @@ const AppointmentsTable = () => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} className="hover:bg-gray-50">
-                {row.cells.map(cell => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      className="py-2 px-4 text-sm text-gray-600 border-b"
-                    >
-                      {cell.render('Cell')}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {rows.length > 0 ? (
+            rows.map(row => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()} className="hover:bg-gray-50">
+                  {row.cells.map(cell => {
+                    return (
+                      <td
+                        {...cell.getCellProps()}
+                        className="py-2 px-4 text-sm text-gray-600 border-b"
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={columns.length} className="py-2 px-4 text-sm text-center text-gray-500">
+                No appointments found.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

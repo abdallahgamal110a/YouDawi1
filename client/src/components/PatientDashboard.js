@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getPublicDoctorsBy } from '../services/DoctorService';
+import { FcSearch } from "react-icons/fc";
+import { jwtDecode } from 'jwt-decode';
+
 
 
 // Notification Bar Component
 function NotificationBar() {
     return (
-        <div className="bg-blue-500 text-white p-4 rounded-lg mb-6">
+        <div className="bg-blue-500 text-white p-14 rounded-lg mb-6">
             <h2 className="font-semibold">Notifications</h2>
             <p>You have 3 upcoming appointments.</p>
         </div>
@@ -56,7 +59,7 @@ function SeacrhDoctor() {
         <div className="relative min-h-screen">
             <div className="relative z-10 flex flex-col items-center justify-center h-full ">
                 <div className="bg-white bg-opacity-85 p-11 rounded-lg shadow-lg text-center">
-                    <h1 className="text-4xl font-bold text-blue-700 mb-4">Find the care you need</h1>
+                    <h1 className="text-6xl font-bold text-blue-700 mb-4">Find the care you need</h1>
                     <div className="flex space-x-4 mb-4">
                         <select
                             className="p-2 border border-gray-300 rounded"
@@ -143,8 +146,9 @@ function SeacrhDoctor() {
                         </div>
                     </div>
                 ) : (
-                    <p className="text-center mt-8">No doctors found</p>
+                    <p className="text-center mt-8 text-6xl p-3">No doctors found</p>
                 )}
+                <FcSearch className="text-9xl col-bl" />
 
             </div>
         </div>
@@ -170,23 +174,25 @@ function AppointmentsSummary() {
 }
 
 // Upcoming Appointments Component
-function TopDoctor() {
-    const TopDoctor = [
-        { id: 1, doctor: 'Dr.Sara Ali', rate: 5 },
-        { id: 2, doctor: 'Dr.Ahmed Osama', rate: 4 },
-        { id: 3, doctor: 'Dr.Mona Ahmed', rate: 3 },
+function TopDoctor({topRatedDoctors = []}) {
+    // const TopDoctor = [
+    //     { id: 1, doctor: 'Dr.Sara Ali', rate: 5 },
+    //     { id: 2, doctor: 'Dr.Ahmed Osama', rate: 4 },
+    //     { id: 3, doctor: 'Dr.Mona Ahmed', rate: 3 },
 
-    ];
+    // ];
+    console.log("Top Rated Doctors:", topRatedDoctors);
 
     return (
         <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
             <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Top Doctor</h2>
             <ul>
-                {TopDoctor.map(appointment => (
-                    <li id='TodayApp' key={appointment.id} className="flex justify-between p-4 border-b last:border-b-0">
+                {topRatedDoctors.map(doctor => (
+                    <li id='TodayApp' key={doctor.id} className="flex justify-between p-4 border-b last:border-b-0">
                         <div>
-                            <p className="font-semibold">{appointment.doctor}</p>
-                            <p className="text-gray-500">Rate {appointment.rate}/5</p>
+                            <p className="font-semibold">{doctor.firstName} {doctor.lastName}</p>
+                            <p className="text-gray-500">Rate {doctor.specialization.join(", ")}</p>
+                            <p className="text-gray-500">Rate {doctor.averageRating}/5</p>
 
                         </div>
                         <button className="text-primary-60 rounded-3x1 p-2 hover:text-white bg-primary-10">Book Now</button>
@@ -240,9 +246,64 @@ function HealthRecords() {
 
 // Main Patient Dashboard Component
 function PatientDashboard() {
+    const [dashboardData, setDashboardData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        // Fetch doctor dashboard data using the token from localStorage
+        const fetchDashboardData = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = jwtDecode(token);
+                try {
+                    const response = await fetch(`http://localhost:5000/api/patients/dashboard`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error fetching dashboard data');
+                    }
+
+                    const data = await response.json();
+                    console.log('Dashboard Data:', data.data);
+                    setDashboardData(data.data); // Assuming the response structure has data
+                } catch (err) {
+                    setError('Error fetching dashboard data');
+                    console.error(err);
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                setError('No token found');
+                setLoading(false);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
+
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
+    const { topRatedDoctors, numUpcomingAppointments, patientName, upcomingAppointments } = dashboardData || {};
+
+
     return (
         <div className="container mx-auto p-6">
-
+            <h1 className="text-4xl font-bold mb-5 pt-5">
+                Hello {patientName}
+            </h1>
             {/* Notification Bar */}
             <SeacrhDoctor />
 
@@ -256,7 +317,7 @@ function PatientDashboard() {
                 {/* Right column */}
                 <div>
                     {/* Upcoming Appointments */}
-                    <TopDoctor />
+                    <TopDoctor topRatedDoctors={topRatedDoctors}/>
                 </div>
             </div>
         </div>

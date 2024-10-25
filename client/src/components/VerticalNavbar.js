@@ -21,8 +21,8 @@ function VerticalNavbar({ onOpenModal, userRole }) {
       , label: 'Home', icon: <FaHome />
     },
     {
-      path: '/doctor-register'
-      , label: 'Doctors', icon: <FaUserMd />
+      path: '/appointments'
+      , label: 'My Appointments', icon: <FaUserMd />
     },
     {
       path: '/patients'
@@ -50,6 +50,7 @@ function VerticalNavbar({ onOpenModal, userRole }) {
   } else if (userRole === 'nurse') {
     navItems = nurseNavItems;
   }
+  console.log(navItems);
 
   return (
     <nav onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)} className={`vertical-navbar  bg-transparent h-full flex flex-col pl-1 pr-1.5 pt-2 pb-2 justify-between transition-all duration-300 ${toggleClasses}`}>
