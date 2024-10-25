@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ProfileSettings = () => {
+const ProfileSettingsDoc = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     // Profile info, passwords, and notifications state (same as before)
@@ -161,4 +161,4 @@ const ProfileSettings = () => {
     );
 };
 
-export default ProfileSettings;
+export default ProfileSettingsDoc;
