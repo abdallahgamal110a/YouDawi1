@@ -317,7 +317,7 @@ function PatientDashboard() {
                 {/* Right column */}
                 <div>
                     {/* Upcoming Appointments */}
-                    <TopDoctor topRatedDoctors={topRatedDoctors}/>
+                    <TopDoctor topRatedDoctors={topRatedDoctors} />
                 </div>
             </div>
         </div>
