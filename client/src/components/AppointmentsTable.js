@@ -69,7 +69,7 @@ const AppointmentsTable = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Doctor Appointments</h2>
+      <h2 className="text-3x1 font-semibold mb-4">Doctor Appointments</h2>
       <table
         {...getTableProps()}
         className="min-w-full bg-white border border-gray-200 rounded-lg shadow"

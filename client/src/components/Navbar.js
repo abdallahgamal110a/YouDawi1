@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import myImage from '../pics/file.png';
+import myImage from '../pics/logo-rbg.png';
 
 
 const Navbar = () => {
   return (
 
-    <nav className="bg-primary-30 px-2">
+    <nav className="absolute w-full bg-primary-30 px-2 py-2 h-10 ">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
