@@ -3,7 +3,25 @@ import { getPublicDoctorsBy } from '../services/DoctorService';
 import { FcSearch } from "react-icons/fc";
 import { jwtDecode } from 'jwt-decode';
 
+import Bannarimg from '../pics/patient.png';
 
+function Banner() {
+    return (
+        <div id='bannar' className='mb-2 w-3/4 bg-gradient-to-r from-primary-40 to-primary-10'>
+            <h2 className="text-3x1 font-semibold text-primary-32 pt-2 pl-2">Appointments Summary</h2>
+            <div className='flex justify-start items-end h-28'>
+                <div id='inbannar' className="text-center bg-pramiry-60 round-full">
+                    <p className="mt-1 text-primary-32">Upcoming Appointments</p>
+                    <p className="mt-1 text-4xl font-bold">3</p>
+                </div>
+                <div className='relative w-50'>
+                    <img className='w-36 absolute bottom-2 left-30' src={Bannarimg} alt="Banner" />
+                </div>
+            </div>
+        </div>
+
+    );
+}
 
 // Notification Bar Component
 function NotificationBar() {
@@ -174,7 +192,7 @@ function AppointmentsSummary() {
 }
 
 // Upcoming Appointments Component
-function TopDoctor({topRatedDoctors = []}) {
+function TopDoctor({ topRatedDoctors = [] }) {
     // const TopDoctor = [
     //     { id: 1, doctor: 'Dr.Sara Ali', rate: 5 },
     //     { id: 2, doctor: 'Dr.Ahmed Osama', rate: 4 },
@@ -205,7 +223,7 @@ function TopDoctor({topRatedDoctors = []}) {
 
 }
 
-function NextAppointment({upcomingAppointments = []}) {
+function NextAppointment({ upcomingAppointments = [] }) {
     // const NextAppointment = [
     //     { id: 1, patint: 'Dr.Sara Ali', date: '2024-10-22', time: '11:30 AM' },
     //     { id: 2, patint: 'Dr.Ahmed Osama', date: '2024-10-22', time: '11:30 AM' },
@@ -222,12 +240,12 @@ function NextAppointment({upcomingAppointments = []}) {
                         <div>
                             <p className="font-semibold">{appointment.doctorId.firstName} {appointment.doctorId.lastName}</p>
                             <p className="text-gray-500">{new Date(appointment.appointmentDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at{' '}
-                            {new Date(`1970-01-01T${appointment.appointmentTime}:00Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            
+                                {new Date(`1970-01-01T${appointment.appointmentTime}:00Z`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+
                             </p>
                             <p>Status: {appointment.status}</p>
                         </div>
-                        <p className="text-primary-60 rounded-full p-2  bg-primary-10"> View</p>
+                        <p className="text-primary-60 rounded-3x1 p-2  bg-primary-10"> View</p>
                     </li>
                 ))}
             </ul>
@@ -308,6 +326,9 @@ function PatientDashboard() {
             <h1 className="text-4xl font-bold mb-5 pt-5">
                 Hello {patientName}
             </h1>
+
+            <Banner />
+
             {/* Notification Bar */}
             <SeacrhDoctor />
 
