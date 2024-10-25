@@ -43,7 +43,7 @@ function Banner() {
     };
 
     return (
-        <div className="relative min-h-screen mt-1">
+        <div className="relative min-h-screen mt-11">
             <img src={myImage2} alt="A doctor holding an elderly person's hand" className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black opacity-30"></div>
             <div className="relative z-10 flex flex-col items-center justify-center h-full">
