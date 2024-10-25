@@ -174,23 +174,25 @@ function AppointmentsSummary() {
 }
 
 // Upcoming Appointments Component
-function TopDoctor() {
-    const TopDoctor = [
-        { id: 1, doctor: 'Dr.Sara Ali', rate: 5 },
-        { id: 2, doctor: 'Dr.Ahmed Osama', rate: 4 },
-        { id: 3, doctor: 'Dr.Mona Ahmed', rate: 3 },
+function TopDoctor({topRatedDoctors = []}) {
+    // const TopDoctor = [
+    //     { id: 1, doctor: 'Dr.Sara Ali', rate: 5 },
+    //     { id: 2, doctor: 'Dr.Ahmed Osama', rate: 4 },
+    //     { id: 3, doctor: 'Dr.Mona Ahmed', rate: 3 },
 
-    ];
+    // ];
+    console.log("Top Rated Doctors:", topRatedDoctors);
 
     return (
         <div id='TodayApp' className="bg-white shadow-lg p-6 rounded-lg">
             <h2 className="text-3x1 text-pramiry-10 font-semibold mb-4">Top Doctor</h2>
             <ul>
-                {TopDoctor.map(appointment => (
-                    <li id='TodayApp' key={appointment.id} className="flex justify-between p-4 border-b last:border-b-0">
+                {topRatedDoctors.map(doctor => (
+                    <li id='TodayApp' key={doctor.id} className="flex justify-between p-4 border-b last:border-b-0">
                         <div>
-                            <p className="font-semibold">{appointment.doctor}</p>
-                            <p className="text-gray-500">Rate {appointment.rate}/5</p>
+                            <p className="font-semibold">{doctor.firstName} {doctor.lastName}</p>
+                            <p className="text-gray-500">Rate {doctor.specialization.join(", ")}</p>
+                            <p className="text-gray-500">Rate {doctor.averageRating}/5</p>
 
                         </div>
                         <button className="text-primary-60 rounded-3x1 p-2 hover:text-white bg-primary-10">Book Now</button>
@@ -315,6 +317,7 @@ function PatientDashboard() {
                 {/* Right column */}
                 <div>
                     {/* Upcoming Appointments */}
+                    <TopDoctor topRatedDoctors={topRatedDoctors}/>
                 </div>
             </div>
         </div>
