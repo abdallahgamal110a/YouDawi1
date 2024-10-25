@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import VerticalNavbar from './VerticalNavbar';
 import Modal from './Modal';
 import { useState } from 'react';
-import ProfileSettings from './ProfileSettings_pat';
+import ProfileSettings from './ProfileSettingspat';
 import DoctorNurseDashboard from './DoctorNurseDashboard';
 import PatientDashboard from './PatientDashboard';
 
